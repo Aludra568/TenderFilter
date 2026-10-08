@@ -1,0 +1,96 @@
+# Эталонный набор: ожидаемые вердикты проставлены вручную «как решил бы тендерный специалист»,
+# до запуска движка. Каждый кейс содержит обоснование. Метки не подгоняются под вывод системы —
+# расхождения видны в отчёте (eval/report.json) и разбираются как ошибки модели.
+
+now: "2026-10-08T12:00:00+03:00"
+
+profiles:
+  it_sib:
+    company_inn: "5406123450"   # IT-поставщик, Новосибирск, МСП
+    criteria: >-
+      Работаем в Новосибирской и Томской областях, в Алтайском крае и Кемеровской области — если выгодно.
+      НМЦК от 500 тыс. до 30 млн. На обеспечения готовы отвлечь не больше 2 млн.
+      На заявку нужно минимум 3 дня. Конкурсы не любим. Аванс важен.
+      Поставляем ноутбуки, компьютеры, серверы, МФУ, картриджи и сетевое оборудование.
+  build_tomsk:
+    company_inn: "7017123451"   # стройматериалы, Томск, не МСП
+    criteria: >-
+      Работаем только в Томской области. Поставляем цемент, кирпич, строительные материалы, отделочные работы.
+      НМЦК до 10 млн.
+  med_msk:
+    company_inn: "7705123452"   # медизделия, Москва, микропредприятие
+    criteria: >-
+      Работаем только в Москве и Московской области. Поставляем медицинское оборудование и лекарственные препараты.
+      Аванс обязателен.
+  liquidating:
+    company_inn: "5406987651"   # компания в стадии ликвидации
+    criteria: Поставляем ноутбуки.
+
+cases:
+  - {id: it-01, profile: it_sib, expected: go, why: "Профильный товар, свой регион, СМП, 6 дней",
+     tender: {subject: "Поставка ноутбуков для образовательных учреждений", okpd2: ["26.20.11.110"], nmck: 4200000, place: "Томская обл., г. Томск", days: 6, method: e_auction, smp_only: true, contract_guarantee_percent: 10, customer_inn: "7017987652"}}
+  - {id: it-02, profile: it_sib, expected: go, why: "Серверы в Новосибирске, обеспечения в пределах лимита",
+     tender: {subject: "Поставка серверного оборудования", okpd2: ["26.20.14.000"], nmck: 18700000, place: "Новосибирская обл., г. Новосибирск", days: 9, method: e_auction, contract_guarantee_percent: 5, app_guarantee_percent: 1}}
+  - {id: it-03, profile: it_sib, expected: consider, why: "Мелкий лот ниже минимума во второстепенном регионе",
+     tender: {subject: "Поставка картриджей для принтеров", okpd2: ["20.59.12.120"], nmck: 420000, place: "Алтайский край, г. Барнаул", days: 5, method: quotation_request, smp_only: true, contract_guarantee_percent: 5}}
+  - {id: it-04, profile: it_sib, expected: consider, why: "Большой конкурс во второстепенном регионе, обеспечение выше лимита",
+     tender: {subject: "Поставка сетевого оборудования", okpd2: ["26.30.11.110"], nmck: 36000000, place: "Кемеровская обл. — Кузбасс, г. Кемерово", days: 15, method: open_contest, contract_guarantee_percent: 10, app_guarantee_percent: 1}}
+  - {id: it-05, profile: it_sib, expected: skip, why: "Подача заканчивается через 12 часов",
+     tender: {subject: "Поставка ноутбуков для администрации района", okpd2: ["26.20.11.110"], nmck: 2800000, place: "Омская обл., г. Омск", days: 0.5, method: e_auction, smp_only: true}}
+  - {id: it-06, profile: it_sib, expected: skip, why: "Медоборудование — не профиль, далёкий регион",
+     tender: {subject: "Поставка медицинского оборудования", okpd2: ["26.60.12.129"], nmck: 12500000, place: "Магаданская обл., г. Магадан", days: 13, method: e_auction}}
+  - {id: it-07, profile: it_sib, expected: go, why: "Мониторы, свой регион, котировки",
+     tender: {subject: "Поставка мониторов", okpd2: ["26.20.17.110"], nmck: 950000, place: "Томская обл., г. Томск", days: 7, method: quotation_request, smp_only: true}}
+  - {id: it-08, profile: it_sib, expected: skip, why: "Москва вне регионов и НМЦК почти вдвое выше максимума",
+     tender: {subject: "Поставка компьютерной техники", okpd2: ["26.20.15.000"], nmck: 54000000, place: "г. Москва", days: 10, method: e_auction, contract_guarantee_percent: 10, national_regime: true}}
+  - {id: it-09, profile: it_sib, expected: skip, why: "Продукты питания — не профиль",
+     tender: {subject: "Поставка продуктов питания для школьных столовых", okpd2: ["10.51.11.110", "10.71.11.110"], nmck: 8800000, place: "Томская обл., г. Томск", days: 9, method: e_auction, smp_only: true}}
+  - {id: it-10, profile: it_sib, expected: go, why: "Лицензии ПО (ОКВЭД 46.51 включает ПО), свой регион",
+     tender: {subject: "Поставка неисключительных лицензий на офисное программное обеспечение", okpd2: ["58.29.29.000"], nmck: 3400000, place: "Новосибирская обл., г. Новосибирск", days: 8, method: e_auction, national_regime: true}}
+  - {id: it-11, profile: it_sib, expected: consider, why: "Хороший лот, но заказчик ликвидируется — риск неоплаты",
+     tender: {subject: "Поставка ноутбуков", okpd2: ["26.20.11.110"], nmck: 1100000, place: "Новосибирская обл., г. Новосибирск", days: 8, method: e_auction, smp_only: true, customer_inn: "5406987651"}}
+  - {id: it-12, profile: it_sib, expected: go, why: "Ноутбуки в соседнем регионе, остальное отлично",
+     tender: {subject: "Поставка ноутбуков", okpd2: ["26.20.11.110"], nmck: 6300000, place: "Кемеровская обл. — Кузбасс, г. Кемерово", days: 11, method: e_auction, smp_only: true, contract_guarantee_percent: 5}}
+  - {id: it-13, profile: it_sib, expected: skip, why: "2 дня при обязательном минимуме 3",
+     tender: {subject: "Поставка планшетных компьютеров", okpd2: ["26.20.11.110"], nmck: 1900000, place: "Томская обл., г. Томск", days: 2, method: quotation_request, smp_only: true}}
+  - {id: it-14, profile: it_sib, expected: go, why: "223-ФЗ, ноутбуки и мониторы, Новосибирск, только МСП",
+     tender: {subject: "Поставка ноутбуков и мониторов", okpd2: ["26.20.11.110", "26.20.17.110"], nmck: 3150000, place: "Новосибирская обл., г. Новосибирск", days: 9, method: proposal_request, smp_only: true, law: "223-FZ"}}
+  - {id: it-15, profile: it_sib, expected: skip, why: "Самара вне регионов, 120 млн и обеспечение 30%",
+     tender: {subject: "Поставка серверов и систем хранения данных", okpd2: ["26.20.14.000", "26.20.40.120"], nmck: 120000000, place: "Самарская обл., г. Самара", days: 18, method: open_contest, contract_guarantee_percent: 30, national_regime: true}}
+  - {id: it-16, profile: it_sib, expected: manual, why: "В извещении нет НМЦК, срока подачи и региона — решать по документации",
+     tender: {subject: "Поставка компьютерного оборудования", okpd2: ["26.20.15.000"], method: e_auction}}
+  - {id: it-17, profile: it_sib, expected: skip, why: "Картриджи на 610 тыс. в Магадан — логистика съест маржу",
+     tender: {subject: "Поставка расходных материалов для оргтехники", okpd2: ["20.59.12.120"], nmck: 610000, place: "Магаданская обл., г. Магадан", days: 6, method: quotation_request, smp_only: true}}
+  - {id: it-18, profile: it_sib, expected: skip, why: "Срок подачи уже истёк",
+     tender: {subject: "Поставка ноутбуков", okpd2: ["26.20.11.110"], nmck: 5500000, place: "Новосибирская обл., г. Новосибирск", days: -1, method: e_auction}}
+  - {id: it-19, profile: it_sib, expected: go, why: "Ремонт компьютеров — дополнительный ОКВЭД 95.11, свой регион",
+     tender: {subject: "Оказание услуг по техническому обслуживанию компьютерной техники", okpd2: ["95.11.10.000"], nmck: 1200000, place: "Томская обл., г. Томск", days: 9, method: e_auction, smp_only: true}}
+  - {id: it-20, profile: it_sib, expected: skip, why: "Мебель — не профиль",
+     tender: {subject: "Поставка мебели для кабинетов", okpd2: ["31.01.12.160"], nmck: 1700000, place: "Томская обл., г. Томск", days: 9, method: e_auction}}
+
+  - {id: bt-01, profile: build_tomsk, expected: skip, why: "Закупка только для СМП, компания не МСП",
+     tender: {subject: "Поставка строительных материалов", okpd2: ["23.51.12.110", "23.32.11.110"], nmck: 3300000, place: "Томская обл., г. Томск", days: 7, method: e_auction, smp_only: true}}
+  - {id: bt-02, profile: build_tomsk, expected: go, why: "Свой регион и товар, без ограничения СМП",
+     tender: {subject: "Поставка строительных материалов", okpd2: ["23.51.12.110"], nmck: 3300000, place: "Томская обл., г. Томск", days: 7, method: e_auction, smp_only: false}}
+  - {id: bt-03, profile: build_tomsk, expected: skip, why: "Новосибирск, а работают только в Томской области",
+     tender: {subject: "Поставка цемента", okpd2: ["23.51.12.110"], nmck: 2000000, place: "Новосибирская обл., г. Новосибирск", days: 8, method: e_auction, smp_only: false}}
+  - {id: bt-04, profile: build_tomsk, expected: consider, why: "Профиль и регион подходят, но лот в 2,5 раза больше обычного",
+     tender: {subject: "Поставка кирпича", okpd2: ["23.32.11.110"], nmck: 25000000, place: "Томская обл., г. Томск", days: 12, method: e_auction, smp_only: false}}
+  - {id: bt-05, profile: build_tomsk, expected: skip, why: "Ноутбуки — не профиль",
+     tender: {subject: "Поставка ноутбуков", okpd2: ["26.20.11.110"], nmck: 1000000, place: "Томская обл., г. Томск", days: 8, method: e_auction, smp_only: false}}
+  - {id: bt-06, profile: build_tomsk, expected: go, why: "Отделочные работы — ОКВЭД 43.39, свой регион",
+     tender: {subject: "Выполнение отделочных работ в здании школы", okpd2: ["43.39.19.190"], nmck: 5000000, place: "Томская обл., г. Томск", days: 10, method: e_auction, smp_only: false}}
+
+  - {id: md-01, profile: med_msk, expected: consider, why: "Профиль и регион подходят, но аванс не указан, а он обязателен",
+     tender: {subject: "Поставка медицинского оборудования", okpd2: ["32.50.13.190"], nmck: 12000000, place: "г. Москва", days: 10, method: e_auction, smp_only: true}}
+  - {id: md-02, profile: med_msk, expected: go, why: "То же, но аванс 30% указан",
+     tender: {subject: "Поставка медицинского оборудования", okpd2: ["32.50.13.190"], nmck: 12000000, place: "г. Москва", days: 10, method: e_auction, smp_only: true, advance_percent: 30}}
+  - {id: md-03, profile: med_msk, expected: skip, why: "Аванс 0%, а он обязателен",
+     tender: {subject: "Поставка лекарственных препаратов", okpd2: ["21.20.10.190"], nmck: 9900000, place: "Московская обл., г. Красногорск", days: 8, method: e_auction, advance_percent: 0}}
+  - {id: md-04, profile: med_msk, expected: skip, why: "Магадан, а работают только в Москве и области",
+     tender: {subject: "Поставка медицинского оборудования", okpd2: ["26.60.12.129"], nmck: 12500000, place: "Магаданская обл., г. Магадан", days: 13, method: e_auction, advance_percent: 30}}
+  - {id: md-05, profile: med_msk, expected: skip, why: "Ноутбуки — не профиль",
+     tender: {subject: "Поставка ноутбуков", okpd2: ["26.20.11.110"], nmck: 2000000, place: "г. Москва", days: 9, method: e_auction, advance_percent: 30}}
+
+  - {id: lq-01, profile: liquidating, expected: skip, why: "Компания-участник в стадии ликвидации",
+     tender: {subject: "Поставка ноутбуков", okpd2: ["26.20.11.110"], nmck: 1500000, place: "Новосибирская обл., г. Новосибирск", days: 8, method: e_auction}}

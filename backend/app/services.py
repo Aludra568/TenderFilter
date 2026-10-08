@@ -1,0 +1,210 @@
+"""Бизнес-логика поверх БД: загрузка извещений, оценка, лента, профили."""
+
+import json
+import logging
+from datetime import datetime, timezone
+
+from sqlalchemy import select, text
+from sqlalchemy.orm import Session
+
+from app.db import IS_POSTGRES
+from app.domain import CanonicalTender, CompanyCard, Preferences
+from app.egrul.providers import get_company, try_get_company
+from app.eis.parser import parse_bytes
+from app.models import Profile, ProfileVersion, Score, Tender
+from app.reference import textvec
+from app.scoring.engine import ScoreResult, evaluate
+
+log = logging.getLogger(__name__)
+
+
+def ingest(db: Session, filename: str, content: bytes) -> Tender:
+    """Разбор файла и сохранение (повторная загрузка того же номера обновляет запись)."""
+    canonical = parse_bytes(content, filename)
+    payload = json.loads(canonical.model_dump_json())
+    row = db.scalar(select(Tender).where(Tender.purchase_number == canonical.purchase_number))
+    if row is None:
+        row = Tender(purchase_number=canonical.purchase_number)
+        db.add(row)
+    else:
+        db.query(Score).filter(Score.tender_id == row.id).delete()
+    row.law = canonical.law
+    row.subject = canonical.subject
+    row.nmck = canonical.nmck
+    row.region_code = canonical.delivery_region_code
+    row.submission_deadline = canonical.submission_deadline
+    row.data = payload
+    row.raw_filename = filename[:255]
+    row.raw_content = content.decode("utf-8", errors="replace")[:2_000_000]
+    row.embedding = textvec.embed(canonical.text_for_matching())
+    db.commit()
+    db.refresh(row)
+    return row
+
+
+def tender_model(row: Tender) -> CanonicalTender:
+    return CanonicalTender.model_validate(row.data)
+
+
+def current_version(db: Session, profile: Profile) -> ProfileVersion:
+    return db.scalar(
+        select(ProfileVersion).where(
+            ProfileVersion.profile_id == profile.id, ProfileVersion.version == profile.current_version
+        )
+    )
+
+
+def create_profile(db: Session, name: str, company_inn: str, prefs: Preferences, criteria_text: str | None) -> Profile:
+    get_company(db, company_inn)  # проверка ИНН и прогрев кэша
+    profile = Profile(name=name, company_inn=company_inn, current_version=1)
+    db.add(profile)
+    db.flush()
+    db.add(ProfileVersion(profile_id=profile.id, version=1, criteria_text=criteria_text,
+                          preferences=json.loads(prefs.model_dump_json())))
+    db.commit()
+    return profile
+
+
+def new_version(db: Session, profile: Profile, prefs: Preferences, criteria_text: str | None) -> ProfileVersion:
+    version = profile.current_version + 1
+    pv = ProfileVersion(profile_id=profile.id, version=version, criteria_text=criteria_text,
+                        preferences=json.loads(prefs.model_dump_json()))
+    db.add(pv)
+    profile.current_version = version
+    db.commit()
+    return pv
+
+
+def compute(db: Session, tender: CanonicalTender, company: CompanyCard | None, prefs: Preferences,
+            now: datetime | None = None) -> ScoreResult:
+    customer = try_get_company(db, tender.customer_inn)
+    return evaluate(tender, company, customer, prefs, now=now)
+
+
+def score_row(db: Session, row: Tender, pv: ProfileVersion, company: CompanyCard | None, force: bool = False) -> Score:
+    """Оценка из кэша (закупка × версия профиля) или новый расчёт."""
+    existing = db.scalar(select(Score).where(Score.tender_id == row.id, Score.profile_version_id == pv.id))
+    if existing and not force:
+        return existing
+    result = compute(db, tender_model(row), company, Preferences.model_validate(pv.preferences))
+    payload = json.loads(result.model_dump_json())
+    if existing:
+        existing.score, existing.verdict, existing.completeness = result.score, result.verdict, result.completeness
+        existing.result, existing.elapsed_ms = payload, result.elapsed_ms
+        existing.created_at = datetime.now(timezone.utc)
+        score = existing
+    else:
+        score = Score(tender_id=row.id, profile_version_id=pv.id, score=result.score, verdict=result.verdict,
+                      completeness=result.completeness, result=payload, elapsed_ms=result.elapsed_ms)
+        db.add(score)
+    db.commit()
+    return score
+
+
+def profile_company(db: Session, profile: Profile) -> CompanyCard | None:
+    return try_get_company(db, profile.company_inn)
+
+
+def rescore_all(db: Session, profile: Profile) -> int:
+    pv = current_version(db, profile)
+    company = profile_company(db, profile)
+    rows = db.scalars(select(Tender)).all()
+    for row in rows:
+        score_row(db, row, pv, company, force=True)
+    return len(rows)
+
+
+VERDICT_ORDER = {"go": 0, "consider": 1, "manual": 2, "skip": 3}
+
+
+def feed(db: Session, profile: Profile, verdict: str | None = None, q: str | None = None,
+         sort: str = "score", limit: int = 50, offset: int = 0) -> dict:
+    pv = current_version(db, profile)
+    company = profile_company(db, profile)
+    rows = db.scalars(select(Tender)).all()
+    items = []
+    counts = {"go": 0, "consider": 0, "skip": 0, "manual": 0}
+    stop_count = 0
+    query_vec = textvec.embed(q) if q else None
+    for row in rows:
+        s = score_row(db, row, pv, company)
+        counts[s.verdict] = counts.get(s.verdict, 0) + 1
+        if s.result.get("stops"):
+            stop_count += 1
+        if verdict and s.verdict != verdict:
+            continue
+        relevance = None
+        if q:
+            ql = q.lower()
+            text_hit = ql in row.subject.lower() or ql in row.purchase_number or ql in (row.data.get("customer_name") or "").lower()
+            relevance = 1.0 if text_hit else textvec.cosine(query_vec, row.embedding or [])
+            if not text_hit and relevance < 0.12:
+                continue
+        items.append(_feed_item(row, s, relevance))
+    if q:
+        items.sort(key=lambda x: (-(x["relevance"] or 0), -x["score"]))
+    elif sort == "deadline":
+        items.sort(key=lambda x: x["submission_deadline"] or "9999")
+    elif sort == "nmck":
+        items.sort(key=lambda x: -(x["nmck"] or 0))
+    else:
+        items.sort(key=lambda x: (VERDICT_ORDER.get(x["verdict"], 9), -x["score"]))
+    return {
+        "profile_id": profile.id,
+        "profile_version": pv.version,
+        "total": len(rows),
+        "counts": counts,
+        "stop_count": stop_count,
+        "items": items[offset: offset + limit],
+        "filtered": len(items),
+    }
+
+
+def _feed_item(row: Tender, s: Score, relevance: float | None = None) -> dict:
+    d = row.data
+    return {
+        "tender_id": row.id,
+        "score_id": s.id,
+        "purchase_number": row.purchase_number,
+        "subject": row.subject,
+        "law": row.law,
+        "procedure_name": d.get("procedure_name"),
+        "customer_name": d.get("customer_name"),
+        "region_name": d.get("delivery_region_name"),
+        "nmck": row.nmck,
+        "submission_deadline": d.get("submission_deadline"),
+        "smp_only": d.get("smp_only"),
+        "score": s.score,
+        "verdict": s.verdict,
+        "completeness": s.completeness,
+        "main_reason": s.result.get("main_reason"),
+        "factors": [{"key": f["key"], "label": f["label"], "score": f["score"]} for f in s.result.get("factors", [])],
+        "relevance": round(relevance, 3) if relevance is not None else None,
+    }
+
+
+def preview(db: Session, profile: Profile, prefs: Preferences, tender_id: int | None) -> dict:
+    """Пересчёт ленты с черновыми настройками без сохранения — для «живых» ползунков."""
+    company = profile_company(db, profile)
+    rows = db.scalars(select(Tender)).all()
+    counts = {"go": 0, "consider": 0, "skip": 0, "manual": 0}
+    example = None
+    for row in rows:
+        result = compute(db, tender_model(row), company, prefs)
+        counts[result.verdict] += 1
+        if row.id == tender_id:
+            example = json.loads(result.model_dump_json())
+    return {"counts": counts, "total": len(rows), "example": example}
+
+
+def similar(db: Session, row: Tender, limit: int = 5) -> list[Tender]:
+    if not row.embedding:
+        return []
+    if IS_POSTGRES:
+        vec = "[" + ",".join(f"{x:.6f}" for x in row.embedding) + "]"
+        stmt = (select(Tender).where(Tender.id != row.id, Tender.embedding.is_not(None))
+                .order_by(text("embedding <=> CAST(:v AS vector)")).limit(limit))
+        return list(db.scalars(stmt, {"v": vec}))
+    others = [t for t in db.scalars(select(Tender).where(Tender.id != row.id)) if t.embedding]
+    others.sort(key=lambda t: -textvec.cosine(row.embedding, t.embedding))
+    return others[:limit]

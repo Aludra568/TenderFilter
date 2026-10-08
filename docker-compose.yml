@@ -1,0 +1,85 @@
+name: tender-filter
+
+x-backend-env: &backend-env
+  DATABASE_URL: postgresql+psycopg://tender:tender@db:5432/tender
+  REDIS_URL: redis://redis:6379/0
+  EGRUL_PROVIDER: ${EGRUL_PROVIDER:-mock}
+  DADATA_API_KEY: ${DADATA_API_KEY:-}
+  LLM_PROVIDER: ${LLM_PROVIDER:-ollama}
+  OLLAMA_URL: http://ollama:11434
+  LLM_MODEL: ${LLM_MODEL:-qwen2.5:1.5b}
+  OPENAI_BASE_URL: ${OPENAI_BASE_URL:-https://api.openai.com/v1}
+  OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+  SEED_DEMO_DATA: ${SEED_DEMO_DATA:-true}
+
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: tender
+      POSTGRES_PASSWORD: tender
+      POSTGRES_DB: tender
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tender -d tender"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  backend:
+    build: ./backend
+    environment: *backend-env
+    depends_on:
+      db: { condition: service_healthy }
+      redis: { condition: service_healthy }
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+  worker:
+    build: ./backend
+    command: celery -A app.worker.celery_app worker --loglevel=info --concurrency=2
+    environment: *backend-env
+    depends_on:
+      backend: { condition: service_healthy }
+    healthcheck:
+      disable: true
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    depends_on:
+      backend: { condition: service_healthy }
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+
+  # Локальная LLM для разбора критериев. Система работает и без неё (разбор правилами),
+  # пока модель скачивается или если LLM_PROVIDER=none.
+  ollama:
+    image: ollama/ollama:0.5.7
+    volumes:
+      - ollama:/root/.ollama
+    restart: unless-stopped
+
+  ollama-pull:
+    image: ollama/ollama:0.5.7
+    environment:
+      OLLAMA_HOST: ollama:11434
+    entrypoint: ["/bin/sh", "-c", "for i in $$(seq 1 30); do ollama list >/dev/null 2>&1 && break; sleep 2; done; ollama pull ${LLM_MODEL:-qwen2.5:1.5b}"]
+    depends_on:
+      - ollama
+    restart: "no"
+
+volumes:
+  pgdata:
+  ollama:

@@ -1,0 +1,76 @@
+# Где искать поля извещения. Пути — цепочки локальных имён элементов
+# (пространства имён не важны), проверяются по порядку до первого совпадения.
+# Новая версия схемы ЕИС = новая строка здесь, код менять не нужно.
+# 44-ФЗ сверено с реальными извещениями epNotificationEF2020 / ZK20 (schemeVersion 16.2, октябрь 2026).
+
+"44-FZ":
+  fields:
+    purchase_number: [commonInfo/purchaseNumber, purchaseNumber, regNumber]
+    subject: [commonInfo/purchaseObjectInfo, purchaseObjectInfo, purchaseObject/name, name]
+    placing_way_code: [commonInfo/placingWay/code, placingWay/code]
+    placing_way_name: [commonInfo/placingWay/name, placingWay/name]
+    published_at: [commonInfo/publishDTInEIS, publishDTInEIS, docPublishDate, publishDate]
+    url: [commonInfo/href, href]
+    nmck: [maxPriceInfo/maxPrice, contractConditionsInfo/maxPrice, lot/maxPrice, maxPrice]
+    currency: [maxPriceInfo/currency/code, currency/code]
+    deadline: [collectingInfo/endDT, procedureInfo/collecting/endDate, collectingEndDate, endDT, endDate]
+    customer_inn: [responsibleOrgInfo/INN, customerInfo/INN, customer/INN, INN]
+    customer_name: [responsibleOrgInfo/fullName, customerInfo/fullName, customer/fullName, fullName]
+    app_guarantee_amount: [applicationGuarantee/amount, applicationGuarantee/sum]
+    app_guarantee_part: [applicationGuarantee/part, applicationGuarantee/procent]
+    contract_guarantee_part: [contractGuarantee/part, contractGuarantee/procent]
+    contract_guarantee_amount: [contractGuarantee/amount, contractGuarantee/sum]
+    advance_percent: [advancePaymentSum/sumInPercents, advancePayment/percent, advancePaymentPercents, prepaymentPercent]
+    delivery_place: [deliveryPlacesInfo/byGARInfo/GARInfo/GARAddress, byGARInfo/deliveryPlace, GARAddress, deliveryPlaceInfo/deliveryPlace, deliveryPlacesInfo/deliveryPlace, deliveryPlace, kladrPlaces/deliveryPlace, responsibleOrgInfo/factAddress]
+    delivery_term: [deliveryTerm, contractExecutionTerm, executionPeriod/term, deliveryTermInfo]
+    contract_end_date: [contractExecutionTermsInfo/notRelativeTermsInfo/endDate, notRelativeTermsInfo/endDate]
+  lists:
+    okpd2: [OKPD2/OKPDCode, OKPD2/code, KTRU/OKPDCode, OKPDCode]
+    ktru: [KTRU/code, KTRUCode]
+    requirements: [preferenseRequirementInfo/name, requirementInfo/name, restrictionInfo/name, preferenseInfo/name, requirement/name, restriction/name, preferense/name, restrictInfo]
+    requirement_codes: [preferenseRequirementInfo/shortName]
+  flags:
+    # ч. 3 ст. 30 44-ФЗ — участниками могут быть только СМП и СОНКО (код PVS33044 в реальных файлах)
+    smp_codes: [PVS33044]
+    national_regime: [isRestrictForeignPurchaseObjects, isProhibitionForeignPurchaseObjects, isPreferenseRFPurchaseObjects]
+  items:
+    container: [purchaseObject, drugPurchaseObjectInfo]
+    name: [name, KTRU/name, OKPD2/OKPDName]
+    okpd2: [OKPD2/OKPDCode, OKPD2/code, KTRU/OKPDCode]
+    ktru: [KTRU/code]
+    quantity: [quantity/value, quantity]
+    price: [price]
+
+"223-FZ":
+  fields:
+    purchase_number: [registrationNumber, purchaseNoticeNumber]
+    subject: [purchaseNoticeData/name, lotData/subject, name, subject]
+    placing_way_code: [purchaseMethodCode, purchaseCode]
+    placing_way_name: [purchaseCodeName, purchaseMethodName]
+    published_at: [publicationDateTime, createDateTime]
+    url: [urlEIS, urlOOS]
+    nmck: [lotData/initialSum, initialSum, lotData/maxContractPrice]
+    currency: [lotData/currency/code, currency/code, currency/letterCode]
+    deadline: [submissionCloseDateTime, applSubmissionCloseDate, submissionCloseDate]
+    customer_inn: [customer/mainInfo/inn, customer/inn, mainInfo/inn, inn]
+    customer_name: [customer/mainInfo/fullName, customer/fullName, mainInfo/fullName, fullName]
+    app_guarantee_amount: [applicationSupplySum, applicationGuaranteeSum]
+    contract_guarantee_amount: [contractSupplySum, contractGuaranteeSum]
+    advance_percent: [prepaymentPercent, advancePercent]
+    delivery_place: [deliveryPlace/address, deliveryPlace/region, deliveryPlace, region]
+    delivery_term: [deliveryTerm, executionPeriod]
+    contract_end_date: [executionEndDate, contractEndDate]
+  lists:
+    okpd2: [okpd2/code, okpd2Code]
+    ktru: [ktru/code]
+    requirements: [preference/name, restriction/name, requirement/name]
+  flags:
+    smp_only: [forSmallOrMiddle, smallOrMiddle]
+    national_regime: [priorityRegulation, nationalRegime]
+  items:
+    container: [lotItem]
+    name: [additionalInfo, okpd2/name, name]
+    okpd2: [okpd2/code]
+    ktru: [ktru/code]
+    quantity: [qty, quantity]
+    price: [unitPrice, price]

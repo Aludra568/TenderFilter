@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- Реальное извещение из ЕИС (zakupki.gov.ru), выгружено 08.10.2026 и сокращено:
+     убраны вложения, банковские реквизиты, контакты сотрудников, повторы позиций. -->
+<ns7:epNotificationEF2020 xmlns="http://zakupki.gov.ru/oos/EPtypes/1" xmlns:ns6="http://zakupki.gov.ru/oos/types/1" xmlns:ns5="http://zakupki.gov.ru/oos/KOTypes/1" xmlns:ns7="http://zakupki.gov.ru/oos/printform/1" xmlns:ns2="http://zakupki.gov.ru/oos/base/1" xmlns:ns4="http://zakupki.gov.ru/oos/CPtypes/1" xmlns:ns3="http://zakupki.gov.ru/oos/common/1" schemeVersion="16.2">
+    <id>44215514</id>
+    <versionNumber>1</versionNumber>
+    <commonInfo>
+        <purchaseNumber>0173100008726000065</purchaseNumber>
+        <docNumber>№0173100008726000065</docNumber>
+        <plannedPublishDate>2026-10-12+03:00</plannedPublishDate>
+        <publishDTInEIS>2026-10-08T16:44:23.377+03:00</publishDTInEIS>
+        <href>https://zakupki.gov.ru/epz/order/notice/ea20/view/common-info.html?regNumber=0173100008726000065</href>
+        <placingWay>
+            <ns2:code>EAP20</ns2:code>
+            <ns2:name>Электронный аукцион</ns2:name>
+        </placingWay>
+        <ETP>
+            <ns2:code>ETP_SBAST</ns2:code>
+            <ns2:name>АО «Сбербанк-АСТ»</ns2:name>
+            <ns2:url>http://www.sberbank-ast.ru</ns2:url>
+        </ETP>
+        <contractConclusionOnSt83Ch2>true</contractConclusionOnSt83Ch2>
+        <purchaseObjectInfo>Поставка компьютерной техники для нужд Счетной палаты Российской Федерации</purchaseObjectInfo>
+    </commonInfo>
+    <purchaseResponsibleInfo>
+        <responsibleOrgInfo>
+            <regNum>01731000087</regNum>
+            <consRegistryNum>00100305</consRegistryNum>
+            <fullName>СЧЕТНАЯ ПАЛАТА РОССИЙСКОЙ ФЕДЕРАЦИИ</fullName>
+            <postAddress>Российская Федерация, 119991, Москва, УЛИЦА ЗУБОВСКАЯ, ДОМ 2</postAddress>
+            <factAddress>Российская Федерация, 119991, Москва г, Зубовская ул, Д. 2</factAddress>
+            <INN>7702166610</INN>
+            <KPP>770401001</KPP>
+        </responsibleOrgInfo>
+        <responsibleRole>CU</responsibleRole>
+    </purchaseResponsibleInfo>
+    <notificationInfo>
+        <procedureInfo>
+            <collectingInfo>
+                <startDT>2026-10-08T16:44:23+03:00</startDT>
+                <endDT>2026-10-20T09:00:00+03:00</endDT>
+            </collectingInfo>
+            <biddingDate>2026-10-20+03:00</biddingDate>
+            <summarizingDate>2026-10-21+03:00</summarizingDate>
+        </procedureInfo>
+        <contractConditionsInfo>
+            <maxPriceInfo>
+                <maxPrice>108142501.80</maxPrice>
+                <currency>
+                    <ns2:code>RUB</ns2:code>
+                    <ns2:name>РОССИЙСКИЙ РУБЛЬ</ns2:name>
+                </currency>
+            </maxPriceInfo>
+        </contractConditionsInfo>
+        <customerRequirementsInfo>
+            <customerRequirementInfo>
+                <customer>
+                    <ns2:regNum>01731000087</ns2:regNum>
+                    <ns2:consRegistryNum>00100305</ns2:consRegistryNum>
+                    <ns2:fullName>СЧЕТНАЯ ПАЛАТА РОССИЙСКОЙ ФЕДЕРАЦИИ</ns2:fullName>
+                </customer>
+                <applicationGuarantee>
+                    <amount>1081425.02</amount>
+                    <procedureInfo>В соответствии с разделом 22 извещения (во вложения)</procedureInfo>
+                    <part>1.0</part>
+                </applicationGuarantee>
+                <contractGuarantee>
+                    <amount>10814250.18</amount>
+                    <procedureInfo>В порядке и по реквизитам, указанным в разделе 26 извещения (во вложении) </procedureInfo>
+                    <part>10.0</part>
+                </contractGuarantee>
+                <contractConditionsInfo>
+                    <maxPriceInfo>
+                        <maxPrice>108142501.80</maxPrice>
+                    </maxPriceInfo>
+                    <mustPublicDiscussion>false</mustPublicDiscussion>
+                    <contractExecutionPaymentPlan>
+                        <contractExecutionTermsInfo>
+                            <notRelativeTermsInfo>
+                                <isFromConclusionDate>true</isFromConclusionDate>
+                                <endDate>2026-12-30+03:00</endDate>
+                            </notRelativeTermsInfo>
+                        </contractExecutionTermsInfo>
+                    </contractExecutionPaymentPlan>
+                    <deliveryPlacesInfo>
+                        <byGARInfo>
+                            <ns3:sid>62046329</ns3:sid>
+                            <ns3:countryInfo>
+                                <ns2:countryCode>643</ns2:countryCode>
+                                <ns2:countryFullName>Российская Федерация</ns2:countryFullName>
+                            </ns3:countryInfo>
+                            <ns3:GARInfo>
+                                <ns3:GARGuid>0c5b2444-70a0-4932-980c-b4dc0d3f02b5</ns3:GARGuid>
+                                <ns3:GARAddress>г. Москва</ns3:GARAddress>
+                            </ns3:GARInfo>
+                            <ns3:deliveryPlace>по адресу Заказчика: 119121, г. Москва, ул. Зубовская, дом 2</ns3:deliveryPlace>
+                        </byGARInfo>
+                    </deliveryPlacesInfo>
+                    <isOneSideRejectionSt95>true</isOneSideRejectionSt95>
+                </contractConditionsInfo>
+                <provisionWarranty>
+                    <ns3:amount>1081425.02</ns3:amount>
+                    <ns3:part>1.0</ns3:part>
+                </provisionWarranty>
+            </customerRequirementInfo>
+        </customerRequirementsInfo>
+        <purchaseObjectsInfo>
+            <notDrugPurchaseObjectsInfo>
+                <ns3:purchaseObject>
+                    <ns3:sid>224324666</ns3:sid>
+                    <ns3:KTRU>
+                        <ns2:code>26.20.11.110-00000141</ns2:code>
+                        <ns2:name>Ноутбук</ns2:name>
+                        <ns2:versionId>377821</ns2:versionId>
+                        <ns2:versionNumber>26</ns2:versionNumber>
+                        <ns3:OKPD2>
+                            <ns2:OKPDCode>26.20.11.110</ns2:OKPDCode>
+                            <ns2:OKPDName>Ноутбуки, в том числе портативные в защищенном исполнении, предназначенные для работы в сложной среде эксплуатации</ns2:OKPDName>
+                        </ns3:OKPD2>
+                    </ns3:KTRU>
+                    <ns3:name>Ноутбук</ns3:name>
+                    <ns3:OKEI>
+                        <ns2:code>796</ns2:code>
+                        <ns2:nationalCode>шт</ns2:nationalCode>
+                        <ns2:name>Штука</ns2:name>
+                    </ns3:OKEI>
+                    <ns3:price>186166.67</ns3:price>
+                    <ns3:quantity>
+                        <ns3:value>365.00000000000</ns3:value>
+                    </ns3:quantity>
+                    <ns3:sum>67950834.55</ns3:sum>
+                    <ns3:type>PRODUCT</ns3:type>
+                    <ns3:hierarchyType>ND</ns3:hierarchyType>
+                    <ns3:restrictionsInfo>
+                        <ns3:isProhibitionForeignPurchaseObjects>false</ns3:isProhibitionForeignPurchaseObjects>
+                        <ns3:isRestrictForeignPurchaseObjects>true</ns3:isRestrictForeignPurchaseObjects>
+                        <ns3:isPreferenseRFPurchaseObjects>false</ns3:isPreferenseRFPurchaseObjects>
+                        <ns3:isImposibilityProhibition>false</ns3:isImposibilityProhibition>
+                    </ns3:restrictionsInfo>
+                    <ns3:isSoftware>false</ns3:isSoftware>
+                </ns3:purchaseObject>
+                <ns3:purchaseObject>
+                    <ns3:sid>224325859</ns3:sid>
+                    <ns3:KTRU>
+                        <ns2:code>26.20.11.110-00000139</ns2:code>
+                        <ns2:name>Ноутбук</ns2:name>
+                        <ns2:versionId>377822</ns2:versionId>
+                        <ns2:versionNumber>25</ns2:versionNumber>
+                        <ns3:OKPD2>
+                            <ns2:OKPDCode>26.20.11.110</ns2:OKPDCode>
+                            <ns2:OKPDName>Ноутбуки, в том числе портативные в защищенном исполнении, предназначенные для работы в сложной среде эксплуатации</ns2:OKPDName>
+                        </ns3:OKPD2>
+                    </ns3:KTRU>
+                    <ns3:name>Ноутбук</ns3:name>
+                    <ns3:OKEI>
+                        <ns2:code>796</ns2:code>
+                        <ns2:nationalCode>шт</ns2:nationalCode>
+                        <ns2:name>Штука</ns2:name>
+                    </ns3:OKEI>
+                    <ns3:price>279000.00</ns3:price>
+                    <ns3:quantity>
+                        <ns3:value>35.00000000000</ns3:value>
+                    </ns3:quantity>
+                    <ns3:sum>9765000.00</ns3:sum>
+                    <ns3:type>PRODUCT</ns3:type>
+                    <ns3:hierarchyType>ND</ns3:hierarchyType>
+                    <ns3:restrictionsInfo>
+                        <ns3:isProhibitionForeignPurchaseObjects>false</ns3:isProhibitionForeignPurchaseObjects>
+                        <ns3:isRestrictForeignPurchaseObjects>true</ns3:isRestrictForeignPurchaseObjects>
+                        <ns3:isPreferenseRFPurchaseObjects>false</ns3:isPreferenseRFPurchaseObjects>
+                        <ns3:isImposibilityProhibition>false</ns3:isImposibilityProhibition>
+                    </ns3:restrictionsInfo>
+                    <ns3:isSoftware>false</ns3:isSoftware>
+                </ns3:purchaseObject>
+                <ns3:totalSum>108142501.80</ns3:totalSum>
+                <quantityUndefined>false</quantityUndefined>
+            </notDrugPurchaseObjectsInfo>
+        </purchaseObjectsInfo>
+        <requirementsInfo>
+            <requirementInfo>
+                <ns3:preferenseRequirementInfo>
+                    <ns2:shortName>ET44</ns2:shortName>
+                    <ns2:name>Единые требования к участникам закупок в соответствии с ч. 1 ст. 31 Закона № 44-ФЗ</ns2:name>
+                </ns3:preferenseRequirementInfo>
+            </requirementInfo>
+            <requirementInfo>
+                <ns3:preferenseRequirementInfo>
+                    <ns2:shortName>TR442</ns2:shortName>
+                    <ns2:name>Требования к участникам закупок в соответствии с ч. 1.1 ст. 31 Закона № 44-ФЗ</ns2:name>
+                </ns3:preferenseRequirementInfo>
+            </requirementInfo>
+        </requirementsInfo>
+        <flags>
+            <purchaseObjectsCh9St37>false</purchaseObjectsCh9St37>
+        </flags>
+    </notificationInfo>
+</ns7:epNotificationEF2020>
