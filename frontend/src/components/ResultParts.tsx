@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import type { Company, Finding, Review, ScoreResult, Tender } from "../api";
 import { rub } from "../format";
 import { Bar, VerdictChip } from "./common";
+import { FuzzyChart } from "./FuzzyChart";
 
 const STATUS: Record<string, string> = {
   ACTIVE: "Действующая",
@@ -23,7 +24,8 @@ export function FactorList({ result }: { result: ScoreResult }) {
           <div style={{ display: "flex", flexDirection: "column", gap: 4, minWidth: 0 }}>
             <span className="name">{f.label}{f.stop && <span className="chip skip" style={{ marginLeft: 8, fontSize: 12 }}>стоп</span>}</span>
             {f.value && <span className="muted" style={{ fontSize: 14 }}>{f.value}</span>}
-            {f.reasons.map((reason) => <span key={reason} className="why">{reason}</span>)}
+            {f.reasons.filter((r) => !(f.fuzzy && r.startsWith("Нечёткая оценка"))).map((reason) => <span key={reason} className="why">{reason}</span>)}
+            {f.fuzzy && f.active && <FuzzyChart data={f.fuzzy} />}
           </div>
           <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
             <span className="num" style={{ fontSize: 17, fontWeight: 800 }}>

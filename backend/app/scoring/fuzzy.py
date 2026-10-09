@@ -97,3 +97,25 @@ def curves(min_rub: float | None, max_rub: float | None, min_days: int) -> dict:
         days_points.append({"x": round(d, 2), **inf.memberships})
     load_points = [{"x": round(r * 2 / 60, 3), **guarantee_load(r * 2 / 60).memberships} for r in range(61)]
     return {"price": price_points, "time_left": days_points, "guarantee_load": load_points}
+
+
+def chart(variable: str, x: float, inf: Inference, **params) -> dict:
+    """Данные для графика в объяснении: кривые термов и точка текущей закупки."""
+    if variable == "price":
+        lo, hi = params.get("low"), params.get("high")
+        top = max((hi or (lo or 1e6) * 2) * 1.8, x * 1.15)
+        xs = [top * i / 40 for i in range(41)]
+        points = [{"x": round(v), "подходит": price_fit(v, lo, hi).memberships["подходит"]} for v in xs]
+        unit = "₽"
+    elif variable == "time_left":
+        top = max(15.0, params.get("min_days", 3) * 2.5, x * 1.15)
+        xs = [top * i / 40 for i in range(41)]
+        points = [{"x": round(v, 2), **time_left(v, params.get("min_days", 3)).memberships} for v in xs]
+        unit = "дн."
+    else:
+        top = max(2.0, min(x, 10.0) * 1.15)
+        xs = [top * i / 40 for i in range(41)]
+        points = [{"x": round(v, 3), **guarantee_load(v).memberships} for v in xs]
+        unit = "доли лимита"
+    return {"variable": variable, "x": round(min(x, top), 3), "unit": unit, "memberships": inf.memberships,
+            "score": inf.score, "points": points}

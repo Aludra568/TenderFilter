@@ -36,6 +36,7 @@ class FactorResult:
     sources: list[Source] = field(default_factory=list)
     weight: float = 0.0
     points: float = 0.0
+    fuzzy: dict | None = None  # график нечёткой переменной для объяснения
 
 
 @dataclass
@@ -158,6 +159,7 @@ def price_factor(ctx: Context) -> FactorResult:
     # Нечёткое множество «цена подходит»: ядро — ваш диапазон, плечи до ½ минимума и до 1,5 максимума.
     inf = fuzzy.price_fit(n, lo, hi)
     r.score = inf.memberships["подходит"]
+    r.fuzzy = fuzzy.chart("price", n, inf, low=lo, high=hi)
     if (lo is None or n >= lo) and (hi is None or n <= hi):
         r.reasons = [f"{_rub(n)} в вашем диапазоне {rng}"]
     elif hi is not None and n > hi:
@@ -233,6 +235,7 @@ def timing_factor(ctx: Context) -> FactorResult:
         # Лингвистическая переменная «время на заявку»: мало / нормально / достаточно (вывод Сугено).
         inf = fuzzy.time_left(days, min_days)
         ds = inf.score
+        r.fuzzy = fuzzy.chart("time_left", days, inf, min_days=min_days)
         if days < min_days and p.required:
             r.stop = f"До окончания подачи {left} — меньше вашего минимума ({_days(min_days)})"
         reasons.append(f"{left[0].upper() + left[1:]} на подготовку заявки" + (" — мало" if ds < 0.6 else ""))
@@ -270,6 +273,7 @@ def finance_factor(ctx: Context) -> FactorResult:
             ratio = total / free if free > 0 else (float("inf") if total > 0 else 0.0)
             inf = fuzzy.guarantee_load(min(ratio, 10.0))
             gs = inf.score
+            r.fuzzy = fuzzy.chart("guarantee_load", min(ratio, 10.0), inf)
             limit_txt = (f"свободном лимите {_rub(free)} (занято {_rub(ctx.committed)} в {ctx.committed_count} "
                          f"заявк{'е' if ctx.committed_count == 1 else 'ах'})") if ctx.committed else f"лимите {_rub(p.guarantee_limit_rub)}"
             reasons.append(f"Обеспечения {_rub(total)} при {limit_txt} — нагрузка «{inf.dominant}»")

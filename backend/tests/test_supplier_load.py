@@ -32,3 +32,15 @@ def test_bid_api_changes_free_limit(client):
     assert client.get(f"/api/tenders/{tid}").json()["bid_status"] == "won"
     client.put(f"/api/tenders/{tid}/bid", json={"status": None})
     assert client.get("/api/bids").json()["bids"] == []
+
+
+def test_whatif_changes_price(client):
+    tid = client.get("/api/feed?verdict=go&limit=1").json()["items"][0]["tender_id"]
+    base = client.post("/api/score/whatif", json={"tender_id": tid}).json()
+    bigger = client.post("/api/score/whatif", json={"tender_id": tid, "nmck_change_pct": 300}).json()
+    assert bigger["nmck"] == base["nmck"] * 4
+    price = lambda r: next(f for f in r["result"]["factors"] if f["key"] == "price")  # noqa: E731
+    assert price(bigger)["score"] <= price(base)["score"]
+    late = client.post("/api/score/whatif", json={"tender_id": tid, "days_left": 0.5}).json()
+    timing = next(f for f in late["result"]["factors"] if f["key"] == "timing")
+    assert timing["fuzzy"]["variable"] == "time_left" and timing["score"] < 0.6

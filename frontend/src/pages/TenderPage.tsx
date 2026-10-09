@@ -4,6 +4,7 @@ import { api, BID_STATUSES, type BidStatus, type TenderCard } from "../api";
 import { useApp } from "../App";
 import { Bar, CountUp, ErrorBox, Skeleton, VerdictChip } from "../components/common";
 import { Radar, type RadarSeries } from "../components/Radar";
+import { WhatIf } from "../components/WhatIf";
 import { CompanyBlock, DocsPicker, FactorList, FindingList, KeyParams, ReviewBlock } from "../components/ResultParts";
 import { LAW, deadlineInfo, rub } from "../format";
 
@@ -175,6 +176,11 @@ export function TenderPage() {
         </section>
 
         <div className="side">
+          <section className="card fu" aria-labelledby="whatif" style={{ display: "flex", flexDirection: "column", gap: 10, animationDelay: "300ms" }}>
+            <h3 id="whatif">Что если</h3>
+            <WhatIf tenderId={card.tender_id} base={r} />
+          </section>
+
           <section className="card fu" aria-labelledby="bid" style={{ display: "flex", flexDirection: "column", gap: 10, animationDelay: "310ms" }}>
             <h3 id="bid">Ваше участие</h3>
             <div className="seg" role="group" aria-label="Статус участия" style={{ borderRadius: 20 }}>

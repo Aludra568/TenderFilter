@@ -422,6 +422,38 @@ def score(body: ScoreRequest, db: Session = Depends(get_db)):
     return services.compute(db, tender, company_card, prefs)
 
 
+class WhatIfRequest(BaseModel):
+    tender_id: int
+    profile_id: int | None = None
+    nmck_change_pct: float = Field(0, ge=-90, le=300)
+    days_left: float | None = Field(None, ge=0, le=120)
+
+
+@router.post("/score/whatif", summary="«Что если»: оценка при другой НМЦК или сроке подачи — чувствительность вердикта")
+def score_whatif(req: WhatIfRequest, db: Session = Depends(get_db)):
+    from datetime import timedelta
+
+    row = db.get(Tender, req.tender_id)
+    if row is None:
+        raise HTTPException(404, "Закупка не найдена")
+    profile = _profile(db, req.profile_id)
+    pv = services.current_version(db, profile)
+    t = services.tender_model(row).model_copy(deep=True)
+    k = 1 + req.nmck_change_pct / 100
+    if t.nmck is not None:
+        t.nmck *= k
+        # обеспечения задаются в % от НМЦК — масштабируются вместе с ней
+        if t.app_guarantee_amount is not None:
+            t.app_guarantee_amount *= k
+        if t.contract_guarantee_amount is not None:
+            t.contract_guarantee_amount *= k
+    if req.days_left is not None:
+        t.submission_deadline = datetime.now(timezone.utc) + timedelta(days=req.days_left)
+    result = services.compute(db, t, services.profile_company(db, profile), Preferences.model_validate(pv.preferences),
+                              committed=services.committed(db, profile.id, row.id))
+    return {"nmck": t.nmck, "result": result}
+
+
 class PreviewRequest(BaseModel):
     profile_id: int | None = None
     preferences: Preferences

@@ -21,6 +21,7 @@ class FactorOut(BaseModel):
     reasons: list[str]
     stop: str | None
     sources: list[dict]
+    fuzzy: dict | None = None
 
 
 class RuleOut(BaseModel):
@@ -168,7 +169,7 @@ def evaluate(
         FactorOut(
             key=r.key, label=r.label, score=r.score, active=r.active and r.weight > 0, weight=round(r.weight, 2),
             points=r.points, max_points=round(100 * r.weight / known_w, 1) if known_w and r.score is not None else 0.0,
-            value=r.value, reasons=r.reasons, stop=r.stop,
+            value=r.value, reasons=r.reasons, stop=r.stop, fuzzy=r.fuzzy,
             sources=[{"field": s.field, "path": s.path, "raw": s.raw} for s in r.sources],
         )
         for r in results

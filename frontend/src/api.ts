@@ -55,6 +55,16 @@ export interface Factor {
   reasons: string[];
   stop: string | null;
   sources: Source[];
+  fuzzy?: FuzzyData | null;
+}
+
+export interface FuzzyData {
+  variable: "price" | "time_left" | "guarantee_load";
+  x: number;
+  unit: string;
+  score: number;
+  memberships: Record<string, number>;
+  points: Record<string, number>[];
 }
 
 export interface ScoreResult {
@@ -372,6 +382,8 @@ export const api = {
   weightQuestions: () => request<{ pairs: WeightQuestion[] }>("/api/weights/questions"),
   weights: (body: { method: "roc"; ranking: string[] } | { method: "ahp"; pairs: { a: string; b: string; value: number }[] }) =>
     request<WeightsResult>("/api/weights", json("POST", body)),
+  whatIf: (tenderId: number, nmckChangePct: number, daysLeft: number | null) =>
+    request<{ nmck: number | null; result: ScoreResult }>("/api/score/whatif", json("POST", { tender_id: tenderId, nmck_change_pct: nmckChangePct, days_left: daysLeft })),
   review: (scoreId: number) => request<{ review: Review; result: ScoreResult }>(`/api/scores/${scoreId}/review`, { method: "POST" }),
   logs: (limit = 30) => request<LogEntry[]>(`/api/logs?limit=${limit}`),
   quickScore: (file: File, inn: string, criteriaText: string, docs: File[] = []) => {
