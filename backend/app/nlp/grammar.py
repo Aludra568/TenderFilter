@@ -34,8 +34,9 @@ PREFIX = or_(
     rule(in_caseless({"до", "максимум", "потолок", "в пределах"})),
     rule(in_caseless({"пределах"})),
     MAX_WORDS,
-    rule(in_caseless({"от", "минимум", "свыше", "больше"})),
+    rule(in_caseless({"от", "минимум", "свыше", "больше", "дороже", "выше"})),
     MIN_WORDS,
+    rule(in_caseless({"дешевле", "ниже", "меньше"})),
     rule(in_caseless({"около", "примерно", "порядка", "приблизительно", "ориентировочно"})),
     rule(caseless("в"), in_caseless({"районе", "район"})),
 )
@@ -140,6 +141,10 @@ def extract_amounts(text: str, default_unit: float | None = None) -> list[Amount
         kind = "max" if words & MAX_SET and not (first == "не" and words & MIN_SET) else "exact"
         if first == "от" or words & MIN_SET and (first in ("от", "минимум") or "не" in words):
             kind = "min" if not words & {"более", "больше", "выше", "дороже", "свыше"} else "max"
+        if first in ("свыше", "больше", "дороже", "выше"):
+            kind = "min"  # «дороже 500 тыс.» — нижняя граница
+        elif first in ("дешевле", "ниже", "меньше"):
+            kind = "max"
         if words & AROUND_SET:
             kind = "around"
         lo = value if kind in ("min", "exact", "around") else None

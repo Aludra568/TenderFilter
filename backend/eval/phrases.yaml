@@ -1,0 +1,107 @@
+# Набор фраз критериев для бенчмарка разбора текста («правила» против LLM).
+# Фразы написаны так, как пишут тендерные специалисты: сокращения, сленг, разный порядок слов.
+# Ожидания проставлены вручную по смыслу фразы, а не по выводу системы.
+# Пути: price.max_rub — число; geo.regions.54 — вес региона; geo.excluded[] — элемент списка;
+# profile.keywords~ — подстрока хотя бы одного ключевого слова; conditions.methods.open_contest — exclude/neutral/prefer.
+
+phrases:
+  - text: "НМЦК от 1 до 30 млн"
+    expect: {price.min_rub: 1000000, price.max_rub: 30000000}
+  - text: "Берём лоты до 5 лямов"
+    expect: {price.max_rub: 5000000}
+  - text: "Интересуют закупки дороже 500 тыс. рублей"
+    expect: {price.min_rub: 500000}
+  - text: "Цена контракта не выше 12,5 млн руб."
+    expect: {price.max_rub: 12500000}
+  - text: "Бюджет закупки от 300 000 до 2 000 000 ₽"
+    expect: {price.min_rub: 300000, price.max_rub: 2000000}
+  - text: "Мелочь до 100 тысяч не смотрим"
+    expect: {price.min_rub: 100000}
+  - text: "Работаем по Новосибирской области"
+    expect: {geo.regions.54: 1.0}
+  - text: "Работаем в Новосибирской и Томской областях"
+    expect: {geo.regions.54: 1.0, geo.regions.70: 1.0}
+  - text: "Поставляем по Москве и МО"
+    expect: {geo.regions.77: 1.0, geo.regions.50: 1.0}
+  - text: "Регион — Санкт-Петербург и Ленобласть"
+    expect: {geo.regions.78: 1.0, geo.regions.47: 1.0}
+  - text: "В Алтайском крае — только если выгодно"
+    expect: {geo.regions.22: 0.5}
+  - text: "Работаем только в Татарстане"
+    expect: {geo.regions.16: 1.0, geo.required: true}
+  - text: "Возим по всей Сибири"
+    expect: {geo.regions.54: 1.0, geo.regions.24: 1.0, geo.regions.38: 1.0}
+  - text: "Кроме Тывы и Якутии"
+    expect: {"geo.excluded[]": ["17", "14"]}
+  - text: "На Дальний Восток не поставляем"
+    expect: {"geo.excluded[]": ["25", "27", "41"]}
+  - text: "Есть склад в Красноярске"
+    expect: {"geo.warehouses[]": ["24"]}
+  - text: "Филиалы в Екатеринбурге и Челябинске"
+    expect: {"geo.warehouses[]": ["66", "74"]}
+  - text: "На заявку нужно минимум 3 дня"
+    expect: {timing.min_days_to_deadline: 3}
+  - text: "Готовим заявку не меньше недели"
+    expect: {timing.min_days_to_deadline: 7}
+  - text: "Если до конца подачи меньше 2 дней — не успеваем"
+    expect: {timing.min_days_to_deadline: 2}
+  - text: "Нужно хотя бы 5 рабочих дней на подготовку документов"
+    expect: {timing.min_days_to_deadline: 7}
+  - text: "На обеспечения готовы отвлечь не больше 1 млн"
+    expect: {finance.guarantee_limit_rub: 1000000}
+  - text: "Обеспечение заявки и контракта в сумме до 3 млн"
+    expect: {finance.guarantee_limit_rub: 3000000}
+  - text: "Аванс очень важен"
+    expect: {finance.advance: want}
+  - text: "Без аванса не работаем"
+    expect: {finance.advance: must}
+  - text: "Аванс обязателен"
+    expect: {finance.advance: must}
+  - text: "Аванс желателен, но не критичен"
+    expect: {finance.advance: want}
+  - text: "Конкурсы не любим"
+    expect: {conditions.methods.open_contest: neutral}
+  - text: "Конкурсы не берём"
+    expect: {conditions.methods.open_contest: exclude}
+  - text: "Только электронные аукционы"
+    expect: {conditions.methods.e_auction: prefer, conditions.methods.open_contest: exclude}
+  - text: "Предпочитаем запросы котировок"
+    expect: {conditions.methods.quotation_request: prefer}
+  - text: "Единственный поставщик нам не интересен"
+    expect: {conditions.methods.single_supplier: exclude}
+  - text: "Работаем только по 44-ФЗ"
+    expect: {conditions.laws: ["44-FZ"]}
+  - text: "Закупки по 223-ФЗ не рассматриваем"
+    expect: {conditions.laws: ["44-FZ"]}
+  - text: "Поставляем только импортное оборудование"
+    expect: {conditions.imports_only: true}
+  - text: "Не работаем с заказчиком ИНН 7702166610"
+    expect: {"customer.excluded_inns[]": ["7702166610"]}
+  - text: "Поставляем ноутбуки, компьютеры и серверы"
+    expect: {"profile.keywords~": ["ноутбук", "компьютер", "сервер"]}
+  - text: "Наш профиль — картриджи и расходники для оргтехники"
+    expect: {"profile.keywords~": ["картридж"]}
+  - text: "Занимаемся поставкой медицинского оборудования"
+    expect: {"profile.keywords~": ["медицинск"]}
+  - text: "Продаём цемент, кирпич, сухие смеси"
+    expect: {"profile.keywords~": ["цемент", "кирпич"]}
+  - text: "Мебель не поставляем"
+    expect: {"profile.exclude_keywords~": ["мебел"]}
+  - text: "Поставляем канцтовары, кроме бумаги"
+    expect: {"profile.keywords~": ["канцтовар"], "profile.exclude_keywords~": ["бумаг"]}
+  - text: "Работаем в Омской области, НМЦК до 15 млн, на заявку минимум 4 дня"
+    expect: {geo.regions.55: 1.0, price.max_rub: 15000000, timing.min_days_to_deadline: 4}
+  - text: "Работаем в Новосибирской и Томской областях, в Алтайском крае — если выгодно. НМЦК от 1 до 30 млн. На обеспечения готовы отвлечь не больше 1 млн. На заявку нужно минимум 3 дня. Конкурсы не любим. Аванс очень важен."
+    expect: {geo.regions.54: 1.0, geo.regions.70: 1.0, geo.regions.22: 0.5, price.min_rub: 1000000, price.max_rub: 30000000, finance.guarantee_limit_rub: 1000000, timing.min_days_to_deadline: 3, conditions.methods.open_contest: neutral, finance.advance: want}
+  - text: "Москва, лоты 2–20 млн, только аукционы, аванс обязателен"
+    expect: {geo.regions.77: 1.0, price.min_rub: 2000000, price.max_rub: 20000000, conditions.methods.e_auction: prefer, finance.advance: must}
+  - text: "Мы небольшая фирма из Самары, тянем контракты максимум на 3 млн, обеспечение больше 300 тысяч не потянем"
+    expect: {geo.regions.63: 1.0, price.max_rub: 3000000, finance.guarantee_limit_rub: 300000}
+  - text: "Краснодарский край и Ростовская обл., кроме Адыгеи"
+    expect: {geo.regions.23: 1.0, geo.regions.61: 1.0, "geo.excluded[]": ["01"]}
+  - text: "НМЦК около 10 млн"
+    expect: {price.min_rub: 8000000, price.max_rub: 12000000}
+  - text: "Контракты от 50 млн нам не по силам"
+    expect: {price.max_rub: 50000000}
+  - text: "Поставляем спецодежду и СИЗ по Уралу"
+    expect: {"profile.keywords~": ["спецодежд"], geo.regions.66: 1.0, geo.regions.74: 1.0}

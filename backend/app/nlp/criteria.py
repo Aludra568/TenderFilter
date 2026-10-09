@@ -29,7 +29,9 @@ SOFT = {"выгодно", "выгодный", "возможность", "ино�
 STRICT = {"только", "строго", "исключительно", "обязательно", "обязательный", "жёстко", "жестко", "нужно", "нужный",
           "минимум", "необходимо"}
 NEG_WORDS = {"без", "кроме", "исключить", "исключая", "никогда", "запрет", "исключение"}
-NEG_VERBS_STRONG = {"брать", "участвовать", "рассматривать", "работать", "интересовать", "подходить", "заходить"}
+NEG_VERBS_STRONG = {"брать", "участвовать", "рассматривать", "работать", "интересовать", "подходить", "заходить",
+                    "поставлять", "возить", "смотреть", "интересный", "тянуть", "потянуть", "осилить", "ездить"}
+NEG_PHRASES = re.compile(r"не\s+по\s+(?:силам|карману|зубам)|не\s+наш\w*\s+(?:уровень|масштаб)", re.I)
 NEG_VERBS_SOFT = {"любить", "любим", "любимый", "хотеть", "нравиться", "жаловать"}
 SOFT_AVOID = {"избегать", "неохотно"}
 MONEY_CTX = {"нмцк", "нмц", "цена", "сумма", "контракт", "лот", "бюджет", "стоимость", "закупка", "рубль", "руб"}
@@ -95,7 +97,7 @@ class Clause:
 
     def polarity(self) -> str:
         """strong — исключить, soft — без приоритета, none — утверждение."""
-        if self.lset & NEG_WORDS or self.has_bigram({"не"}, NEG_VERBS_STRONG):
+        if self.lset & NEG_WORDS or self.has_bigram({"не"}, NEG_VERBS_STRONG) or NEG_PHRASES.search(self.text):
             return "strong"
         if self.has_bigram({"не"}, NEG_VERBS_SOFT) or self.lset & SOFT_AVOID or self.has_bigram({"не"}, {"очень"}):
             return "soft"
@@ -131,7 +133,17 @@ def _clauses(sentence: str) -> list[Clause]:
     return [Clause(p, [t.lemma for t in morph_tokens(p) if t.lemma[:1].isalnum()]) for p in parts]
 
 
+def prenormalize(text: str) -> str:
+    """Типографика, которую грамматикам удобнее видеть в одном виде."""
+    text = re.sub(r"(?<=\d)[   ](?=\d{3}(?!\d))", "", text)  # «2 000 000» → «2000000»
+    text = re.sub(r"(?<!от )(?<![\d.,])(\d+(?:[.,]\d+)?)\s*[–—-]\s*(?=\d)", r"от \1 до ", text)  # «2–20 млн»
+    text = re.sub(r"(?i)\b(не\s+меньше|не\s+менее|минимум|хотя\s+бы|как\s+минимум|до|не\s+больше|не\s+более|максимум)"
+                  r"\s+(недел\w*|месяц\w*)", r"\1 1 \2", text)  # «не меньше недели» → «не меньше 1 недели»
+    return text
+
+
 def parse_rules(text: str, base: Preferences | None = None) -> ParseOutcome:
+    text = prenormalize(text)
     prefs = (base or Preferences()).model_copy(deep=True)
     out = ParseOutcome(preferences=prefs)
     for sentence in split_sentences(text):
@@ -180,6 +192,8 @@ def _money(sentence: str, lem: set[str], clauses: list[Clause], out: ParseOutcom
         before = [t.lemma for t in morph_tokens(sentence[:a.start])][::-1]
         nearest = next((w for w in before if w in GUARANTEE_CTX or w in MONEY_CTX), None)
         is_guarantee = nearest in GUARANTEE_CTX if nearest else bool(lem & GUARANTEE_CTX and not lem & MONEY_CTX)
+        if clause.lset & GUARANTEE_CTX:
+            is_guarantee = True  # «обеспечение заявки и контракта до 3 млн» — про обеспечение, хоть рядом и «контракт»
         if not (a.has_unit or ctx & MONEY_CTX or is_guarantee):
             continue
         value_hi = a.high if a.high is not None else a.low
@@ -190,17 +204,24 @@ def _money(sentence: str, lem: set[str], clauses: list[Clause], out: ParseOutcom
             _add(out, "finance", f"Обеспечения не больше {_rub(fin.guarantee_limit_rub)}", sentence)
             continue
         p = out.preferences.price
-        if a.kind == "range":
+        kind = a.kind
+        if clause.polarity() == "strong" and kind in ("min", "max", "exact"):
+            # «до 100 тыс. не смотрим» = от 100 тыс.; «от 50 млн нам не по силам» = до 50 млн
+            kind = {"min": "max", "max": "min"}.get(kind, "min" if {"до", "максимум"} & clause.lset else "max")
+            a = type(a)(a.low if a.low is not None else a.high, a.high if a.high is not None else a.low,
+                        kind, a.start, a.end, a.has_unit)
+            value_hi = a.high
+        if kind == "range":
             p.min_rub, p.max_rub = a.low, a.high
             _add(out, "price", f"НМЦК от {_rub(a.low)} до {_rub(a.high)}", sentence)
-        elif a.kind == "around":
+        elif kind == "around":
             # Нечёткий диапазон: «около N» = ядро N ±20 %, за краями — плавное убывание (см. scoring/fuzzy.py).
             p.min_rub, p.max_rub = round(a.low * 0.8), round(a.low * 1.2)
             _add(out, "price", f"НМЦК около {_rub(a.low)} (нечёткий диапазон {_rub(p.min_rub)} – {_rub(p.max_rub)})", sentence)
-        elif a.kind == "max" or (a.kind == "exact" and {"до", "максимум"} & clause.lset):
+        elif kind == "max" or (kind == "exact" and {"до", "максимум"} & clause.lset and clause.polarity() != "strong"):
             p.max_rub = value_hi
             _add(out, "price", f"НМЦК до {_rub(value_hi)}", sentence)
-        elif a.kind == "min":
+        elif kind == "min":
             p.min_rub = a.low
             _add(out, "price", f"НМЦК от {_rub(a.low)}", sentence)
 
@@ -357,20 +378,37 @@ def _keywords(sentence: str, out: ParseOutcome) -> None:
             continue
         negated = i > 0 and toks[i - 1].lemma == "не"
         j = i + 1
-        while j < len(toks) and toks[j].lemma in {"на", "с", "в", ":", "—", "-"}:
+        while j < len(toks) and toks[j].lemma in {"на", "с", "в", "по", ":", "—", "-"}:
             j += 1
-        if j >= len(toks):
+        if j >= len(toks) or not toks[j].lemma[:1].isalnum():
+            # «Мебель не поставляем»: объект стоит перед глаголом
+            if negated and i > 1:
+                fragment = re.sub(r"^\s*(мы|нам|у нас)\s+", "", sentence[:toks[i - 1].start], flags=re.I)
+                items = _split_items(fragment)
+                if items:
+                    prof.exclude_keywords += [x for x in items if x not in prof.exclude_keywords]
+                    _add(out, "profile", "Исключить, если в предмете: " + ", ".join(items), sentence)
             return
-        items = _split_items(sentence[toks[j].start:])
+        rest = sentence[toks[j].start:]
+        # «Поставляем канцтовары, кроме бумаги» — после «кроме» идут исключения
+        parts = re.split(r"\b(?:кроме|за исключением|исключая|но не)\b", rest, maxsplit=1, flags=re.I)
+        items = _split_items(parts[0])
         items = [x for x in items if not any(m & {t.lemma for t in morph_tokens(x)} for m, _, _ in METHODS)]
-        if not items:
+        excluded = _split_items(parts[1]) if len(parts) > 1 else []
+        if not items and not excluded:
             return
         target = prof.exclude_keywords if negated else prof.keywords
         for it in items:
             if it not in target:
                 target.append(it)
-        label = "Исключить, если в предмете: " if negated else "Ключевые слова: "
-        _add(out, "profile", label + ", ".join(items), sentence)
+        for it in excluded:
+            if it not in prof.exclude_keywords:
+                prof.exclude_keywords.append(it)
+        if items:
+            label = "Исключить, если в предмете: " if negated else "Ключевые слова: "
+            _add(out, "profile", label + ", ".join(items), sentence)
+        if excluded:
+            _add(out, "profile", "Исключить, если в предмете: " + ", ".join(excluded), sentence)
         return
     # «кроме / исключить X» без глагола поставки — исключаемые товары, если это не регион и не способ закупки.
     m = re.search(r"(?:исключить|кроме)\s+(.+)", sentence, flags=re.I)

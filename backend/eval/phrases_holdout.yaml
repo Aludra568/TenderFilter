@@ -1,0 +1,64 @@
+# Отложенный набор: написан после доработки правил и НЕ используется для их настройки.
+# Его результат — честная оценка того, как правила поймут новые формулировки.
+
+phrases:
+  - text: "Нас интересуют тендеры на сумму от 700 тысяч до 4,5 млн рублей"
+    expect: {price.min_rub: 700000, price.max_rub: 4500000}
+  - text: "Максимальная цена контракта — 8 млн"
+    expect: {price.max_rub: 8000000}
+  - text: "Крупнее 25 миллионов не берём"
+    expect: {price.max_rub: 25000000}
+  - text: "Ищем закупки не дешевле 200 т.р."
+    expect: {price.min_rub: 200000}
+  - text: "НМЦК в пределах 3 млн"
+    expect: {price.max_rub: 3000000}
+  - text: "Работаем в Иркутской области и Бурятии"
+    expect: {geo.regions.38: 1.0, geo.regions.03: 1.0}
+  - text: "Наша география — Пермский край, иногда Удмуртия"
+    expect: {geo.regions.59: 1.0, geo.regions.18: 0.5}
+  - text: "Кавказ не рассматриваем"
+    expect: {"geo.excluded[]": ["05", "20"]}
+  - text: "Возим только по Свердловской области"
+    expect: {geo.regions.66: 1.0, geo.required: true}
+  - text: "Склад у нас в Новосибирске, офис в Москве"
+    expect: {"geo.warehouses[]": ["54"]}
+  - text: "Для подготовки заявки нам надо не меньше четырёх дней"
+    expect: {timing.min_days_to_deadline: 4}
+  - text: "Срок на подачу должен быть от 5 дней"
+    expect: {timing.min_days_to_deadline: 5}
+  - text: "Свободных денег на обеспечение — до 500 тыс."
+    expect: {finance.guarantee_limit_rub: 500000}
+  - text: "Предоплата для нас критична"
+    expect: {finance.advance: must}
+  - text: "Хорошо бы с авансом"
+    expect: {finance.advance: want}
+  - text: "Аукционы — да, конкурсы — нет"
+    expect: {conditions.methods.e_auction: prefer, conditions.methods.open_contest: exclude}
+  - text: "Запросы предложений не рассматриваем"
+    expect: {conditions.methods.proposal_request: exclude}
+  - text: "Котировки берём охотно"
+    expect: {conditions.methods.quotation_request: prefer}
+  - text: "Только 223-ФЗ"
+    expect: {conditions.laws: ["223-FZ"]}
+  - text: "Поставляем отечественную продукцию"
+    expect: {conditions.imports_only: false}
+  - text: "Продаём бытовую химию и хозтовары"
+    expect: {"profile.keywords~": ["хими", "хозтовар"]}
+  - text: "Специализируемся на поставке продуктов питания"
+    expect: {"profile.keywords~": ["продукт"]}
+  - text: "Оказываем услуги по уборке помещений"
+    expect: {"profile.keywords~": ["уборк"]}
+  - text: "Лекарства не возим"
+    expect: {"profile.exclude_keywords~": ["лекарств"]}
+  - text: "Поставляем стройматериалы, но не металлопрокат"
+    expect: {"profile.keywords~": ["стройматериал"], "profile.exclude_keywords~": ["металлопрокат"]}
+  - text: "С заказчиком 5504123459 больше не работаем"
+    expect: {"customer.excluded_inns[]": ["5504123459"]}
+  - text: "Работаем по Краснодарскому краю, лоты 1–10 млн, аукционы, на заявку минимум 3 дня, аванс желателен"
+    expect: {geo.regions.23: 1.0, price.min_rub: 1000000, price.max_rub: 10000000, conditions.methods.e_auction: prefer, timing.min_days_to_deadline: 3, finance.advance: want}
+  - text: "Мы из Нижнего Новгорода. Контракты до 7 млн, обеспечение не больше 700 тыс. Конкурсы не берём."
+    expect: {geo.regions.52: 1.0, price.max_rub: 7000000, finance.guarantee_limit_rub: 700000, conditions.methods.open_contest: exclude}
+  - text: "Работаем по ЦФО, кроме Москвы"
+    expect: {geo.regions.40: 1.0, "geo.excluded[]": ["77"]}
+  - text: "Цена от 1 млн, до конца подачи хотя бы 2 дня"
+    expect: {price.min_rub: 1000000, timing.min_days_to_deadline: 2}

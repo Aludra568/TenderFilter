@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-09T21:27:44",
+  "generated_at": "2026-10-09T21:43:26",
   "cases": 32,
   "correct": 31,
   "accuracy": 0.969,
@@ -22,8 +22,8 @@
     }
   },
   "timing_ms": {
-    "avg": 0.759,
-    "max": 4.162
+    "avg": 0.696,
+    "max": 5.061
   },
   "rows": [
     {
