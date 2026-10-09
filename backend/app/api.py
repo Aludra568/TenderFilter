@@ -789,6 +789,13 @@ def feedback(score_id: int, body: FeedbackIn, db: Session = Depends(get_db)):
     return {"ok": True}
 
 
+@router.get("/learning/suggest", summary="Самообучение: какие веса и пороги лучше совпадут с отметками пользователя")
+def learning_suggest(profile_id: int | None = None, db: Session = Depends(get_db)):
+    from app.learning import suggest
+
+    return suggest(db, _profile(db, profile_id))
+
+
 @router.get("/accuracy", summary="Точность: эталонный набор + отметки пользователей")
 def accuracy(db: Session = Depends(get_db)):
     total = db.scalar(select(func.count()).select_from(Feedback)) or 0

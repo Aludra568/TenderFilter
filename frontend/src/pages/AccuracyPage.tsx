@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { api, type Accuracy, type Health, type LogEntry, type Verdict } from "../api";
 import { CountUp, ErrorBox, Skeleton, VerdictChip } from "../components/common";
+import { LearningCard } from "../components/LearningCard";
 
 const ORDER: Verdict[] = ["go", "consider", "skip"];
 
@@ -103,6 +104,8 @@ export function AccuracyPage() {
           </div>
         </div>
       )}
+
+      <LearningCard />
 
       <section className="card fu" style={{ animationDelay: "480ms" }}>
         <div className="field-head" style={{ marginBottom: 8 }}>

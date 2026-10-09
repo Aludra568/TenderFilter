@@ -376,8 +376,10 @@ export const api = {
     return request<{ batch_id: number; total: number; queue: string }>("/api/batches", { method: "POST", body: fd });
   },
   batchStatus: (id: number) => request<Batch>(`/api/batches/${id}`),
-  feedback: (scoreId: number, correct: boolean) =>
-    request<{ ok: boolean }>(`/api/scores/${scoreId}/feedback`, json("POST", { correct })),
+  feedback: (scoreId: number, correct: boolean, expected?: Verdict) =>
+    request<{ ok: boolean }>(`/api/scores/${scoreId}/feedback`, json("POST", { correct, expected_verdict: expected ?? null })),
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  learningSuggest: () => request<any>("/api/learning/suggest"),
   accuracy: () => request<Accuracy>("/api/accuracy"),
   weightQuestions: () => request<{ pairs: WeightQuestion[] }>("/api/weights/questions"),
   weights: (body: { method: "roc"; ranking: string[] } | { method: "ahp"; pairs: { a: string; b: string; value: number }[] }) =>

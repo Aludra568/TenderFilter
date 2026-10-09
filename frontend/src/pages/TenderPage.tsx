@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { api, BID_STATUSES, type BidStatus, type TenderCard } from "../api";
+import { api, BID_STATUSES, type BidStatus, type TenderCard, type Verdict } from "../api";
 import { useApp } from "../App";
 import { Bar, CountUp, ErrorBox, Skeleton, VerdictChip } from "../components/common";
 import { Radar, type RadarSeries } from "../components/Radar";
@@ -21,6 +21,7 @@ export function TenderPage() {
   const [compare, setCompare] = useState<Record<number, boolean>>({});
   const [replay, setReplay] = useState(0);
   const [vote, setVote] = useState<boolean | null>(null);
+  const [voteDone, setVoteDone] = useState(false);
   const [raw, setRaw] = useState<string | null>(null);
   const [reviewing, setReviewing] = useState(false);
   const [docs, setDocs] = useState<File[]>([]);
@@ -73,9 +74,10 @@ export function TenderPage() {
     }
   };
 
-  const sendVote = async (correct: boolean) => {
+  const sendVote = async (correct: boolean, expected?: Verdict) => {
     setVote(correct);
-    await api.feedback(card.score_id, correct).catch(() => setVote(null));
+    setVoteDone(correct || !!expected);
+    await api.feedback(card.score_id, correct, expected).catch(() => setVote(null));
   };
 
   return (
@@ -244,9 +246,17 @@ export function TenderPage() {
             <p className="muted" style={{ margin: 0, fontSize: 14 }}>Отметки копятся в отчёте о точности и помогают настраивать веса.</p>
             <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
               <button type="button" className={vote === true ? "btn" : "btn2"} onClick={() => sendVote(true)}>Да, верно</button>
-              <button type="button" className={vote === false ? "btn" : "btn2"} onClick={() => sendVote(false)}>Нет, ошибка</button>
+              <button type="button" className={vote === false ? "btn" : "btn2"} onClick={() => { setVote(false); setVoteDone(false); }}>Нет, ошибка</button>
             </div>
-            {vote !== null && <span className="pop" style={{ fontSize: 14, color: "var(--go-fg)", fontWeight: 700 }}>Спасибо, отметка сохранена</span>}
+            {vote === false && !voteDone && (
+              <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
+                <span className="muted" style={{ fontSize: 14 }}>Правильно было бы:</span>
+                {(["go", "consider", "skip"] as Verdict[]).filter((v) => v !== r.verdict).map((v) => (
+                  <button key={v} type="button" className="btn2" onClick={() => sendVote(false, v)}><VerdictChip verdict={v} /></button>
+                ))}
+              </div>
+            )}
+            {voteDone && <span className="pop" style={{ fontSize: 14, color: "var(--go-fg)", fontWeight: 700 }}>Спасибо, отметка сохранена</span>}
           </section>
         </div>
       </div>
