@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns7:epNotificationEZK2020 schemeVersion="16.2" xmlns="http://zakupki.gov.ru/oos/EPtypes/1" xmlns:ns6="http://zakupki.gov.ru/oos/types/1" xmlns:ns5="http://zakupki.gov.ru/oos/KOTypes/1" xmlns:ns7="http://zakupki.gov.ru/oos/printform/1" xmlns:ns2="http://zakupki.gov.ru/oos/base/1" xmlns:ns4="http://zakupki.gov.ru/oos/CPtypes/1" xmlns:ns3="http://zakupki.gov.ru/oos/common/1">
+    <id>44163525</id>
+    <versionNumber>1</versionNumber>
+    <commonInfo>
+        <purchaseNumber>0362100022326000101</purchaseNumber>
+        <docNumber>№0362100022326000101</docNumber>
+        <plannedPublishDate>2026-10-02+05:00</plannedPublishDate>
+        <publishDTInEIS>2026-10-02T13:49:45.808+05:00</publishDTInEIS>
+        <href>https://zakupki.gov.ru/epz/order/notice/zk20/view/common-info.html?regNumber=0362100022326000101</href>
+        <placingWay>
+            <ns2:code>ZKP20</ns2:code>
+            <ns2:name>Запрос котировок в электронной форме</ns2:name>
+        </placingWay>
+        <ETP>
+            <ns2:code>ETP_RTS</ns2:code>
+            <ns2:name>РТС-тендер</ns2:name>
+            <ns2:url>http://www.rts-tender.ru</ns2:url>
+        </ETP>
+        <contractConclusionOnSt83Ch2>true</contractConclusionOnSt83Ch2>
+        <purchaseObjectInfo>Оказание услуг по предоставлению доступа и сопровождению Электронного периодического справочника (справочно-правовой системы) (далее - ЭПС), содержащего информацию о текущем состоянии законодательства Российской Федерации, путем предоставления текущих версий комплекта ЭПС (справочно-правовой системы)</purchaseObjectInfo>
+    </commonInfo>
+    <purchaseResponsibleInfo>
+        <responsibleOrgInfo>
+            <regNum>03621000223</regNum>
+            <consRegistryNum>001У6154</consRegistryNum>
+            <fullName>ФЕДЕРАЛЬНОЕ ГОСУДАРСТВЕННОЕ БЮДЖЕТНОЕ НАУЧНОЕ УЧРЕЖДЕНИЕ "УРАЛЬСКИЙ ФЕДЕРАЛЬНЫЙ АГРАРНЫЙ НАУЧНО-ИССЛЕДОВАТЕЛЬСКИЙ ЦЕНТР УРАЛЬСКОГО ОТДЕЛЕНИЯ РОССИЙСКОЙ АКАДЕМИИ НАУК"</fullName>
+            <shortName>ФГБНУ УРФАНИЦ УРО РАН</shortName>
+            <postAddress>Российская Федерация, 620142, Свердловская обл, Екатеринбург г, Белинского ул, Д. 112А</postAddress>
+            <factAddress>Российская Федерация, 620142, Свердловская обл, Екатеринбург г, Белинского ул, Д. 112А</factAddress>
+            <INN>6661002456</INN>
+            <KPP>667101001</KPP>
+        </responsibleOrgInfo>
+        <responsibleRole>CU</responsibleRole>
+        <responsibleInfo>
+            <orgPostAddress>Российская Федерация, 620142, Свердловская обл, Екатеринбург г, Белинского ул, Д. 112А</orgPostAddress>
+            <orgFactAddress>Российская Федерация, 620142, Свердловская обл, Екатеринбург г, Белинского ул, Д. 112А</orgFactAddress>
+            <contactPersonInfo>
+                <ns3:lastName>Кузвесова</ns3:lastName>
+                <ns3:firstName>Ольга</ns3:firstName>
+                <ns3:middleName>Валерьевна</ns3:middleName>
+            </contactPersonInfo>
+            <contactEMail>contract@urfanic.ru</contactEMail>
+            <contactPhone>7-343-2527446</contactPhone>
+        </responsibleInfo>
+    </purchaseResponsibleInfo>
+    <printFormInfo>
+        <ns3:url>https://zakupki.gov.ru/epz/order/notice/printForm/view.html?regNumber=0362100022326000101</ns3:url>
+    </printFormInfo>
+    <attachmentsInfo>
+        <ns3:attachmentInfo>
+            <ns3:publishedContentId>01A0FB5D623D77F29EA516932A5DDC3F</ns3:publishedContentId>
+            <ns3:fileName>Обоснование цены.docx</ns3:fileName>
+            <ns3:fileSize>22290</ns3:fileSize>
+            <ns3:docDescription>Обоснование цены</ns3:docDescription>
+            <ns3:docDate>2026-10-02T09:46:36+03:00</ns3:docDate>
+            <ns3:url>https://zakupki.gov.ru/44fz/filestore/public/1.0/download/priz/file.html?uid=01A0FB5D623D77F29EA516932A5DDC3F</ns3:url>
+            <ns3:docKindInfo>
+                <ns2:code>MRJ</ns2:code>
+                <ns2:name>Обоснование начальной (максимальной) цены контракта</ns2:name>
+            </ns3:docKindInfo>
+        </ns3:attachmentInfo>
+        <ns3:attachmentInfo>
+            <ns3:publishedContentId>01A0FBCBACDC7288A2707C48AF49CC0D</ns3:publishedContentId>
+            <ns3:fileName>Проект контракта.doc</ns3:fileName>
+            <ns3:fileSize>144896</ns3:fileSize>
+            <ns3:docDescription>Проект контракта</ns3:docDescription>
+            <ns3:docDate>2026-10-02T11:47:04+03:00</ns3:docDate>
+            <ns3:url>https://zakupki.gov.ru/44fz/filestore/public/1.0/download/priz/file.html?uid=01A0FBCBACDC7288A2707C48AF49CC0D</ns3:url>
+            <ns3:docKindInfo>
+                <ns2:code>CP</ns2:code>
+                <ns2:name>Проект контракта</ns2:name>
+            </ns3:docKindInfo>
+        </ns3:attachmentInfo>
+        <ns3:attachmentInfo>
+            <ns3:publishedContentId>01A0FB5D8CBA7978A0C4F7DAD5B8C947</ns3:publishedContentId>
+            <ns3:fileName>Описание объекта закупки.docx</ns3:fileName>
+            <ns3:fileSize>25588</ns3:fileSize>
+            <ns3:docDescription>Описание объекта закупки</ns3:docDescription>
+            <ns3:docDate>2026-10-02T09:46:47+03:00</ns3:docDate>
+            <ns3:url>https://zakupki.gov.ru/44fz/filestore/public/1.0/download/priz/file.html?uid=01A0FB5D8CBA7978A0C4F7DAD5B8C947</ns3:url>
+            <ns3:docKindInfo>
+                <ns2:code>POD</ns2:code>
+                <ns2:name>Описание объекта закупки</ns2:name>
+            </ns3:docKindInfo>
+        </ns3:attachmentInfo>
+        <ns3:attachmentInfo>
+            <ns3:publishedContentId>01A0FB61D64C74BAA007702E3E250FDA</ns3:publishedContentId>
+            <ns3:fileName>требования к содержанию составу заявки.docx</ns3:fileName>
+            <ns3:fileSize>44738</ns3:fileSize>
+            <ns3:docDescription>требования к содержанию составу заявки</ns3:docDescription>
+            <ns3:docDate>2026-10-02T09:51:28+03:00</ns3:docDate>
+            <ns3:url>https://zakupki.gov.ru/44fz/filestore/public/1.0/download/priz/file.html?uid=01A0FB61D64C74BAA007702E3E250FDA</ns3:url>
+            <ns3:docKindInfo>
+                <ns2:code>CAR</ns2:code>
+                <ns2:name>Требование к содержанию, составу заявки на участие в закупке</ns2:name>
+            </ns3:docKindInfo>
+        </ns3:attachmentInfo>
+    </attachmentsInfo>
+    <serviceSigns>
+        <isControlP1Ch5St99>true</isControlP1Ch5St99>
+    </serviceSigns>
+    <notificationInfo>
+        <procedureInfo>
+            <collectingInfo>
+                <startDT>2026-10-02T13:49:45+05:00</startDT>
+                <endDT>2026-10-09T17:00:00+05:00</endDT>
+            </collectingInfo>
+            <summarizingDate>2026-10-12+05:00</summarizingDate>
+        </procedureInfo>
+        <contractConditionsInfo>
+            <maxPriceInfo>
+                <maxPrice>102871.68</maxPrice>
+                <currency>
+                    <ns2:code>RUB</ns2:code>
+                    <ns2:name>РОССИЙСКИЙ РУБЛЬ</ns2:name>
+                </currency>
+            </maxPriceInfo>
+        </contractConditionsInfo>
+        <customerRequirementsInfo>
+            <customerRequirementInfo>
+                <customer>
+                    <ns2:regNum>03621000223</ns2:regNum>
+                    <ns2:consRegistryNum>001У6154</ns2:consRegistryNum>
+                    <ns2:fullName>ФЕДЕРАЛЬНОЕ ГОСУДАРСТВЕННОЕ БЮДЖЕТНОЕ НАУЧНОЕ УЧРЕЖДЕНИЕ "УРАЛЬСКИЙ ФЕДЕРАЛЬНЫЙ АГРАРНЫЙ НАУЧНО-ИССЛЕДОВАТЕЛЬСКИЙ ЦЕНТР УРАЛЬСКОГО ОТДЕЛЕНИЯ РОССИЙСКОЙ АКАДЕМИИ НАУК"</ns2:fullName>
+                </customer>
+                <contractConditionsInfo>
+                    <maxPriceInfo>
+                        <maxPrice>102871.68</maxPrice>
+                    </maxPriceInfo>
+                    <IKZInfo>
+                        <purchaseCode>261666100245666710100101161166311244</purchaseCode>
+                        <publishYear>2026</publishYear>
+                        <OKPD2Info>
+                            <ns3:OKPD2>
+                                <ns2:OKPDCode>63.11</ns2:OKPDCode>
+                                <ns2:OKPDName>Услуги по обработке данных, размещению и взаимосвязанные услуги</ns2:OKPDName>
+                            </ns3:OKPD2>
+                        </OKPD2Info>
+                        <KVRInfo>
+                            <ns3:KVR>
+                                <ns2:code>244</ns2:code>
+                                <ns2:name>Прочая закупка товаров, работ и услуг</ns2:name>
+                            </ns3:KVR>
+                        </KVRInfo>
+                        <customerCode>16661002456667101001</customerCode>
+                        <purchaseNumber>0116</purchaseNumber>
+                        <purchaseOrderNumber>116</purchaseOrderNumber>
+                    </IKZInfo>
+                    <tenderPlan2020Info>
+                        <ns3:plan2020Number>202603621000223001</ns3:plan2020Number>
+                        <ns3:position2020Number>202603621000223001000237</ns3:position2020Number>
+                    </tenderPlan2020Info>
+                    <contractExecutionPaymentPlan>
+                        <contractExecutionTermsInfo>
+                            <ns3:notRelativeTermsInfo>
+                                <ns3:startDate>2026-11-01+03:00</ns3:startDate>
+                                <ns3:endDate>2027-12-15+03:00</ns3:endDate>
+                            </ns3:notRelativeTermsInfo>
+                        </contractExecutionTermsInfo>
+                        <financingSourcesInfo>
+                            <nonbudgetFinancingsInfo>
+                                <selfFunds>true</selfFunds>
+                            </nonbudgetFinancingsInfo>
+                            <currentYear>2026</currentYear>
+                            <financeInfo>
+                                <total>102871.68</total>
+                                <currentYear>8572.64</currentYear>
+                                <firstYear>94299.04</firstYear>
+                                <secondYear>0.00</secondYear>
+                                <subsecYears>0.00</subsecYears>
+                            </financeInfo>
+                        </financingSourcesInfo>
+                        <stagesInfo>
+                            <stageInfo>
+                                <sid>22096870</sid>
+                                <termsInfo>
+                                    <ns3:notRelativeTermsInfo>
+                                        <ns3:startDate>2026-11-01+03:00</ns3:startDate>
+                                        <ns3:endDate>2027-12-15+03:00</ns3:endDate>
+                                    </ns3:notRelativeTermsInfo>
+                                </termsInfo>
+                                <nonbudgetFinancingInfo>
+                                    <paymentYearInfo>
+                                        <total>102871.68</total>
+                                        <currentYear>8572.64</currentYear>
+                                        <firstYear>94299.04</firstYear>
+                                        <secondYear>0.00</secondYear>
+                                        <subsecYears>0.00</subsecYears>
+                                    </paymentYearInfo>
+                                    <KVRsInfo>
+                                        <ns3:currentYear>2026</ns3:currentYear>
+                                        <ns3:KVRInfo>
+                                            <ns3:KVR>
+                                                <ns2:code>244</ns2:code>
+                                                <ns2:name>Прочая закупка товаров, работ и услуг</ns2:name>
+                                            </ns3:KVR>
+                                            <ns3:KVRYearsInfo>
+                                                <ns3:total>102871.68</ns3:total>
+                                                <ns3:currentYear>8572.64</ns3:currentYear>
+                                                <ns3:firstYear>94299.04</ns3:firstYear>
+                                                <ns3:secondYear>0.00</ns3:secondYear>
+                                                <ns3:subsecYears>0.00</ns3:subsecYears>
+                                            </ns3:KVRYearsInfo>
+                                        </ns3:KVRInfo>
+                                        <ns3:totalSum>102871.68</ns3:totalSum>
+                                    </KVRsInfo>
+                                </nonbudgetFinancingInfo>
+                            </stageInfo>
+                        </stagesInfo>
+                    </contractExecutionPaymentPlan>
+                    <deliveryPlacesInfo>
+                        <byGARInfo>
+                            <ns3:sid>61957422</ns3:sid>
+                            <ns3:countryInfo>
+                                <ns2:countryCode>643</ns2:countryCode>
+                                <ns2:countryFullName>Российская Федерация</ns2:countryFullName>
+                            </ns3:countryInfo>
+                            <ns3:GARInfo>
+                                <ns3:GARGuid>39f80550-53b3-412a-9d09-aaff97bb6001</ns3:GARGuid>
+                                <ns3:GARAddress>обл. Свердловская, г.о. город Екатеринбург, п. Исток, ул. Главная, стр. 21</ns3:GARAddress>
+                            </ns3:GARInfo>
+                        </byGARInfo>
+                    </deliveryPlacesInfo>
+                    <isOneSideRejectionSt95>true</isOneSideRejectionSt95>
+                    <isExecutionStagesTerms>false</isExecutionStagesTerms>
+                </contractConditionsInfo>
+            </customerRequirementInfo>
+        </customerRequirementsInfo>
+        <purchaseObjectsInfo>
+            <notDrugPurchaseObjectsInfo>
+                <ns3:purchaseObject>
+                    <ns3:sid>223995739</ns3:sid>
+                    <ns3:OKPD2>
+                        <ns2:OKPDCode>63.11.13.000</ns2:OKPDCode>
+                        <ns2:OKPDName>Услуги по предоставлению программного обеспечения без его размещения на компьютерном оборудовании пользователя</ns2:OKPDName>
+                    </ns3:OKPD2>
+                    <ns3:name>Оказание услуг по предоставлению доступа к сопровождению Электронного периодического справочника (справочно-правовой системы), содержащего информацию о текущем состоянии законодательства Российской Федерации, путем предоставления текущих версий комплекта ЭПС (справочно-правовой системы)</ns3:name>
+                    <ns3:OKEI>
+                        <ns2:code>362</ns2:code>
+                        <ns2:nationalCode>мес</ns2:nationalCode>
+                        <ns2:name>Месяц</ns2:name>
+                    </ns3:OKEI>
+                    <ns3:price>8572.64</ns3:price>
+                    <ns3:volumeSpecifyingMethod>QF</ns3:volumeSpecifyingMethod>
+                    <ns3:quantity>
+                        <ns3:value>12.00000000000</ns3:value>
+                    </ns3:quantity>
+                    <ns3:sum>102871.68</ns3:sum>
+                    <ns3:type>SERVICE</ns3:type>
+                    <ns3:hierarchyType>ND</ns3:hierarchyType>
+                    <ns3:restrictionsInfo>
+                        <ns3:isProhibitionForeignPurchaseObjects>true</ns3:isProhibitionForeignPurchaseObjects>
+                        <ns3:isRestrictForeignPurchaseObjects>false</ns3:isRestrictForeignPurchaseObjects>
+                        <ns3:isPreferenseRFPurchaseObjects>false</ns3:isPreferenseRFPurchaseObjects>
+                        <ns3:isImposibilityProhibition>false</ns3:isImposibilityProhibition>
+                    </ns3:restrictionsInfo>
+                    <ns3:isSoftware>false</ns3:isSoftware>
+                </ns3:purchaseObject>
+                <ns3:totalSum>102871.68</ns3:totalSum>
+                <quantityUndefined>false</quantityUndefined>
+            </notDrugPurchaseObjectsInfo>
+        </purchaseObjectsInfo>
+        <preferensesInfo>
+            <preferenseInfo>
+                <ns3:preferenseRequirementInfo>
+                    <ns2:shortName>PVS33044</ns2:shortName>
+                    <ns2:name>Преимущество в соответствии с ч. 3 ст. 30 Закона № 44-ФЗ</ns2:name>
+                </ns3:preferenseRequirementInfo>
+            </preferenseInfo>
+        </preferensesInfo>
+        <requirementsInfo>
+            <requirementInfo>
+                <ns3:preferenseRequirementInfo>
+                    <ns2:shortName>ET44</ns2:shortName>
+                    <ns2:name>Единые требования к участникам закупок в соответствии с ч. 1 ст. 31 Закона № 44-ФЗ</ns2:name>
+                </ns3:preferenseRequirementInfo>
+            </requirementInfo>
+            <requirementInfo>
+                <ns3:preferenseRequirementInfo>
+                    <ns2:shortName>TR442</ns2:shortName>
+                    <ns2:name>Требования к участникам закупок в соответствии с ч. 1.1 ст. 31 Закона № 44-ФЗ</ns2:name>
+                </ns3:preferenseRequirementInfo>
+            </requirementInfo>
+        </requirementsInfo>
+    </notificationInfo>
+    <printFormFieldsInfo>
+        <is449Features>false</is449Features>
+    </printFormFieldsInfo>
+</ns7:epNotificationEZK2020>

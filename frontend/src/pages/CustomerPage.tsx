@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { api, type CustomerCheck, type ParticipantCheck } from "../api";
 import { ErrorBox, VerdictChip } from "../components/common";
+import { EisNumberLoader } from "../components/EisNumberLoader";
 import { DocsPicker, FindingList } from "../components/ResultParts";
 import { rub } from "../format";
 
@@ -83,6 +84,7 @@ export function CustomerPage() {
             <div className="muted" style={{ fontSize: 13 }}>{file ? "нажмите, чтобы заменить" : "выгрузка из ЕИС"}</div>
           </button>
           <input ref={fileInput} type="file" accept=".xml,.json" hidden onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
+          <EisNumberLoader onFile={setFile} />
           <button type="button" className="btn3" style={{ alignSelf: "flex-start" }} onClick={takeExample}>Взять реальное извещение из ЕИС</button>
           <DocsPicker files={docs} onChange={setDocs} />
         </div>

@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns7:epNotificationEZT2020 schemeVersion="16.2" xmlns="http://zakupki.gov.ru/oos/EPtypes/1" xmlns:ns6="http://zakupki.gov.ru/oos/types/1" xmlns:ns5="http://zakupki.gov.ru/oos/KOTypes/1" xmlns:ns7="http://zakupki.gov.ru/oos/printform/1" xmlns:ns2="http://zakupki.gov.ru/oos/base/1" xmlns:ns4="http://zakupki.gov.ru/oos/CPtypes/1" xmlns:ns3="http://zakupki.gov.ru/oos/common/1">
+    <id>44231875</id>
+    <externalId>4662658</externalId>
+    <versionNumber>1</versionNumber>
+    <commonInfo>
+        <purchaseNumber>0348200027026000464</purchaseNumber>
+        <docNumber>№0348200027026000464</docNumber>
+        <plannedPublishDate>2026-10-09+03:00</plannedPublishDate>
+        <publishDTInEIS>2026-10-09T17:01:02.411+03:00</publishDTInEIS>
+        <href>https://zakupki.gov.ru/epz/order/notice/ezt20/view/common-info.html?regNumber=0348200027026000464</href>
+        <placingWay>
+            <ns2:code>EZTP20</ns2:code>
+            <ns2:name>Закупка, осуществляемая в соответствии с частью 12 статьи 93 Закона № 44-ФЗ</ns2:name>
+        </placingWay>
+        <ETP>
+            <ns2:code>ETP_RTS</ns2:code>
+            <ns2:name>РТС-тендер</ns2:name>
+            <ns2:url>http://www.rts-tender.ru</ns2:url>
+        </ETP>
+        <contractConclusionOnSt83Ch2>true</contractConclusionOnSt83Ch2>
+        <useProgramRights>false</useProgramRights>
+    </commonInfo>
+    <purchaseResponsibleInfo>
+        <responsibleOrgInfo>
+            <regNum>03482000270</regNum>
+            <consRegistryNum>46284191</consRegistryNum>
+            <fullName>ГОСУДАРСТВЕННОЕ БЮДЖЕТНОЕ УЧРЕЖДЕНИЕ ЗДРАВООХРАНЕНИЯ МОСКОВСКОЙ ОБЛАСТИ "МОСКОВСКИЙ ОБЛАСТНОЙ НАУЧНО-ИССЛЕДОВАТЕЛЬСКИЙ КЛИНИЧЕСКИЙ ИНСТИТУТ ИМ. М.Ф.ВЛАДИМИРСКОГО"</fullName>
+            <shortName>ГБУЗ МО МОНИКИ ИМ. М.Ф.ВЛАДИМИРСКОГО</shortName>
+            <postAddress>Российская Федерация, 129110, Москва, УЛ. ЩЕПКИНА, Д.61/2</postAddress>
+            <factAddress>Российская Федерация, 129110, Москва, УЛ. ЩЕПКИНА, Д.61/2</factAddress>
+            <INN>7702066157</INN>
+            <KPP>770201001</KPP>
+        </responsibleOrgInfo>
+        <responsibleRole>CU</responsibleRole>
+        <responsibleInfo>
+            <orgPostAddress>Российская Федерация, 129110, Москва, УЛ. ЩЕПКИНА, Д.61/2</orgPostAddress>
+            <orgFactAddress>Российская Федерация, 129110, Москва, УЛ. ЩЕПКИНА, Д.61/2</orgFactAddress>
+            <contactPersonInfo>
+                <ns3:lastName>Колосовав</ns3:lastName>
+                <ns3:firstName>Елена</ns3:firstName>
+                <ns3:middleName>  Владимировна</ns3:middleName>
+            </contactPersonInfo>
+            <contactEMail>tender@monikiweb.ru</contactEMail>
+            <contactPhone>7-495-6317211</contactPhone>
+            <contactFax>7-495-6317211</contactFax>
+        </responsibleInfo>
+    </purchaseResponsibleInfo>
+    <printFormInfo>
+        <ns3:url>https://zakupki.gov.ru/epz/order/notice/printForm/view.html?regNumber=0348200027026000464</ns3:url>
+    </printFormInfo>
+    <attachmentsInfo>
+        <ns3:attachmentInfo>
+            <ns3:publishedContentId>01A120E916737AF7A05B2985A929C584</ns3:publishedContentId>
+            <ns3:fileName>Обоснование НМЦК.zip</ns3:fileName>
+            <ns3:fileSize>148966</ns3:fileSize>
+            <ns3:docDescription>Обоснование НМЦК</ns3:docDescription>
+            <ns3:docDate>2026-10-09T16:53:45+03:00</ns3:docDate>
+            <ns3:url>https://zakupki.gov.ru/44fz/filestore/public/1.0/download/priz/file.html?uid=01A120E916737AF7A05B2985A929C584</ns3:url>
+            <ns3:docKindInfo>
+                <ns2:code>PR</ns2:code>
+                <ns2:name>Обоснование цены контракта</ns2:name>
+            </ns3:docKindInfo>
+        </ns3:attachmentInfo>
+        <ns3:attachmentInfo>
+            <ns3:publishedContentId>01A120E918A37A3E85898F653A56D931</ns3:publishedContentId>
+            <ns3:fileName>Проект контракта, сост. 09.10.2026.zip</ns3:fileName>
+            <ns3:fileSize>56606</ns3:fileSize>
+            <ns3:docDescription>Проект контракта, сост. 09.10.2026</ns3:docDescription>
+            <ns3:docDate>2026-10-09T16:53:45+03:00</ns3:docDate>
+            <ns3:url>https://zakupki.gov.ru/44fz/filestore/public/1.0/download/priz/file.html?uid=01A120E918A37A3E85898F653A56D931</ns3:url>
+            <ns3:docKindInfo>
+                <ns2:code>CP</ns2:code>
+                <ns2:name>Проект контракта</ns2:name>
+            </ns3:docKindInfo>
+        </ns3:attachmentInfo>
+        <ns3:attachmentInfo>
+            <ns3:publishedContentId>01A120E8F977776BB947EA36C38B8D17</ns3:publishedContentId>
+            <ns3:fileName>ТЗ лекарство 288.docx</ns3:fileName>
+            <ns3:fileSize>42782</ns3:fileSize>
+            <ns3:docDescription>ТЗ лекарство 288</ns3:docDescription>
+            <ns3:docDate>2026-10-09T16:53:45+03:00</ns3:docDate>
+            <ns3:url>https://zakupki.gov.ru/44fz/filestore/public/1.0/download/priz/file.html?uid=01A120E8F977776BB947EA36C38B8D17</ns3:url>
+            <ns3:docKindInfo>
+                <ns2:code>AD</ns2:code>
+                <ns2:name>Дополнительная информация и документы</ns2:name>
+            </ns3:docKindInfo>
+        </ns3:attachmentInfo>
+        <ns3:attachmentInfo>
+            <ns3:publishedContentId>01A120E8FB1C76BFA3144627DB0C0E16</ns3:publishedContentId>
+            <ns3:fileName>Уведомление.pdf</ns3:fileName>
+            <ns3:fileSize>73948</ns3:fileSize>
+            <ns3:docDescription>Уведомление</ns3:docDescription>
+            <ns3:docDate>2026-10-09T16:53:45+03:00</ns3:docDate>
+            <ns3:url>https://zakupki.gov.ru/44fz/filestore/public/1.0/download/priz/file.html?uid=01A120E8FB1C76BFA3144627DB0C0E16</ns3:url>
+            <ns3:docKindInfo>
+                <ns2:code>AD</ns2:code>
+                <ns2:name>Дополнительная информация и документы</ns2:name>
+            </ns3:docKindInfo>
+        </ns3:attachmentInfo>
+        <ns3:attachmentInfo>
+            <ns3:publishedContentId>01A120E91C21733ABAA6292C01F8E313</ns3:publishedContentId>
+            <ns3:fileName>Приложение к проекту контракта, сост. 09.10.2026.zip</ns3:fileName>
+            <ns3:fileSize>500434</ns3:fileSize>
+            <ns3:docDescription>Приложение к проекту контракта, сост. 09.10.2026</ns3:docDescription>
+            <ns3:docDate>2026-10-09T16:53:45+03:00</ns3:docDate>
+            <ns3:url>https://zakupki.gov.ru/44fz/filestore/public/1.0/download/priz/file.html?uid=01A120E91C21733ABAA6292C01F8E313</ns3:url>
+            <ns3:docKindInfo>
+                <ns2:code>AD</ns2:code>
+                <ns2:name>Дополнительная информация и документы</ns2:name>
+            </ns3:docKindInfo>
+        </ns3:attachmentInfo>
+    </attachmentsInfo>
+    <notificationInfo>
+        <contractConditionsInfo>
+            <maxPriceInfo>
+                <maxPrice>4254712.50</maxPrice>
+                <currency>
+                    <ns2:code>RUB</ns2:code>
+                    <ns2:name>РОССИЙСКИЙ РУБЛЬ</ns2:name>
+                </currency>
+            </maxPriceInfo>
+            <deliveryPlaceInfo>
+                <sid>62074389</sid>
+                <OKTMO>
+                    <ns2:code>45379000</ns2:code>
+                    <ns2:name>Муниципальные образования города Москвы (столицы Российской Федерации города федерального значения) / Внутригородские муниципальные образования в городе Москве (см. также 45 900 000)/ / муниципальный округ Мещанский</ns2:name>
+                </OKTMO>
+                <GARInfo>
+                    <ns3:GARGuid>933b4597-5acd-4af2-88ba-9b45255d39f7</ns3:GARGuid>
+                    <ns3:GARAddress>г. Москва, вн.тер.г. муниципальный округ Мещанский</ns3:GARAddress>
+                </GARInfo>
+                <deliveryPlace>город Москва, внутригородская территория (внутригородское муниципальное образование) города федерального значения муниципальный округ Мещанский Российская Федерация, 129110, Москва, ул. Щепкина, д.61/2</deliveryPlace>
+            </deliveryPlaceInfo>
+        </contractConditionsInfo>
+        <customerRequirementsInfo>
+            <customerRequirementInfo>
+                <customer>
+                    <ns2:regNum>03482000270</ns2:regNum>
+                    <ns2:consRegistryNum>46284191</ns2:consRegistryNum>
+                    <ns2:fullName>ГОСУДАРСТВЕННОЕ БЮДЖЕТНОЕ УЧРЕЖДЕНИЕ ЗДРАВООХРАНЕНИЯ МОСКОВСКОЙ ОБЛАСТИ "МОСКОВСКИЙ ОБЛАСТНОЙ НАУЧНО-ИССЛЕДОВАТЕЛЬСКИЙ КЛИНИЧЕСКИЙ ИНСТИТУТ ИМ. М.Ф.ВЛАДИМИРСКОГО"</ns2:fullName>
+                </customer>
+                <contractGuarantee>
+                    <amount>425471.25</amount>
+                    <account>
+                        <ns3:bik>004525987</ns3:bik>
+                        <ns3:settlementAccount>03224643460000004800</ns3:settlementAccount>
+                        <ns3:personalAccount>20825841910</ns3:personalAccount>
+                        <ns3:creditOrgName>ГУ БАНКА РОССИИ ПО ЦФО//УФК ПО МОСКОВСКОЙ ОБЛАСТИ Г.МОСКВА</ns3:creditOrgName>
+                        <ns3:corrAccountNumber>40102810845370000004</ns3:corrAccountNumber>
+                    </account>
+                    <procedureInfo>Исполнение контракта обеспечивается предоставлением независимой гарантии, соответствующей требованиям статьи 45 Федерального закона № 44-ФЗ, или внесением денежных средств на указанный заказчиком счет, на котором в соответствии с законодательством Российской Федерации учитываются операции со средствами, поступающими заказчику. Способ обеспечения исполнения контракта, срок действия независимой гарантии определяются в соответствии с требованиями Федерального закона № 44-ФЗ участником закупки, с которым заключается контракт, самостоятельно. При этом срок действия независимой гарантии должен превышать предусмотренный контрактом срок исполнения обязательств, которые должны быть обеспечены такой независимой гарантией, не менее чем на один месяц, в том числе в случае его изменения в соответствии со статьей 95 Федерального закона № 44-ФЗ.Независимая гарантия должна содержать в том числе указание на то, что споры, возникающие в связи с исполнением обязательств по независимой гарантии, подлежат рассмотрению в Арбитражном суде Московской области.Требования к предоставлению обеспечения исполнения контракта, в том числе с учетом положений статьи 37 Федерального закона № 44-ФЗ, не применяются в случаях: 1) заключения контракта с участником закупки, который является казенным учреждением; 2) осуществления закупки услуги по предоставлению кредита; 3) заключения бюджетным учреждением, государственным, муниципальным унитарными предприятиями контракта, предметом которого является выдача независимой гарантии.</procedureInfo>
+                    <part>10.0</part>
+                </contractGuarantee>
+                <contractConditionsInfo>
+                    <maxPriceInfo>
+                        <maxPrice>4254712.50</maxPrice>
+                    </maxPriceInfo>
+                    <IKZInfo>
+                        <purchaseCode>262770206615777020100106400010000244</purchaseCode>
+                        <publishYear>2026</publishYear>
+                        <OKPD2Info>
+                            <ns3:undefined>0000</ns3:undefined>
+                        </OKPD2Info>
+                        <KVRInfo>
+                            <ns3:KVR>
+                                <ns2:code>244</ns2:code>
+                                <ns2:name>Прочая закупка товаров, работ и услуг</ns2:name>
+                            </ns3:KVR>
+                        </KVRInfo>
+                        <customerCode>27702066157770201001</customerCode>
+                        <purchaseNumber>0640</purchaseNumber>
+                        <purchaseOrderNumber>001</purchaseOrderNumber>
+                    </IKZInfo>
+                    <tenderPlan2020Info>
+                        <ns3:plan2020Number>202603482000270001</ns3:plan2020Number>
+                        <ns3:position2020Number>202603482000270001000615</ns3:position2020Number>
+                    </tenderPlan2020Info>
+                    <contractExecutionPaymentPlan>
+                        <contractExecutionTermsInfo>
+                            <ns3:notRelativeTermsInfo>
+                                <ns3:isFromConclusionDate>true</ns3:isFromConclusionDate>
+                                <ns3:endDate>2028-06-09+03:00</ns3:endDate>
+                            </ns3:notRelativeTermsInfo>
+                        </contractExecutionTermsInfo>
+                        <financingSourcesInfo>
+                            <nonbudgetFinancingsInfo>
+                                <selfFunds>true</selfFunds>
+                            </nonbudgetFinancingsInfo>
+                            <currentYear>2026</currentYear>
+                            <financeInfo>
+                                <total>4254712.50</total>
+                                <currentYear>4254712.50</currentYear>
+                                <firstYear>0.00</firstYear>
+                                <secondYear>0.00</secondYear>
+                                <subsecYears>0.00</subsecYears>
+                            </financeInfo>
+                        </financingSourcesInfo>
+                        <stagesInfo>
+                            <stageInfo>
+                                <sid>22198890</sid>
+                                <externalSid>119c6a8b-a965-4fa8-b774-472713d9730e</externalSid>
+                                <termsInfo>
+                                    <ns3:notRelativeTermsInfo>
+                                        <ns3:isFromConclusionDate>true</ns3:isFromConclusionDate>
+                                        <ns3:endDate>2028-06-09+03:00</ns3:endDate>
+                                    </ns3:notRelativeTermsInfo>
+                                </termsInfo>
+                                <nonbudgetFinancingInfo>
+                                    <paymentYearInfo>
+                                        <total>4254712.50</total>
+                                        <currentYear>4254712.50</currentYear>
+                                        <firstYear>0.00</firstYear>
+                                        <secondYear>0.00</secondYear>
+                                        <subsecYears>0.00</subsecYears>
+                                    </paymentYearInfo>
+                                    <KVRsInfo>
+                                        <ns3:currentYear>2026</ns3:currentYear>
+                                        <ns3:KVRInfo>
+                                            <ns3:KVR>
+                                                <ns2:code>244</ns2:code>
+                                                <ns2:name>Прочая закупка товаров, работ и услуг</ns2:name>
+                                            </ns3:KVR>
+                                            <ns3:KVRYearsInfo>
+                                                <ns3:total>4254712.50</ns3:total>
+                                                <ns3:currentYear>4254712.50</ns3:currentYear>
+                                                <ns3:firstYear>0.00</ns3:firstYear>
+                                                <ns3:secondYear>0.00</ns3:secondYear>
+                                                <ns3:subsecYears>0.00</ns3:subsecYears>
+                                            </ns3:KVRYearsInfo>
+                                        </ns3:KVRInfo>
+                                        <ns3:totalSum>4254712.50</ns3:totalSum>
+                                    </KVRsInfo>
+                                </nonbudgetFinancingInfo>
+                            </stageInfo>
+                        </stagesInfo>
+                    </contractExecutionPaymentPlan>
+                    <deliveryTime>10</deliveryTime>
+                    <isOneSideRejectionSt95>true</isOneSideRejectionSt95>
+                    <isExecutionStagesTerms>false</isExecutionStagesTerms>
+                </contractConditionsInfo>
+                <warrantyInfo>
+                    <warrantyServiceRequirement>-</warrantyServiceRequirement>
+                    <manufacturersWarrantyRequirement>-</manufacturersWarrantyRequirement>
+                    <warrantyTerm>Срок годности лекарственных препаратов на момент поставки должен быть не менее 1 (одного) года.</warrantyTerm>
+                </warrantyInfo>
+            </customerRequirementInfo>
+        </customerRequirementsInfo>
+        <drugPurchaseObjectsInfo>
+            <ns3:drugPurchaseObjectInfo>
+                <ns3:sid>12857187</ns3:sid>
+                <ns3:externalSid>03662d1d-03e2-4458-a6e0-139da650a68f</ns3:externalSid>
+                <ns3:objectInfoUsingReferenceInfo>
+                    <ns3:drugsInfo>
+                        <ns3:drugInfo>
+                            <ns3:sid>16866327</ns3:sid>
+                            <ns3:externalSid>03662d1d-03e2-4458-a6e0-139da650a68f</ns3:externalSid>
+                            <ns3:MNNInfo>
+                                <ns3:MNNExternalCode>1edd12be-bf5b-11e9-bd5d-e342963d4f96</ns3:MNNExternalCode>
+                                <ns3:MNNName>КАЛЬЦИЯ ФОЛИНАТ</ns3:MNNName>
+                            </ns3:MNNInfo>
+                            <ns3:OKPD2>
+                                <ns2:OKPDCode>21.20.23.190</ns2:OKPDCode>
+                                <ns2:OKPDName>Препараты фармацевтические прочие</ns2:OKPDName>
+                            </ns3:OKPD2>
+                            <ns3:KTRU>
+                                <ns2:code>21.20.23.190-00022</ns2:code>
+                            </ns3:KTRU>
+                            <ns3:medicamentalFormInfo>
+                                <ns3:medicamentalFormName>ЛИОФИЛИЗАТ ДЛЯ ПРИГОТОВЛЕНИЯ РАСТВОРА ДЛЯ ВНУТРИВЕННОГО И ВНУТРИМЫШЕЧНОГО ВВЕДЕНИЯ</ns3:medicamentalFormName>
+                            </ns3:medicamentalFormInfo>
+                            <ns3:dosageInfo>
+                                <ns3:dosageGRLSValue>50 мг</ns3:dosageGRLSValue>
+                                <ns3:dosageUserOKEI>
+                                    <ns2:code>161</ns2:code>
+                                    <ns2:name>мг</ns2:name>
+                                </ns3:dosageUserOKEI>
+                                <ns3:dosageUserName>мг действующего вещества</ns3:dosageUserName>
+                            </ns3:dosageInfo>
+                            <ns3:manualUserOKEI>
+                                <ns2:code>161</ns2:code>
+                                <ns2:name>мг</ns2:name>
+                            </ns3:manualUserOKEI>
+                            <ns3:basicUnit>true</ns3:basicUnit>
+                            <ns3:drugQuantity>1233250</ns3:drugQuantity>
+                            <ns3:limPriceValuePerUnit>2.14280</ns3:limPriceValuePerUnit>
+                        </ns3:drugInfo>
+                    </ns3:drugsInfo>
+                </ns3:objectInfoUsingReferenceInfo>
+                <ns3:name>КАЛЬЦИЯ ФОЛИНАТ, ЛИОФИЛИЗАТ ДЛЯ ПРИГОТОВЛЕНИЯ РАСТВОРА ДЛЯ ВНУТРИВЕННОГО И ВНУТРИМЫШЕЧНОГО ВВЕДЕНИЯ 50 мг, единица измерения товара: Миллиграмм (МГ)</ns3:name>
+                <ns3:isZNVLP>true</ns3:isZNVLP>
+                <ns3:isNarcotic>false</ns3:isNarcotic>
+                <ns3:drugQuantityCustomersInfo>
+                    <ns3:drugQuantityCustomerInfo>
+                        <ns3:customer>
+                            <ns2:regNum>03482000270</ns2:regNum>
+                            <ns2:consRegistryNum>46284191</ns2:consRegistryNum>
+                            <ns2:fullName>ГОСУДАРСТВЕННОЕ БЮДЖЕТНОЕ УЧРЕЖДЕНИЕ ЗДРАВООХРАНЕНИЯ МОСКОВСКОЙ ОБЛАСТИ "МОСКОВСКИЙ ОБЛАСТНОЙ НАУЧНО-ИССЛЕДОВАТЕЛЬСКИЙ КЛИНИЧЕСКИЙ ИНСТИТУТ ИМ. М.Ф.ВЛАДИМИРСКОГО"</ns2:fullName>
+                        </ns3:customer>
+                        <ns3:quantity>1233250</ns3:quantity>
+                    </ns3:drugQuantityCustomerInfo>
+                    <ns3:total>1233250</ns3:total>
+                </ns3:drugQuantityCustomersInfo>
+                <ns3:pricePerUnit>3.45</ns3:pricePerUnit>
+                <ns3:positionPrice>4254712.50</ns3:positionPrice>
+                <ns3:restrictionsInfo>
+                    <ns3:isRestrictForeignPurchaseObjects>true</ns3:isRestrictForeignPurchaseObjects>
+                    <ns3:isPreferenseRFPurchaseObjects>true</ns3:isPreferenseRFPurchaseObjects>
+                </ns3:restrictionsInfo>
+            </ns3:drugPurchaseObjectInfo>
+            <ns3:total>4254712.50</ns3:total>
+        </drugPurchaseObjectsInfo>
+        <requirementsInfo>
+            <requirementInfo>
+                <ns3:preferenseRequirementInfo>
+                    <ns2:shortName>ET44</ns2:shortName>
+                    <ns2:name>Единые требования к участникам закупок в соответствии с ч. 1 ст. 31 Закона № 44-ФЗ</ns2:name>
+                </ns3:preferenseRequirementInfo>
+            </requirementInfo>
+            <requirementInfo>
+                <ns3:preferenseRequirementInfo>
+                    <ns2:shortName>TR442</ns2:shortName>
+                    <ns2:name>Требования к участникам закупок в соответствии с ч. 1.1 ст. 31 Закона № 44-ФЗ</ns2:name>
+                </ns3:preferenseRequirementInfo>
+            </requirementInfo>
+        </requirementsInfo>
+    </notificationInfo>
+    <printFormFieldsInfo>
+        <is449Features>false</is449Features>
+    </printFormFieldsInfo>
+    <serviceSigns>
+        <isIncludeKOKS>false</isIncludeKOKS>
+        <isControlP1Ch5St99>true</isControlP1Ch5St99>
+    </serviceSigns>
+</ns7:epNotificationEZT2020>

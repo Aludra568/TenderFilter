@@ -1,0 +1,21 @@
+{
+  "notices": 1000,
+  "total_seconds": 3.86,
+  "notices_per_second": 258.9,
+  "parse_ms": {
+    "median": 2.683,
+    "p95": 3.868,
+    "max": 14.306
+  },
+  "score_ms": {
+    "median": 0.976,
+    "p95": 1.465,
+    "max": 4.634
+  },
+  "verdicts": {
+    "go": 487,
+    "consider": 81,
+    "skip": 432
+  },
+  "generated_at": "2026-10-09T15:03:19+00:00"
+}

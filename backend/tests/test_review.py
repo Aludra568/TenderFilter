@@ -74,7 +74,7 @@ def test_no_time_left_skips_llm():
 def test_quick_score_includes_review(client):
     from tests.conftest import SAMPLES
 
-    path = next(SAMPLES.glob("real_*.xml"))
+    path = next(SAMPLES.glob("real_44fz_ef2020_*.xml"))
     resp = client.post("/api/quick-score", files={"file": (path.name, path.read_bytes())},
                        data={"criteria_text": "Поставляем медицинские изделия", "save": "false"})
     assert resp.status_code == 200

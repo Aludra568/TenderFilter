@@ -1,0 +1,86 @@
+{
+  "files": 198,
+  "parsed": 198,
+  "parse_errors": [],
+  "key_fields_complete": 1.0,
+  "overall": {
+    "subject": 1.0,
+    "nmck": 1.0,
+    "submission_deadline": 1.0,
+    "delivery_region_code": 1.0,
+    "okpd2": 1.0,
+    "customer_inn": 1.0,
+    "procedure_type": 1.0,
+    "contract_guarantee_percent": 0.939,
+    "app_guarantee_amount": 0.636,
+    "smp_only": 1.0
+  },
+  "by_document_type": {
+    "epNotificationEZK2020": {
+      "count": 89,
+      "fields": {
+        "subject": 1.0,
+        "nmck": 1.0,
+        "submission_deadline": 1.0,
+        "delivery_region_code": 1.0,
+        "okpd2": 1.0,
+        "customer_inn": 1.0,
+        "procedure_type": 1.0,
+        "contract_guarantee_percent": 0.899,
+        "app_guarantee_amount": 0.528,
+        "smp_only": 1.0
+      }
+    },
+    "epNotificationEF2020": {
+      "count": 75,
+      "fields": {
+        "subject": 1.0,
+        "nmck": 1.0,
+        "submission_deadline": 1.0,
+        "delivery_region_code": 1.0,
+        "okpd2": 1.0,
+        "customer_inn": 1.0,
+        "procedure_type": 1.0,
+        "contract_guarantee_percent": 0.987,
+        "app_guarantee_amount": 0.667,
+        "smp_only": 1.0
+      }
+    },
+    "epNotificationEOK2020": {
+      "count": 31,
+      "fields": {
+        "subject": 1.0,
+        "nmck": 1.0,
+        "submission_deadline": 1.0,
+        "delivery_region_code": 1.0,
+        "okpd2": 1.0,
+        "customer_inn": 1.0,
+        "procedure_type": 1.0,
+        "contract_guarantee_percent": 1.0,
+        "app_guarantee_amount": 0.935,
+        "smp_only": 1.0
+      }
+    },
+    "epNotificationEZT2020": {
+      "count": 3,
+      "fields": {
+        "subject": 1.0,
+        "nmck": 1.0,
+        "submission_deadline": 1.0,
+        "delivery_region_code": 1.0,
+        "okpd2": 1.0,
+        "customer_inn": 1.0,
+        "procedure_type": 1.0,
+        "contract_guarantee_percent": 0.333,
+        "app_guarantee_amount": 0.0,
+        "smp_only": 1.0
+      }
+    }
+  },
+  "roots": {
+    "epNotificationEZK2020": 89,
+    "epNotificationEF2020": 75,
+    "epNotificationEOK2020": 31,
+    "epNotificationEZT2020": 3
+  }
+}

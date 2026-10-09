@@ -20,7 +20,7 @@ def seed(db: Session) -> None:
         return
     log.info("Заполняю базу демо-данными")
     files = demo_files()
-    for path in sorted(SAMPLES.glob("real_*.xml")):
+    for path in sorted(SAMPLES.glob("real_44fz_ef2020_*.xml")):
         files.append((path.name, path.read_bytes()))
     for name, content in files:
         try:

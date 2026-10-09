@@ -140,6 +140,8 @@ def normalize(text: str) -> str:
 def find_regions(text: str) -> list[Region]:
     """Все субъекты, упомянутые в тексте, в порядке справочника, без повторов."""
     t = normalize(text)
+    # «обл. Ивановская», «край Алтайский» — в адресах ЕИС слово «область» бывает впереди
+    t = re.sub(r"\b(обл(?:асть)?|край|респ(?:ублика)?)\.?\s+([а-я-]+)", r"\2 \1 \2", t)
     found: list[Region] = []
     for region, patterns in _COMPILED:
         if any(p.search(t) for p in patterns):

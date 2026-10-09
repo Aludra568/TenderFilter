@@ -89,3 +89,14 @@ def test_xxe_is_not_resolved(tmp_path):
         assert "TOP-SECRET" not in t.subject
     except ParseError:
         pass
+
+
+_REAL = sorted(SAMPLES.glob("real_44fz_*.xml"))
+
+
+@pytest.mark.parametrize("path", _REAL, ids=[p.name for p in _REAL])
+def test_real_notices_of_all_types_have_key_fields(path):
+    t = parse_bytes(path.read_bytes(), path.name)
+    assert t.subject and t.nmck and t.submission_deadline and t.customer_inn
+    assert t.delivery_region_code, t.delivery_place
+    assert t.procedure_type != "other"

@@ -258,22 +258,44 @@ async def upload_tender(file: UploadFile = File(...), profile_id: int | None = F
     return {"tender_id": row.id, "score_id": score.id, "result": score.result}
 
 
+@router.get("/eis/notice/{reestr_number}", response_class=PlainTextResponse,
+            summary="XML извещения 44-ФЗ из ЕИС по номеру (для формы быстрой оценки)")
+def eis_notice(reestr_number: str):
+    from app.eis import public
+    from app.eis.getdocs import EisApiError
+
+    if not reestr_number.isdigit() or len(reestr_number) != 19:
+        raise HTTPException(422, "Номер закупки 44-ФЗ — 19 цифр")
+    try:
+        name, content = public.fetch_notice(reestr_number)
+    except EisApiError as exc:
+        raise HTTPException(502, str(exc))
+    return PlainTextResponse(content.decode("utf-8", errors="replace"), media_type="application/xml",
+                             headers={"Content-Disposition": f'attachment; filename="{name}"'})
+
+
 class ByNumberRequest(BaseModel):
     reestr_number: str = Field(pattern=r"^\d{19}$", description="Реестровый номер закупки 44-ФЗ (19 цифр)")
     profile_id: int | None = None
 
 
-@router.post("/tenders/by-number", summary="Загрузить извещение 44-ФЗ из ЕИС по номеру (API getDocsIP, нужен EIS_TOKEN)")
+@router.post("/tenders/by-number", summary="Загрузить извещение 44-ФЗ из ЕИС по номеру (печатная форма ЕИС; при токене — API getDocsIP)")
 def tender_by_number(req: ByNumberRequest, db: Session = Depends(get_db)):
+    from app.eis import public
     from app.eis.getdocs import EisApiError, fetch_notice
 
     started = time.perf_counter()
     try:
-        filename, content = fetch_notice(req.reestr_number)
+        try:
+            filename, content = public.fetch_notice(req.reestr_number)  # открытая печатная форма — без токена
+        except EisApiError:
+            if not settings.eis_token:
+                raise
+            filename, content = fetch_notice(req.reestr_number)  # официальный API по токену
         row = services.ingest(db, filename, content)
     except EisApiError as exc:
         audit("error", f"ЕИС по номеру {req.reestr_number}: {exc}", level="warning")
-        raise HTTPException(503 if "EIS_TOKEN" in str(exc) else 502, str(exc))
+        raise HTTPException(502, str(exc))
     except ParseError as exc:
         raise HTTPException(422, f"Документ из ЕИС не разобран: {exc}")
     profile = _profile(db, req.profile_id)
@@ -725,7 +747,7 @@ def logs(limit: int = Query(50, le=500), event: str | None = None, db: Session =
 
 @router.get("/demo/sample.xml", response_class=PlainTextResponse, summary="Реальное извещение ЕИС для быстрой проверки")
 def demo_sample():
-    path = next((Path(__file__).resolve().parents[1] / "samples").glob("real_*.xml"))
+    path = next((Path(__file__).resolve().parents[1] / "samples").glob("real_44fz_ef2020_*.xml"))
     return PlainTextResponse(path.read_text(encoding="utf-8"), media_type="application/xml",
                              headers={"Content-Disposition": f'attachment; filename="{path.name}"'})
 
@@ -741,7 +763,7 @@ def demo_zip():
         for name, content in demo_files():
             zf.writestr(name, content)
         real = Path(__file__).resolve().parents[1] / "samples"
-        for path in real.glob("real_*.xml"):
+        for path in real.glob("real_44fz_ef2020_*.xml"):
             zf.writestr(path.name, path.read_bytes())
     buf.seek(0)
     return StreamingResponse(buf, media_type="application/zip",

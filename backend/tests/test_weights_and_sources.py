@@ -130,10 +130,23 @@ def test_getdocs_response_and_archive():
     assert name.startswith("epNotification") and content.startswith(b"<")
 
 
-def test_by_number_without_token(client):
+def test_by_number_uses_public_print_form(client, monkeypatch):
+    from app.eis import public
+
+    sample = (SAMPLES / "real_44fz_ef2020_0173100008726000065.xml").read_bytes()
+    monkeypatch.setattr(public, "fetch_notice", lambda n, timeout=15.0: (f"{n}.xml", sample))
     r = client.post("/api/tenders/by-number", json={"reestr_number": "0173100008726000065"})
-    assert r.status_code == 503 and "EIS_TOKEN" in r.json()["detail"]
+    assert r.status_code == 200 and r.json()["result"]["factors"]
+    assert client.get("/api/eis/notice/0173100008726000065").text.startswith("<?xml")
+
+    def down(n, timeout=15.0):
+        raise getdocs.EisApiError("ЕИС недоступна: ConnectError")
+
+    monkeypatch.setattr(public, "fetch_notice", down)
+    r = client.post("/api/tenders/by-number", json={"reestr_number": "0173100008726000065"})
+    assert r.status_code == 502 and "ЕИС" in r.json()["detail"]
     assert client.post("/api/tenders/by-number", json={"reestr_number": "123"}).status_code == 422
+    assert client.get("/api/eis/notice/123").status_code == 422
 
 
 # ---------- нечёткая логика ----------

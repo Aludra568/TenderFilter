@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { api, ApiError, type Company, type QuickResult } from "../api";
 import { CountUp, ErrorBox, VerdictChip } from "../components/common";
 import { Radar } from "../components/Radar";
+import { EisNumberLoader } from "../components/EisNumberLoader";
 import { CompanyBlock, DocsPicker, FactorList, FindingList, KeyParams, ReviewBlock } from "../components/ResultParts";
 
 const EXAMPLE_CRITERIA =
@@ -120,6 +121,7 @@ export function QuickPage() {
             )}
             <input ref={fileInput} type="file" accept=".xml,.json" hidden onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
           </div>
+          <EisNumberLoader onFile={setFile} />
           <button type="button" className="btn3" style={{ alignSelf: "flex-start" }} onClick={takeExample}>Взять реальное извещение из ЕИС</button>
           <DocsPicker files={docs} onChange={setDocs} />
         </div>

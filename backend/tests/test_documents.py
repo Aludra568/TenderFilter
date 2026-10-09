@@ -79,7 +79,7 @@ def test_extract_docx_and_errors():
 def test_documents_api(client):
     from tests.conftest import SAMPLES
 
-    path = next(SAMPLES.glob("real_*.xml"))
+    path = next(SAMPLES.glob("real_44fz_ef2020_*.xml"))
     resp = client.post("/api/quick-score", files=[("file", (path.name, path.read_bytes())),
                                                   ("documents", ("contract.docx", _docx(BAD))),
                                                   ("documents", ("scan.doc", b"\xd0\xcf\x11\xe0"))],

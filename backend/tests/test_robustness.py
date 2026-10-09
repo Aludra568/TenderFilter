@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-SAMPLE = next((Path(__file__).resolve().parents[1] / "samples").glob("real_*.xml")).read_bytes()
+SAMPLE = next((Path(__file__).resolve().parents[1] / "samples").glob("real_44fz_ef2020_*.xml")).read_bytes()
 
 BOMB = b"""<?xml version="1.0"?>
 <!DOCTYPE lolz [<!ENTITY lol "lol"><!ENTITY lol2 "&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;">

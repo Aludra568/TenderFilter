@@ -49,7 +49,7 @@ def test_participant_checks():
 def test_customer_api(client):
     from tests.conftest import SAMPLES
 
-    path = next(SAMPLES.glob("real_*.xml"))
+    path = next(SAMPLES.glob("real_44fz_ef2020_*.xml"))
     r = client.post("/api/customer/check", files=[("file", (path.name, path.read_bytes())),
                                                   ("documents", ("contract.docx", _docx(BAD)))])
     assert r.status_code == 200, r.text

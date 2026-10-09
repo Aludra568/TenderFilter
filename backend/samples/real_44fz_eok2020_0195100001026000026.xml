@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns7:epNotificationEOK2020 schemeVersion="16.2" xmlns="http://zakupki.gov.ru/oos/EPtypes/1" xmlns:ns6="http://zakupki.gov.ru/oos/types/1" xmlns:ns5="http://zakupki.gov.ru/oos/KOTypes/1" xmlns:ns7="http://zakupki.gov.ru/oos/printform/1" xmlns:ns2="http://zakupki.gov.ru/oos/base/1" xmlns:ns4="http://zakupki.gov.ru/oos/CPtypes/1" xmlns:ns3="http://zakupki.gov.ru/oos/common/1">
+    <id>44171141</id>
+    <versionNumber>1</versionNumber>
+    <commonInfo>
+        <purchaseNumber>0195100001026000026</purchaseNumber>
+        <docNumber>№0195100001026000026</docNumber>
+        <directDT>2026-10-02T17:20:50.232+03:00</directDT>
+        <plannedPublishDate>2026-10-02+03:00</plannedPublishDate>
+        <publishDTInEIS>2026-10-02T19:43:15.165+03:00</publishDTInEIS>
+        <href>https://zakupki.gov.ru/epz/order/notice/ok20/view/common-info.html?regNumber=0195100001026000026</href>
+        <placingWay>
+            <ns2:code>OKP20</ns2:code>
+            <ns2:name>Открытый конкурс в электронной форме</ns2:name>
+        </placingWay>
+        <ETP>
+            <ns2:code>ETP_GPB</ns2:code>
+            <ns2:name>ЭТП Газпромбанк</ns2:name>
+            <ns2:url>https://etpgpb.ru/</ns2:url>
+        </ETP>
+        <contractConclusionOnSt83Ch2>true</contractConclusionOnSt83Ch2>
+        <purchaseObjectInfo>Организация и проведение торжественного концерта церемонии награждения победителей Всероссийского конкурса «СМИротворец» на лучшее освещение вопросов межнациональных и этноконфессиональных отношений</purchaseObjectInfo>
+    </commonInfo>
+    <purchaseResponsibleInfo>
+        <responsibleOrgInfo>
+            <regNum>01951000010</regNum>
+            <consRegistryNum>00100380</consRegistryNum>
+            <fullName>ФЕДЕРАЛЬНОЕ АГЕНТСТВО ПО ДЕЛАМ НАЦИОНАЛЬНОСТЕЙ</fullName>
+            <shortName>ФАДН РОССИИ</shortName>
+            <postAddress>123112, Г.МОСКВА, вн.тер.г. МУНИЦИПАЛЬНЫЙ ОКРУГ ПРЕСНЕНСКИЙ, НАБ ПРЕСНЕНСКАЯ, Д. 10, СТР. 2</postAddress>
+            <factAddress>123112, Г.МОСКВА, вн.тер.г. МУНИЦИПАЛЬНЫЙ ОКРУГ ПРЕСНЕНСКИЙ, НАБ ПРЕСНЕНСКАЯ, Д. 10, СТР. 2</factAddress>
+            <INN>7708257207</INN>
+            <KPP>770301001</KPP>
+        </responsibleOrgInfo>
+        <responsibleRole>CU</responsibleRole>
+        <responsibleInfo>
+            <orgPostAddress>123112, Г.МОСКВА, вн.тер.г. МУНИЦИПАЛЬНЫЙ ОКРУГ ПРЕСНЕНСКИЙ, НАБ ПРЕСНЕНСКАЯ, Д. 10, СТР. 2</orgPostAddress>
+            <orgFactAddress>123112, Г.МОСКВА, вн.тер.г. МУНИЦИПАЛЬНЫЙ ОКРУГ ПРЕСНЕНСКИЙ, НАБ ПРЕСНЕНСКАЯ, Д. 10, СТР. 2</orgFactAddress>
+            <contactPersonInfo>
+                <ns3:lastName>Полежаев</ns3:lastName>
+                <ns3:firstName>Евгений</ns3:firstName>
+                <ns3:middleName>Владиславович</ns3:middleName>
+            </contactPersonInfo>
+            <contactEMail>goszakupka@fadn.gov.ru</contactEMail>
+            <contactPhone>7-495-8702921-78105</contactPhone>
+        </responsibleInfo>
+    </purchaseResponsibleInfo>
+    <printFormInfo>
+        <ns3:url>https://zakupki.gov.ru/epz/order/notice/printForm/view.html?regNumber=0195100001026000026</ns3:url>
+    </printFormInfo>
+    <attachmentsInfo>
+        <ns3:attachmentInfo>
+            <ns3:publishedContentId>01A0FCD3473E79EDB7814B62B2533290</ns3:publishedContentId>
+            <ns3:fileName>Приложение № 4 НМЦК (закупки) концерт СМИротворец.docx</ns3:fileName>
+            <ns3:fileSize>21096</ns3:fileSize>
+            <ns3:docDescription>Приложение № 4 НМЦК (закупки) концерт СМИротворец</ns3:docDescription>
+            <ns3:docDate>2026-10-02T16:34:59+03:00</ns3:docDate>
+            <ns3:url>https://zakupki.gov.ru/44fz/filestore/public/1.0/download/priz/file.html?uid=01A0FCD3473E79EDB7814B62B2533290</ns3:url>
+            <ns3:docKindInfo>
+                <ns2:code>MRJ</ns2:code>
+            </ns3:docKindInfo>
+        </ns3:attachmentInfo>
+        <ns3:attachmentInfo>
+            <ns3:publishedContentId>01A0FD754D8C78D6B7ED18E21CFFC0EB</ns3:publishedContentId>
+            <ns3:fileName>Приложение № 2 еис (Проект контракта) СМИротворец концерт.docx</ns3:fileName>
+            <ns3:fileSize>72029</ns3:fileSize>
+            <ns3:docDescription>Приложение № 2 еис (Проект контракта) СМИротворец концерт (ф)</ns3:docDescription>
+            <ns3:docDate>2026-10-02T19:31:58+03:00</ns3:docDate>
+            <ns3:url>https://zakupki.gov.ru/44fz/filestore/public/1.0/download/priz/file.html?uid=01A0FD754D8C78D6B7ED18E21CFFC0EB</ns3:url>
+            <ns3:docKindInfo>
+                <ns2:code>CP</ns2:code>
+            </ns3:docKindInfo>
+        </ns3:attachmentInfo>
+        <ns3:attachmentInfo>
+            <ns3:publishedContentId>01A0FD75A095743F909159EB0C09BEA4</ns3:publishedContentId>
+            <ns3:fileName>ТЗ СМИротворец концерт (Ф).docx</ns3:fileName>
+            <ns3:fileSize>45362</ns3:fileSize>
+            <ns3:docDescription>ТЗ СМИротворец концерт (Ф)</ns3:docDescription>
+            <ns3:docDate>2026-10-02T19:32:19+03:00</ns3:docDate>
+            <ns3:url>https://zakupki.gov.ru/44fz/filestore/public/1.0/download/priz/file.html?uid=01A0FD75A095743F909159EB0C09BEA4</ns3:url>
+            <ns3:docKindInfo>
+                <ns2:code>POD</ns2:code>
+            </ns3:docKindInfo>
+        </ns3:attachmentInfo>
+        <ns3:attachmentInfo>
+            <ns3:publishedContentId>01A0FCD5AFE47B8688C21E1490301AC0</ns3:publishedContentId>
+            <ns3:fileName>Инфиормационная карта  СМИротворец концерт.docx</ns3:fileName>
+            <ns3:fileSize>37023</ns3:fileSize>
+            <ns3:docDescription>Инфиормационная карта  СМИротворец концерт</ns3:docDescription>
+            <ns3:docDate>2026-10-02T16:37:37+03:00</ns3:docDate>
+            <ns3:url>https://zakupki.gov.ru/44fz/filestore/public/1.0/download/priz/file.html?uid=01A0FCD5AFE47B8688C21E1490301AC0</ns3:url>
+            <ns3:docKindInfo>
+                <ns2:code>CAR</ns2:code>
+            </ns3:docKindInfo>
+        </ns3:attachmentInfo>
+        <ns3:attachmentInfo>
+            <ns3:publishedContentId>01A0FCDB4347758C9C8B6BE680C1EEE0</ns3:publishedContentId>
+            <ns3:fileName>Приложение№3Требования_к_заявке(Инструкия к заявке) 2026 (Смиротворец концерт).doc</ns3:fileName>
+            <ns3:fileSize>524800</ns3:fileSize>
+            <ns3:docDescription>Приложение№3Требования_к_заявке(Инструкия к заявке) 2026 (Смиротворец концерт)</ns3:docDescription>
+            <ns3:docDate>2026-10-02T16:43:43+03:00</ns3:docDate>
+            <ns3:url>https://zakupki.gov.ru/44fz/filestore/public/1.0/download/priz/file.html?uid=01A0FCDB4347758C9C8B6BE680C1EEE0</ns3:url>
+            <ns3:docKindInfo>
+                <ns2:code>AD</ns2:code>
+            </ns3:docKindInfo>
+        </ns3:attachmentInfo>
+        <ns3:attachmentInfo>
+            <ns3:publishedContentId>01A0FD77062D74558B7252A705C03963</ns3:publishedContentId>
+            <ns3:fileName>Критерии_оценки_СМИротворец концерт (Ф).docx</ns3:fileName>
+            <ns3:fileSize>40778</ns3:fileSize>
+            <ns3:docDescription>Критерии_оценки_СМИротворец концерт (Ф)</ns3:docDescription>
+            <ns3:docDate>2026-10-02T19:33:51+03:00</ns3:docDate>
+            <ns3:url>https://zakupki.gov.ru/44fz/filestore/public/1.0/download/priz/file.html?uid=01A0FD77062D74558B7252A705C03963</ns3:url>
+            <ns3:docKindInfo>
+                <ns2:code>OCA</ns2:code>
+            </ns3:docKindInfo>
+        </ns3:attachmentInfo>
+    </attachmentsInfo>
+    <serviceSigns>
+        <isControlP1Ch5St99>true</isControlP1Ch5St99>
+    </serviceSigns>
+    <notificationInfo>
+        <procedureInfo>
+            <collectingInfo>
+                <startDT>2026-10-02T19:43:15+03:00</startDT>
+                <endDT>2026-10-19T11:00:00+03:00</endDT>
+            </collectingInfo>
+            <firstPartsDate>2026-10-20+03:00</firstPartsDate>
+            <submissionProcedureDate>2026-10-21+03:00</submissionProcedureDate>
+            <secondPartsDate>2026-10-21+03:00</secondPartsDate>
+            <summarizingDate>2026-10-21+03:00</summarizingDate>
+        </procedureInfo>
+        <contractConditionsInfo>
+            <maxPriceInfo>
+                <maxPrice>8758247.00</maxPrice>
+                <currency>
+                    <ns2:code>RUB</ns2:code>
+                    <ns2:name>РОССИЙСКИЙ РУБЛЬ</ns2:name>
+                </currency>
+            </maxPriceInfo>
+            <contractMultiInfo>
+                <notProvided>true</notProvided>
+            </contractMultiInfo>
+        </contractConditionsInfo>
+        <customerRequirementsInfo>
+            <customerRequirementInfo>
+                <customer>
+                    <ns2:regNum>01951000010</ns2:regNum>
+                    <ns2:consRegistryNum>00100380</ns2:consRegistryNum>
+                    <ns2:fullName>ФЕДЕРАЛЬНОЕ АГЕНТСТВО ПО ДЕЛАМ НАЦИОНАЛЬНОСТЕЙ</ns2:fullName>
+                </customer>
+                <applicationGuarantee>
+                    <amount>87582.47</amount>
+                    <account>
+                        <ns3:bik>024501901</ns3:bik>
+                        <ns3:settlementAccount>03212643000000019502</ns3:settlementAccount>
+                        <ns3:personalAccount>05951003800</ns3:personalAccount>
+                        <ns3:creditOrgName>Операционный департамент БАНКА РОССИИ // Межрегиональное операционное УФК г. Москва</ns3:creditOrgName>
+                        <ns3:corrAccountNumber>40102810045370000002</ns3:corrAccountNumber>
+                    </account>
+                    <procedureInfo>В соответствии с приложением извещения (Информационная карта)</procedureInfo>
+                    <part>1.0</part>
+                </applicationGuarantee>
+                <contractGuarantee>
+                    <account>
+                        <ns3:bik>024501901</ns3:bik>
+                        <ns3:settlementAccount>03212643000000019502</ns3:settlementAccount>
+                        <ns3:personalAccount>05951003800</ns3:personalAccount>
+                        <ns3:creditOrgName>Операционный департамент БАНКА РОССИИ // Межрегиональное операционное УФК г. Москва</ns3:creditOrgName>
+                        <ns3:corrAccountNumber>40102810045370000002</ns3:corrAccountNumber>
+                    </account>
+                    <procedureInfo>В соответствии с приложением извещения (Информационная карта)</procedureInfo>
+                    <part>10.0</part>
+                </contractGuarantee>
+                <contractConditionsInfo>
+                    <maxPriceInfo>
+                        <maxPrice>8758247.00</maxPrice>
+                    </maxPriceInfo>
+                    <mustPublicDiscussion>false</mustPublicDiscussion>
+                    <advancePaymentSum>
+                        <sumInPercents>10.0</sumInPercents>
+                    </advancePaymentSum>
+                    <IKZInfo>
+                        <purchaseCode>261770825720777030100100500018412244</purchaseCode>
+                        <publishYear>2026</publishYear>
+                        <OKPD2Info>
+                            <ns3:OKPD2>
+                                <ns2:OKPDCode>84.12</ns2:OKPDCode>
+                                <ns2:OKPDName>Услуги государственного управления организаций, обеспечивающих услуги в области здравоохранения, образования, культуры, и прочие социальные услуги, кроме услуг в области социального обеспечения</ns2:OKPDName>
+                            </ns3:OKPD2>
+                        </OKPD2Info>
+                        <KVRInfo>
+                            <ns3:KVR>
+                                <ns2:code>244</ns2:code>
+                                <ns2:name>Прочая закупка товаров, работ и услуг</ns2:name>
+                            </ns3:KVR>
+                        </KVRInfo>
+                        <customerCode>17708257207770301001</customerCode>
+                        <purchaseNumber>0050</purchaseNumber>
+                        <purchaseOrderNumber>001</purchaseOrderNumber>
+                    </IKZInfo>
+                    <tenderPlan2020Info>
+                        <ns3:plan2020Number>202601951000010001</ns3:plan2020Number>
+                        <ns3:position2020Number>202601951000010001000050</ns3:position2020Number>
+                    </tenderPlan2020Info>
+                    <contractExecutionPaymentPlan>
+                        <contractExecutionTermsInfo>
+                            <ns3:notRelativeTermsInfo>
+                                <ns3:isFromConclusionDate>true</ns3:isFromConclusionDate>
+                                <ns3:endDate>2026-12-10+03:00</ns3:endDate>
+                            </ns3:notRelativeTermsInfo>
+                        </contractExecutionTermsInfo>
+                        <financingSourcesInfo>
+                            <budgetFinancingsInfo>
+                                <budgetInfo>
+                                    <ns2:code>99010001</ns2:code>
+                                    <ns2:name>Федеральный бюджет</ns2:name>
+                                </budgetInfo>
+                                <budgetLevelInfo>
+                                    <ns2:code>10</ns2:code>
+                                    <ns2:name>федеральный бюджет</ns2:name>
+                                </budgetLevelInfo>
+                                <OKTMOInfo>
+                                    <ns2:code>00000001</ns2:code>
+                                    <ns2:name>Раздел 1. Муниципальные образования субъектов Российской Федерации / Федеральный бюджет</ns2:name>
+                                </OKTMOInfo>
+                            </budgetFinancingsInfo>
+                            <currentYear>2026</currentYear>
+                            <financeInfo>
+                                <total>8758247.00</total>
+                                <currentYear>8758247.00</currentYear>
+                                <firstYear>0.00</firstYear>
+                                <secondYear>0.00</secondYear>
+                                <subsecYears>0.00</subsecYears>
+                            </financeInfo>
+                        </financingSourcesInfo>
+                        <stagesInfo>
+                            <stageInfo>
+                                <sid>22105336</sid>
+                                <termsInfo>
+                                    <ns3:notRelativeTermsInfo>
+                                        <ns3:isFromConclusionDate>true</ns3:isFromConclusionDate>
+                                        <ns3:endDate>2026-12-10+03:00</ns3:endDate>
+                                    </ns3:notRelativeTermsInfo>
+                                </termsInfo>
+                                <budgetFinancingsInfo>
+                                    <budgetFinancingInfo>
+                                        <KBK>38001134640192100244</KBK>
+                                        <paymentYearInfo>
+                                            <total>8758247.00</total>
+                                            <currentYear>8758247.00</currentYear>
+                                            <firstYear>0.00</firstYear>
+                                            <secondYear>0.00</secondYear>
+                                            <subsecYears>0.00</subsecYears>
+                                        </paymentYearInfo>
+                                    </budgetFinancingInfo>
+                                </budgetFinancingsInfo>
+                            </stageInfo>
+                        </stagesInfo>
+                    </contractExecutionPaymentPlan>
+                    <BOInfo>
+                        <BONumber>0010038026000000395</BONumber>
+                        <BODate>2026-10-02T00:00:00+03:00</BODate>
+                        <inputBOFlag>auto</inputBOFlag>
+                    </BOInfo>
+                    <deliveryPlacesInfo>
+                        <byGARInfo>
+                            <ns3:sid>61970101</ns3:sid>
+                            <ns3:countryInfo>
+                                <ns2:countryCode>643</ns2:countryCode>
+                                <ns2:countryFullName>Российская Федерация</ns2:countryFullName>
+                            </ns3:countryInfo>
+                            <ns3:GARInfo>
+                                <ns3:GARGuid>0c5b2444-70a0-4932-980c-b4dc0d3f02b5</ns3:GARGuid>
+                                <ns3:GARAddress>г. Москва</ns3:GARAddress>
+                            </ns3:GARInfo>
+                        </byGARInfo>
+                    </deliveryPlacesInfo>
+                    <isOneSideRejectionSt95>true</isOneSideRejectionSt95>
+                    <isExecutionStagesTerms>false</isExecutionStagesTerms>
+                </contractConditionsInfo>
+            </customerRequirementInfo>
+        </customerRequirementsInfo>
+        <purchaseObjectsInfo>
+            <notDrugPurchaseObjectsInfo>
+                <ns3:purchaseObject>
+                    <ns3:sid>224036990</ns3:sid>
+                    <ns3:OKPD2>
+                        <ns2:OKPDCode>84.12.14.000</ns2:OKPDCode>
+                        <ns2:OKPDName>Услуги государственного управления в областях организованного отдыха, культуры и религии</ns2:OKPDName>
+                    </ns3:OKPD2>
+                    <ns3:name>Организация и проведение торжественного концерта церемонии награждения победителей Всероссийского конкурса «СМИротворец» на лучшее освещение вопросов межнациональных и этноконфессиональных отношений</ns3:name>
+                    <ns3:OKEI>
+                        <ns2:code>642</ns2:code>
+                        <ns2:nationalCode>ЕД</ns2:nationalCode>
+                        <ns2:name>Единица</ns2:name>
+                    </ns3:OKEI>
+                    <ns3:price>8758247.00</ns3:price>
+                    <ns3:volumeSpecifyingMethod>QF</ns3:volumeSpecifyingMethod>
+                    <ns3:quantity>
+                        <ns3:value>1.00000000000</ns3:value>
+                    </ns3:quantity>
+                    <ns3:sum>8758247.00</ns3:sum>
+                    <ns3:type>SERVICE</ns3:type>
+                    <ns3:hierarchyType>ND</ns3:hierarchyType>
+                </ns3:purchaseObject>
+                <ns3:totalSum>8758247.00</ns3:totalSum>
+                <quantityUndefined>false</quantityUndefined>
+            </notDrugPurchaseObjectsInfo>
+        </purchaseObjectsInfo>
+        <criteriaInfo>
+            <isCertainWorks>false</isCertainWorks>
+            <criterionInfo>
+                <costCriterionInfo>
+                    <code>CP</code>
+                    <valueInfo>
+                        <value>60.00</value>
+                    </valueInfo>
+                </costCriterionInfo>
+            </criterionInfo>
+            <criterionInfo>
+                <qualitativeCriterionInfo>
+                    <code>QF</code>
+                    <valueInfo>
+                        <value>40.00</value>
+                    </valueInfo>
+                    <indicatorsInfo>
+                        <indicatorInfo>
+                            <sId>6017025</sId>
+                            <purchaseObjectCharsInfo>
+                                <ns2:code>1</ns2:code>
+                                <ns2:name>Качественные характеристики объекта закупки</ns2:name>
+                            </purchaseObjectCharsInfo>
+                            <value>100.0000</value>
+                            <detailIndicatorsInfo>
+                                <detailIndicatorInfo>
+                                    <sId>2758824</sId>
+                                    <indicatorInfo>
+                                        <manualEnteredName>Степень проработанности предложения</manualEnteredName>
+                                    </indicatorInfo>
+                                    <value>100.0000</value>
+                                    <orderEvalIndicatorsInfo>
+                                        <ns2:code>1</ns2:code>
+                                        <ns2:name>Лучшим является наименьшее значение характеристики объекта закупки</ns2:name>
+                                    </orderEvalIndicatorsInfo>
+                                </detailIndicatorInfo>
+                            </detailIndicatorsInfo>
+                        </indicatorInfo>
+                    </indicatorsInfo>
+                </qualitativeCriterionInfo>
+            </criterionInfo>
+        </criteriaInfo>
+        <preferensesInfo>
+            <preferenseInfo>
+                <ns3:preferenseRequirementInfo>
+                    <ns2:shortName>PVS33044</ns2:shortName>
+                    <ns2:name>Преимущество в соответствии с ч. 3 ст. 30 Закона № 44-ФЗ</ns2:name>
+                </ns3:preferenseRequirementInfo>
+            </preferenseInfo>
+        </preferensesInfo>
+        <requirementsInfo>
+            <requirementInfo>
+                <ns3:preferenseRequirementInfo>
+                    <ns2:shortName>ET44</ns2:shortName>
+                    <ns2:name>Единые требования к участникам закупок в соответствии с ч. 1 ст. 31 Закона № 44-ФЗ</ns2:name>
+                </ns3:preferenseRequirementInfo>
+            </requirementInfo>
+            <requirementInfo>
+                <ns3:preferenseRequirementInfo>
+                    <ns2:shortName>TR442</ns2:shortName>
+                    <ns2:name>Требования к участникам закупок в соответствии с ч. 1.1 ст. 31 Закона № 44-ФЗ</ns2:name>
+                </ns3:preferenseRequirementInfo>
+            </requirementInfo>
+        </requirementsInfo>
+        <flags>
+            <purchaseObjectsCh9St37>false</purchaseObjectsCh9St37>
+            <competitionCh19St48>false</competitionCh19St48>
+        </flags>
+    </notificationInfo>
+</ns7:epNotificationEOK2020>
