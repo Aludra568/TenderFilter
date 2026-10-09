@@ -4,6 +4,7 @@ import { useApp } from "../App";
 import { ControlView } from "../components/Controls";
 import { CountUp, ErrorBox, Skeleton, VerdictChip } from "../components/common";
 import { Radar } from "../components/Radar";
+import { WeightsWizard } from "../components/WeightsWizard";
 
 const clone = <T,>(x: T): T => JSON.parse(JSON.stringify(x));
 
@@ -96,7 +97,7 @@ export function ProfilePage() {
 
   const ex = preview?.example;
   const total = preview?.total || 1;
-  const counts = preview?.counts ?? { go: 0, consider: 0, skip: 0, manual: 0 };
+  const counts = preview?.counts ?? { go: 0, consider: 0, skip: 0 };
 
   return (
     <>
@@ -180,6 +181,11 @@ export function ProfilePage() {
             })
           )}
           {mode === "ui" && (
+            <WeightsWizard factors={schema.factors} draft={draft}
+                           onApply={(weights, method) => setDraft((d) => ({ ...d!, weights, weights_method: method }))}
+                           onReset={() => setDraft((d) => ({ ...d!, weights: {}, weights_method: null }))} />
+          )}
+          {mode === "ui" && (
             <div className="field">
               <div className="lbl-big">Пороги вердиктов</div>
               {(["go", "consider"] as const).map((k) => (
@@ -215,11 +221,11 @@ export function ProfilePage() {
           <section className="card fu" style={{ display: "flex", flexDirection: "column", gap: 14, animationDelay: "260ms" }}>
             <h3>Лента: {preview?.total ?? "…"} извещений</h3>
             <div style={{ display: "flex", height: 14, borderRadius: 7, overflow: "hidden", background: "var(--line)", gap: 3 }} aria-hidden="true">
-              {(["go", "consider", "manual", "skip"] as Verdict[]).map((v) => (
+              {(["go", "consider", "skip"] as Verdict[]).map((v) => (
                 <span key={v} style={{ width: `${(counts[v] / total) * 100}%`, background: `var(--${v})`, borderRadius: 7, transition: "width .45s cubic-bezier(.34,1.3,.64,1)" }} />
               ))}
             </div>
-            {(["go", "consider", "manual", "skip"] as Verdict[]).map((v) => (
+            {(["go", "consider", "skip"] as Verdict[]).map((v) => (
               <div key={v} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <VerdictChip verdict={v} />
                 <span className="digits" style={{ fontWeight: 800 }}><CountUp value={counts[v]} /></span>

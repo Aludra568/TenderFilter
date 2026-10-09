@@ -3,8 +3,10 @@ import { Route, Routes } from "react-router-dom";
 import { api, type Profile, type Schema } from "./api";
 import { Layout } from "./components/common";
 import { AccuracyPage } from "./pages/AccuracyPage";
+import { CustomerPage } from "./pages/CustomerPage";
 import { FeedPage } from "./pages/FeedPage";
 import { ProfilePage } from "./pages/ProfilePage";
+import { QuickPage } from "./pages/QuickPage";
 import { TenderPage } from "./pages/TenderPage";
 import { UploadPage } from "./pages/UploadPage";
 
@@ -39,10 +41,12 @@ export function App() {
       <Layout company={company}>
         <Routes>
           <Route path="/" element={<FeedPage />} />
+          <Route path="/quick" element={<QuickPage />} />
           <Route path="/tenders/:id" element={<TenderPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/upload" element={<UploadPage />} />
           <Route path="/accuracy" element={<AccuracyPage />} />
+          <Route path="/customer" element={<CustomerPage />} />
           <Route path="*" element={<FeedPage />} />
         </Routes>
       </Layout>

@@ -10,31 +10,30 @@
 import math
 import re
 import zlib
+from functools import lru_cache
 
 from app.config import get_settings
+from app.nlp.morph import lemmas
 
-_WORD = re.compile(r"[a-zа-я0-9]+")
 
 STOPWORDS = {
-    "поставка", "поставку", "поставки", "для", "нужд", "нужды", "оказание", "оказанию", "услуг", "услуги",
-    "выполнение", "работ", "работы", "закупка", "закупки", "приобретение", "обеспечения", "обеспечение",
-    "государственного", "муниципального", "учреждения", "учреждений", "бюджетного", "казенного", "автономного",
-    "областного", "городского", "района", "года", "году", "году", "период", "соответствии", "согласно",
-    "товара", "товаров", "товар", "предмет", "контракта", "договора", "право", "заключения", "на", "по", "и",
-    "в", "с", "из", "к", "от", "до", "или", "а", "не", "мбу", "мбоу", "гбу", "гбуз", "огбу", "фгбу", "мку",
-    # общие слова почти любого предмета закупки — ничего не говорят о профиле
-    "оборудование", "оборудования", "оборудованием", "техника", "техники", "технику", "материалы", "материалов",
-    "изделия", "изделий", "устройства", "устройств", "средства", "средств", "продукция", "продукции", "прочих",
+    # служебные слова предметов закупки (в начальной форме) — встречаются почти везде и не говорят о профиле
+    "поставка", "нужда", "оказание", "услуга", "выполнение", "работа", "закупка", "приобретение", "обеспечение",
+    "государственный", "муниципальный", "учреждение", "бюджетный", "казённый", "казенный", "автономный",
+    "областной", "городской", "район", "год", "период", "соответствие", "согласно", "товар", "предмет",
+    "контракт", "договор", "право", "заключение", "для", "на", "по", "и", "в", "с", "из", "к", "от", "до", "или",
+    "а", "не", "мбу", "мбоу", "гбу", "гбуз", "огбу", "фгбу", "мку", "оборудование", "техника", "материал",
+    "изделие", "устройство", "средство", "продукция", "прочий", "организация", "нуждаться",
 }
 
 
 def tokens(text: str) -> list[str]:
-    t = text.lower().replace("ё", "е")
-    return [w for w in _WORD.findall(t) if w not in STOPWORDS and (len(w) >= 3 or w.isdigit())]
+    """Начальные формы значимых слов (морфология pymorphy3): «ноутбуков» → «ноутбук»."""
+    return [w for w in lemmas(text) if w not in STOPWORDS and (len(w) >= 3 or w.isdigit())]
 
 
 def stem(word: str) -> str:
-    return word[:6] if len(word) > 6 else word
+    return word  # слова уже в начальной форме
 
 
 def _features(text: str) -> list[tuple[str, float]]:
@@ -48,7 +47,11 @@ def _features(text: str) -> list[tuple[str, float]]:
 
 
 def embed(text: str, dim: int | None = None) -> list[float]:
-    dim = dim or get_settings().embedding_dim
+    return list(_embed_cached(text, dim or get_settings().embedding_dim))
+
+
+@lru_cache(maxsize=20_000)
+def _embed_cached(text: str, dim: int) -> tuple[float, ...]:
     vec = [0.0] * dim
     for feat, weight in _features(text):
         h = zlib.crc32(feat.encode("utf-8"))
@@ -57,8 +60,8 @@ def embed(text: str, dim: int | None = None) -> list[float]:
         vec[idx] += sign * weight
     norm = math.sqrt(sum(v * v for v in vec))
     if norm == 0:
-        return vec
-    return [v / norm for v in vec]
+        return tuple(vec)
+    return tuple(v / norm for v in vec)
 
 
 def cosine(a: list[float], b: list[float]) -> float:

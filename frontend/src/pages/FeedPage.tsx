@@ -1,16 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { api, type Feed, type Verdict } from "../api";
+import { api, BID_STATUSES, type Feed, type Verdict } from "../api";
 import { useApp } from "../App";
 import { CountUp, ErrorBox, ScoreRing, Skeleton, VerdictChip } from "../components/common";
 import { LAW, VERDICT, deadlineInfo, rub } from "../format";
 
-const TABS: [Verdict | "", string][] = [["", "Все"], ["go", "Участвовать"], ["consider", "Рассмотреть"], ["skip", "Не участвовать"], ["manual", "Вручную"]];
+const TABS: [Verdict | "", string][] = [["", "Все"], ["go", "Участвовать"], ["consider", "Рассмотреть"], ["skip", "Не участвовать"]];
 const HINT: Record<Verdict, string> = {
   go: "можно подавать заявку",
   consider: "есть оговорки — посмотрите причины",
   skip: "стоп-факторы или слабое совпадение",
-  manual: "не хватает данных в извещении",
 };
 
 export function FeedPage() {
@@ -72,7 +71,7 @@ export function FeedPage() {
       <ErrorBox error={error} />
 
       <section className="summary" aria-label="Сводка по вердиктам">
-        {(["go", "consider", "skip", "manual"] as Verdict[]).map((v, i) => (
+        {(["go", "consider", "skip"] as Verdict[]).map((v, i) => (
           <button
             key={v}
             type="button"
@@ -139,10 +138,11 @@ export function FeedPage() {
                   return (
                     <tr key={item.tender_id} style={{ animationDelay: `${Math.min(i, 15) * 45}ms`, cursor: "pointer" }}
                         onClick={(e) => { if (!(e.target as HTMLElement).closest("a")) navigate(`/tenders/${item.tender_id}`); }}>
-                      <td><ScoreRing score={item.score} verdict={item.verdict} manual={item.verdict === "manual"} /></td>
+                      <td><ScoreRing score={item.score} verdict={item.verdict} /></td>
                       <td><VerdictChip verdict={item.verdict} /></td>
                       <td>
                         <Link className="subject" to={`/tenders/${item.tender_id}`}>{item.subject}</Link>
+                        {item.bid_status && <span className="chip manual" style={{ fontSize: 12, marginLeft: 8 }}>{BID_STATUSES[item.bid_status]}</span>}
                         <div className="meta num">
                           № {item.purchase_number} · {LAW(item.law)} · {item.procedure_name}{item.region_name ? ` · ${item.region_name}` : ""}
                           {item.smp_only ? " · только СМП" : ""}

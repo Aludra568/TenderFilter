@@ -106,7 +106,7 @@ export function UploadPage() {
                 <tbody>
                   {batch.items.map((item, i) => (
                     <tr key={item.tender_id} style={{ animationDelay: `${Math.min(i, 15) * 45}ms` }}>
-                      <td><ScoreRing score={item.score} verdict={item.verdict} manual={item.verdict === "manual"} /></td>
+                      <td><ScoreRing score={item.score} verdict={item.verdict} /></td>
                       <td><VerdictChip verdict={item.verdict} /></td>
                       <td><Link className="subject" to={`/tenders/${item.tender_id}`}>{item.subject}</Link><div className="meta">{item.region_name}</div></td>
                       <td className="num" style={{ textAlign: "right", fontWeight: 800 }}>{rub(item.nmck)}</td>

@@ -59,3 +59,11 @@ def test_phrases(text, check):
 def test_unparsed_is_reported():
     o = parse_rules("НМЦК до 10 млн. Хотим работать с хорошими людьми.")
     assert o.unparsed == ["Хотим работать с хорошими людьми"]
+
+
+def test_warehouses_from_text():
+    from app.nlp.criteria import parse_criteria
+
+    o = parse_criteria("Работаем в Новосибирской области. Есть склад в Красноярске и филиал в Томске.", use_llm=False)
+    assert o.preferences.geo.regions == {"54": 1.0}
+    assert set(o.preferences.geo.warehouses) == {"24", "70"}

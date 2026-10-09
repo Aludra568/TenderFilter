@@ -4,7 +4,6 @@ export const VERDICT: Record<Verdict, { label: string; icon: string; color: stri
   go: { label: "Участвовать", icon: "✓", color: "var(--go)", glow: "#3ddc97" },
   consider: { label: "Рассмотреть", icon: "!", color: "var(--consider)", glow: "#ffc93d" },
   skip: { label: "Не участвовать", icon: "✕", color: "var(--skip)", glow: "#ff4fa3" },
-  manual: { label: "Проверить вручную", icon: "?", color: "var(--manual)", glow: "#7c5cff" },
 };
 
 export function rub(v: number | null | undefined): string {

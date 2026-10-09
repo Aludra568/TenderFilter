@@ -1,4 +1,4 @@
-export type Verdict = "go" | "consider" | "skip" | "manual";
+export type Verdict = "go" | "consider" | "skip";
 
 export interface FactorBrief {
   key: string;
@@ -22,6 +22,7 @@ export interface FeedItem {
   verdict: Verdict;
   completeness: number;
   main_reason: string;
+  bid_status?: BidStatus | null;
   factors: FactorBrief[];
   relevance: number | null;
 }
@@ -67,6 +68,19 @@ export interface ScoreResult {
   factors: Factor[];
   rules: { id: string; label: string; effect: string; points: number }[];
   elapsed_ms: number;
+  review?: Review;
+}
+
+export interface Review {
+  status: "agree" | "doubt" | "unconfirmed" | "unavailable";
+  status_name: string;
+  algorithm_verdict: Verdict;
+  final_verdict: Verdict;
+  changed: boolean;
+  suggested_verdict: Verdict | null;
+  issues: { factor: string; problem: string; quote: string; verified: boolean }[];
+  note: string;
+  elapsed_ms: number;
 }
 
 export interface Company {
@@ -108,6 +122,63 @@ export interface Tender {
   items: { name: string; okpd2: string | null; quantity: number | null; price: number | null }[];
   url: string | null;
   parse_warnings: string[];
+  contract?: ContractTerms | null;
+}
+
+export interface Finding {
+  code: string;
+  side: "supplier" | "customer" | "both";
+  severity: "info" | "warn" | "high";
+  title: string;
+  detail: string;
+  quote: string | null;
+  law: string | null;
+}
+
+export interface ContractTerms {
+  files: string[];
+  payment_days: number | null;
+  acceptance_days: number | null;
+  advance_percent: number | null;
+  supplier_penalty: "standard" | "elevated" | null;
+  max_fine_percent: number | null;
+  warranty_months: number | null;
+  brands_without_equivalent: string[];
+  findings: Finding[];
+}
+
+export type BidStatus = "preparing" | "submitted" | "won" | "lost" | "declined";
+
+export const BID_STATUSES: Record<BidStatus, string> = {
+  preparing: "Готовим заявку",
+  submitted: "Заявка подана",
+  won: "Выиграли — исполняем",
+  lost: "Не выиграли",
+  declined: "Отказались",
+};
+
+export interface Interest {
+  profiles: { profile: string; score: number; verdict: Verdict; verdict_name: string; reason: string }[];
+  counts: Record<Verdict, number>;
+  total: number;
+  note: string;
+}
+
+export interface CustomerCheck {
+  tender: Tender;
+  findings: Finding[];
+  summary: { high: number; warn: number; info: number };
+  interest: Interest;
+  elapsed_ms: number;
+}
+
+export interface ParticipantCheck {
+  inn: string;
+  price: number | null;
+  company: Company | null;
+  risk: "high" | "warn" | "low";
+  risk_name: string;
+  findings: Finding[];
 }
 
 export interface TenderCard {
@@ -119,6 +190,7 @@ export interface TenderCard {
   customer: Company | null;
   similar: FeedItem[];
   profile_version: number;
+  bid_status: BidStatus | null;
 }
 
 // Предпочтения профиля — свободная структура: схема приходит с бэкенда (/api/factors).
@@ -200,10 +272,33 @@ export interface Accuracy {
   timing_ms: { avg: number; max: number };
 }
 
+export interface QuickResult {
+  tender: Tender;
+  tender_id: number | null;
+  company: Company | null;
+  customer: Company | null;
+  criteria: ParseOutcome & { elapsed_ms: number } | null;
+  preferences: Prefs;
+  result: ScoreResult;
+  timings: { parse_ms: number; egrul_ms: number; criteria_ms: number; scoring_ms: number; review_ms?: number; documents_ms?: number; total_ms: number };
+}
+
+export interface LogEntry {
+  id: number;
+  created_at: string;
+  event: string;
+  event_name: string;
+  level: string;
+  message: string;
+  duration_ms: number | null;
+  detail: Record<string, unknown>;
+}
+
 export interface Health {
   status: string;
   llm: { provider: string; model: string | null; ready: boolean; detail: string | null };
   egrul_provider: string;
+  egrul_chain?: string[];
   queue: string;
 }
 
@@ -212,6 +307,16 @@ export class ApiError extends Error {
     super(message);
   }
 }
+
+export interface WeightsResult {
+  method: "roc" | "ahp";
+  weights: Record<string, number>;
+  cr: number | null;
+  consistent: boolean;
+  advice: string[];
+}
+
+export interface WeightQuestion { a: string; b: string; a_label: string; b_label: string }
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(path, init);
@@ -264,4 +369,33 @@ export const api = {
   feedback: (scoreId: number, correct: boolean) =>
     request<{ ok: boolean }>(`/api/scores/${scoreId}/feedback`, json("POST", { correct })),
   accuracy: () => request<Accuracy>("/api/accuracy"),
+  weightQuestions: () => request<{ pairs: WeightQuestion[] }>("/api/weights/questions"),
+  weights: (body: { method: "roc"; ranking: string[] } | { method: "ahp"; pairs: { a: string; b: string; value: number }[] }) =>
+    request<WeightsResult>("/api/weights", json("POST", body)),
+  review: (scoreId: number) => request<{ review: Review; result: ScoreResult }>(`/api/scores/${scoreId}/review`, { method: "POST" }),
+  logs: (limit = 30) => request<LogEntry[]>(`/api/logs?limit=${limit}`),
+  quickScore: (file: File, inn: string, criteriaText: string, docs: File[] = []) => {
+    const fd = new FormData();
+    fd.append("file", file);
+    docs.forEach((d) => fd.append("documents", d));
+    if (inn.trim()) fd.append("inn", inn.trim());
+    if (criteriaText.trim()) fd.append("criteria_text", criteriaText);
+    return request<QuickResult>("/api/quick-score", { method: "POST", body: fd });
+  },
+  attachDocs: (tenderId: number, files: File[]) => {
+    const fd = new FormData();
+    files.forEach((f) => fd.append("files", f));
+    return request<{ contract: ContractTerms; result: ScoreResult }>(`/api/tenders/${tenderId}/documents`, { method: "POST", body: fd });
+  },
+  setBid: (tenderId: number, status: BidStatus | null) =>
+    request<{ status: BidStatus | null; committed: number; committed_count: number }>(`/api/tenders/${tenderId}/bid`, json("PUT", { status })),
+  bids: () => request<{ bids: { tender_id: number; purchase_number: string; subject: string; status: BidStatus; status_name: string; hold: number }[]; committed: number; committed_count: number }>("/api/bids"),
+  customerCheck: (file: File, docs: File[]) => {
+    const fd = new FormData();
+    fd.append("file", file);
+    docs.forEach((d) => fd.append("documents", d));
+    return request<CustomerCheck>("/api/customer/check", { method: "POST", body: fd });
+  },
+  customerParticipants: (tender: Tender, participants: { inn: string; price: number | null }[]) =>
+    request<{ participants: ParticipantCheck[] }>("/api/customer/participants", json("POST", { tender, participants })),
 };

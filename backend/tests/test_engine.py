@@ -55,10 +55,12 @@ def test_off_profile_is_stop():
     assert r.verdict == "skip" and "профил" in r.main_reason
 
 
-def test_missing_data_gives_manual_check():
+def test_missing_data_is_decided_automatically_but_never_go():
     t = tender(nmck=None, submission_deadline=None, delivery_region_code=None)
     r = evaluate(t, COMPANY, None, prefs(), now=NOW)
-    assert r.verdict == "manual" and r.completeness < 0.7
+    assert r.completeness < 0.7 and r.verdict == "consider"
+    assert any("Мало данных" in f for f in r.flags)
+    assert r.score > 0  # процент считается по найденным данным
 
 
 def test_liquidating_customer_caps_verdict():

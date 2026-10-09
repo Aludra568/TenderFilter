@@ -9,7 +9,9 @@ from datetime import datetime, timezone
 from typing import Callable
 
 from app.domain import PROCEDURE_NAMES, CanonicalTender, CompanyCard, Preferences
+from app.docs.contract import supplier_findings
 from app.reference import textvec
+from app.scoring import fuzzy
 from app.reference.okved import match_okved_okpd
 from app.reference.regions import BY_CODE
 
@@ -43,6 +45,8 @@ class Context:
     customer: CompanyCard | None
     prefs: Preferences
     now: datetime
+    committed: float = 0.0  # уже занято в обеспечениях по другим заявкам компании
+    committed_count: int = 0
 
 
 def _src(ctx: Context, *fields: str) -> list[Source]:
@@ -131,6 +135,12 @@ def profile_factor(ctx: Context) -> FactorResult:
 
 # ---------------- Цена ----------------
 
+def _explain_fuzzy(r: FactorResult, inf: "fuzzy.Inference") -> None:
+    """Пояснение только для пограничных значений, где нечёткая логика и правда что-то решает."""
+    if 0.001 < r.score < 0.999:
+        r.reasons.append("Нечёткая оценка — " + inf.describe())
+
+
 def price_factor(ctx: Context) -> FactorResult:
     p, t = ctx.prefs.price, ctx.tender
     r = FactorResult("price", "Цена", None, sources=_src(ctx, "nmck"))
@@ -145,17 +155,16 @@ def price_factor(ctx: Context) -> FactorResult:
         return r
     n = t.nmck
     rng = f"{_rub(lo) if lo else '0'} – {_rub(hi) if hi else 'без ограничения'}"
+    # Нечёткое множество «цена подходит»: ядро — ваш диапазон, плечи до ½ минимума и до 1,5 максимума.
+    inf = fuzzy.price_fit(n, lo, hi)
+    r.score = inf.memberships["подходит"]
     if (lo is None or n >= lo) and (hi is None or n <= hi):
-        r.score = 1.0
         r.reasons = [f"{_rub(n)} в вашем диапазоне {rng}"]
     elif hi is not None and n > hi:
-        # Линейно до нуля при превышении максимума в 1,5 раза.
-        r.score = round(max(0.0, 1 - (n - hi) / (0.5 * hi)), 3)
         r.reasons = [f"{_rub(n)} выше вашего максимума {_rub(hi)}"]
     else:
-        # Линейно до нуля, если НМЦК вдвое меньше минимума.
-        r.score = round(max(0.0, 1 - (lo - n) / (0.5 * lo)), 3) if lo else 0.0
         r.reasons = [f"{_rub(n)} ниже вашего минимума {_rub(lo)}"]
+    _explain_fuzzy(r, inf)
     if p.required and r.score < 1:
         r.stop = f"НМЦК вне диапазона {rng}"
     return r
@@ -178,6 +187,8 @@ def geo_factor(ctx: Context) -> FactorResult:
     allowed = dict(p.regions)
     if not allowed and ctx.company and ctx.company.region_code:
         allowed = {ctx.company.region_code: 1.0}
+    for wh in p.warehouses:
+        allowed.setdefault(wh, 0.9)  # склад или филиал в регионе — логистика своя
     if not allowed:
         r.active, r.score = False, 1.0
         r.reasons = ["Регионы не заданы — фактор не учитывается"]
@@ -185,6 +196,9 @@ def geo_factor(ctx: Context) -> FactorResult:
     if code in allowed:
         r.score = float(allowed[code])
         r.reasons = [f"{r.value} — ваш регион" if r.score >= 1 else f"{r.value} — регион с пониженным приоритетом"]
+        if code in p.warehouses:
+            r.score = max(r.score, 0.9)
+            r.reasons = [f"{r.value} — у вас там склад или филиал"]
     else:
         districts = {BY_CODE[c].district for c, v in allowed.items() if c in BY_CODE and v >= 1}
         if region and region.district in districts and not p.required:
@@ -216,16 +230,14 @@ def timing_factor(ctx: Context) -> FactorResult:
         left = _days(whole) if whole >= 1 else "меньше суток"
         r.value = f"до окончания подачи {left}"
         min_days = max(0, p.min_days_to_deadline)
-        if days >= max(7, min_days):
-            ds = 1.0
-        elif days >= min_days:
-            span = max(1, 7 - min_days)
-            ds = 0.6 + 0.4 * (days - min_days) / span
-        else:
-            ds = 0.2
-            if p.required:
-                r.stop = f"До окончания подачи {left} — меньше вашего минимума ({_days(min_days)})"
+        # Лингвистическая переменная «время на заявку»: мало / нормально / достаточно (вывод Сугено).
+        inf = fuzzy.time_left(days, min_days)
+        ds = inf.score
+        if days < min_days and p.required:
+            r.stop = f"До окончания подачи {left} — меньше вашего минимума ({_days(min_days)})"
         reasons.append(f"{left[0].upper() + left[1:]} на подготовку заявки" + (" — мало" if ds < 0.6 else ""))
+        if sum(1 for m in inf.memberships.values() if m > 0.001) > 1:
+            reasons.append("Нечёткая оценка времени — " + inf.describe())
         parts.append((2.0, ds))
     if p.min_contract_days and t.contract_term_days:
         ts = 1.0 if t.contract_term_days >= p.min_contract_days else t.contract_term_days / p.min_contract_days
@@ -253,11 +265,18 @@ def finance_factor(ctx: Context) -> FactorResult:
     if known_guarantee:
         values.append(f"обеспечения {_rub(total)}")
         if p.guarantee_limit_rub:
-            ratio = total / p.guarantee_limit_rub
-            gs = 1.0 if ratio <= 0.5 else 0.7 if ratio <= 1 else max(0.0, 0.5 * (2 - ratio))
-            reasons.append(f"Обеспечения {_rub(total)} при лимите {_rub(p.guarantee_limit_rub)}")
+            # Динамический лимит: часть денег уже заморожена в обеспечениях по другим заявкам.
+            free = max(0.0, p.guarantee_limit_rub - ctx.committed)
+            ratio = total / free if free > 0 else (float("inf") if total > 0 else 0.0)
+            inf = fuzzy.guarantee_load(min(ratio, 10.0))
+            gs = inf.score
+            limit_txt = (f"свободном лимите {_rub(free)} (занято {_rub(ctx.committed)} в {ctx.committed_count} "
+                         f"заявк{'е' if ctx.committed_count == 1 else 'ах'})") if ctx.committed else f"лимите {_rub(p.guarantee_limit_rub)}"
+            reasons.append(f"Обеспечения {_rub(total)} при {limit_txt} — нагрузка «{inf.dominant}»")
+            if sum(1 for m in inf.memberships.values() if m > 0.001) > 1:
+                reasons.append("Нечёткая оценка нагрузки — " + inf.describe())
             if ratio > 1 and p.required:
-                r.stop = f"Обеспечения {_rub(total)} больше вашего лимита {_rub(p.guarantee_limit_rub)}"
+                r.stop = f"Обеспечения {_rub(total)} больше свободного лимита {_rub(free)}"
         else:
             pct = t.contract_guarantee_percent or 0
             gs = 1.0 if pct <= 5 else 0.8 if pct <= 10 else 0.6 if pct <= 20 else 0.4
@@ -282,6 +301,11 @@ def finance_factor(ctx: Context) -> FactorResult:
                 r.flag = "Аванс для вас обязателен, а в извещении он не указан — проверьте проект контракта"
     elif t.advance_percent:
         reasons.append(f"Аванс {t.advance_percent:g}%")
+    gap = next((x for x in (t.contract.findings if t.contract else []) if x.code == "cash_gap"), None)
+    if gap:
+        # Кассовый разрыв из проекта контракта: приёмка + оплата.
+        parts.append(0.6 if gap.severity == "warn" else 1.0)
+        reasons.append(gap.title)
     r.value = ", ".join(values)
     if not parts:
         r.reasons = ["Нет данных об обеспечениях и авансе"]
@@ -328,7 +352,20 @@ def conditions_factor(ctx: Context) -> FactorResult:
             return r
         reasons.append("Действует национальный режим (ПП № 1875) — нужны документы о происхождении товара")
         parts.append(0.8)
-    r.score = round(sum(parts) / len(parts), 3)
+    score = sum(parts) / len(parts)
+    # Риски проекта контракта и ТЗ (если документы загружены): жёсткие санкции, долгая оплата, марка без аналога.
+    risks = [x for x in supplier_findings(t) if x.severity in ("high", "warn")]
+    if risks:
+        penalty = sum(0.3 if x.severity == "high" else 0.15 for x in risks)
+        score = max(0.0, score - penalty)
+        reasons += ["Контракт: " + x.title for x in risks[:4]]
+        high = next((x for x in risks if x.severity == "high"), None)
+        if high:
+            r.flag = "Контракт: " + high.title
+        r.sources.append(Source("contract", "проект контракта", high.quote if high and high.quote else risks[0].title))
+    elif t.contract:
+        reasons.append("Проект контракта проверен — жёстких условий не найдено")
+    r.score = round(score, 3)
     r.reasons = reasons
     return r
 
@@ -391,6 +428,7 @@ FACTORS: list[FactorDef] = [
                {"param": "max_rub", "type": "money", "label": "НМЦК до", "max": 1_000_000_000}]),
     FactorDef("geo", "География", 15, geo_factor, "Регион поставки: ваши регионы, соседние и исключённые",
               [{"param": "regions", "type": "regions", "label": "Ваши регионы"},
+               {"param": "warehouses", "type": "region_list", "label": "Склады и филиалы"},
                {"param": "excluded", "type": "region_list", "label": "Исключённые регионы"},
                {"param": "same_district_score", "type": "ratio", "label": "Балл соседнего региона того же округа"}]),
     FactorDef("timing", "Сроки", 15, timing_factor, "Время на подготовку заявки и срок исполнения контракта",

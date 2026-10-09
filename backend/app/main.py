@@ -20,7 +20,19 @@ async def lifespan(_: FastAPI):
 
         with SessionLocal() as db:
             seed(db)
+    _warm_up()
     yield
+
+
+def _warm_up() -> None:
+    """Загружаем словари pymorphy3 и компилируем грамматики yargy при старте, а не на первом запросе."""
+    from app.domain import Preferences
+    from app.nlp.criteria import parse_criteria
+    from app.reference.textvec import embed
+
+    parse_criteria("Поставляем ноутбуки в Новосибирской области до 5 млн руб., подача не менее 3 дней",
+                   Preferences(), use_llm=False)
+    embed("поставка ноутбуков")
 
 
 app = FastAPI(

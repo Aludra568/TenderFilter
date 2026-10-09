@@ -33,6 +33,8 @@ def ingest(db: Session, filename: str, content: bytes) -> Tender:
     row.nmck = canonical.nmck
     row.region_code = canonical.delivery_region_code
     row.submission_deadline = canonical.submission_deadline
+    if row.data and row.data.get("contract") and not payload.get("contract"):
+        payload["contract"] = row.data["contract"]  # повторная загрузка извещения не теряет разобранный контракт
     row.data = payload
     row.raw_filename = filename[:255]
     row.raw_content = content.decode("utf-8", errors="replace")[:2_000_000]
@@ -40,6 +42,36 @@ def ingest(db: Session, filename: str, content: bytes) -> Tender:
     db.commit()
     db.refresh(row)
     return row
+
+
+def read_documents(files: list[tuple[str, bytes]], law: str):
+    """Тексты вложений → условия контракта. Нечитаемые файлы не роняют разбор, а попадают в находки."""
+    from app.docs.contract import analyze
+    from app.docs.extract import DocumentError, extract_text
+    from app.domain import Finding
+
+    texts, names, errors = [], [], []
+    for name, content in files:
+        try:
+            texts.append(extract_text(name, content))
+            names.append(name)
+        except DocumentError as exc:
+            errors.append(Finding(code="unreadable", side="both", severity="info", title=f"Не прочитан: {name}",
+                                  detail=str(exc)))
+    terms = analyze("\n".join(texts), law, names)
+    terms.findings = errors + terms.findings
+    return terms
+
+
+def attach_documents(db: Session, row: Tender, files: list[tuple[str, bytes]]):
+    from app.docs.contract import attach
+
+    terms = read_documents(files, row.law)
+    tender = attach(tender_model(row), terms)
+    row.data = json.loads(tender.model_dump_json())
+    db.query(Score).filter(Score.tender_id == row.id).delete()
+    db.commit()
+    return terms
 
 
 def tender_model(row: Tender) -> CanonicalTender:
@@ -76,9 +108,43 @@ def new_version(db: Session, profile: Profile, prefs: Preferences, criteria_text
 
 
 def compute(db: Session, tender: CanonicalTender, company: CompanyCard | None, prefs: Preferences,
-            now: datetime | None = None) -> ScoreResult:
+            now: datetime | None = None, committed: tuple[float, int] = (0.0, 0)) -> ScoreResult:
     customer = try_get_company(db, tender.customer_inn)
-    return evaluate(tender, company, customer, prefs, now=now)
+    return evaluate(tender, company, customer, prefs, now=now, committed=committed)
+
+
+BID_STATUSES = {
+    "preparing": "Готовим заявку",
+    "submitted": "Заявка подана",
+    "won": "Выиграли — исполняем",
+    "lost": "Не выиграли",
+    "declined": "Отказались",
+}
+
+
+def bid_hold(tender: CanonicalTender, status: str) -> float:
+    """Сколько денег заморожено: обеспечение заявки, пока идёт процедура; обеспечение контракта — при исполнении."""
+    if status in ("preparing", "submitted"):
+        return tender.app_guarantee_amount or 0.0
+    if status == "won":
+        if tender.contract_guarantee_amount is not None:
+            return tender.contract_guarantee_amount
+        return (tender.nmck or 0) * (tender.contract_guarantee_percent or 0) / 100
+    return 0.0
+
+
+def committed(db: Session, profile_id: int, exclude_tender_id: int | None = None) -> tuple[float, int]:
+    from app.models import Bid
+
+    total, count = 0.0, 0
+    for bid in db.scalars(select(Bid).where(Bid.profile_id == profile_id)):
+        if bid.tender_id == exclude_tender_id:
+            continue
+        row = db.get(Tender, bid.tender_id)
+        hold = bid_hold(tender_model(row), bid.status) if row else 0.0
+        if hold > 0:
+            total, count = total + hold, count + 1
+    return total, count
 
 
 def score_row(db: Session, row: Tender, pv: ProfileVersion, company: CompanyCard | None, force: bool = False) -> Score:
@@ -86,7 +152,8 @@ def score_row(db: Session, row: Tender, pv: ProfileVersion, company: CompanyCard
     existing = db.scalar(select(Score).where(Score.tender_id == row.id, Score.profile_version_id == pv.id))
     if existing and not force:
         return existing
-    result = compute(db, tender_model(row), company, Preferences.model_validate(pv.preferences))
+    result = compute(db, tender_model(row), company, Preferences.model_validate(pv.preferences),
+                     committed=committed(db, pv.profile_id, row.id))
     payload = json.loads(result.model_dump_json())
     if existing:
         existing.score, existing.verdict, existing.completeness = result.score, result.verdict, result.completeness
@@ -114,7 +181,7 @@ def rescore_all(db: Session, profile: Profile) -> int:
     return len(rows)
 
 
-VERDICT_ORDER = {"go": 0, "consider": 1, "manual": 2, "skip": 3}
+VERDICT_ORDER = {"go": 0, "consider": 1, "skip": 2}
 
 
 def feed(db: Session, profile: Profile, verdict: str | None = None, q: str | None = None,
@@ -123,8 +190,11 @@ def feed(db: Session, profile: Profile, verdict: str | None = None, q: str | Non
     company = profile_company(db, profile)
     rows = db.scalars(select(Tender)).all()
     items = []
-    counts = {"go": 0, "consider": 0, "skip": 0, "manual": 0}
+    counts = {"go": 0, "consider": 0, "skip": 0}
     stop_count = 0
+    from app.models import Bid
+
+    bids = {b.tender_id: b.status for b in db.scalars(select(Bid).where(Bid.profile_id == profile.id))}
     query_vec = textvec.embed(q) if q else None
     for row in rows:
         s = score_row(db, row, pv, company)
@@ -140,7 +210,9 @@ def feed(db: Session, profile: Profile, verdict: str | None = None, q: str | Non
             relevance = 1.0 if text_hit else textvec.cosine(query_vec, row.embedding or [])
             if not text_hit and relevance < 0.12:
                 continue
-        items.append(_feed_item(row, s, relevance))
+        item = _feed_item(row, s, relevance)
+        item["bid_status"] = bids.get(row.id)
+        items.append(item)
     if q:
         items.sort(key=lambda x: (-(x["relevance"] or 0), -x["score"]))
     elif sort == "deadline":
@@ -187,10 +259,10 @@ def preview(db: Session, profile: Profile, prefs: Preferences, tender_id: int | 
     """Пересчёт ленты с черновыми настройками без сохранения — для «живых» ползунков."""
     company = profile_company(db, profile)
     rows = db.scalars(select(Tender)).all()
-    counts = {"go": 0, "consider": 0, "skip": 0, "manual": 0}
+    counts = {"go": 0, "consider": 0, "skip": 0}
     example = None
     for row in rows:
-        result = compute(db, tender_model(row), company, prefs)
+        result = compute(db, tender_model(row), company, prefs, committed=committed(db, profile.id, row.id))
         counts[result.verdict] += 1
         if row.id == tender_id:
             example = json.loads(result.model_dump_json())

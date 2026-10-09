@@ -1,8 +1,8 @@
 """Тонкий клиент LLM: Ollama (локально, по умолчанию в docker-compose) или OpenAI-совместимый API.
 
-LLM используется только для разбора текстовых критериев в правила — не в расчёте оценки.
-Любая ошибка (нет модели, таймаут, невалидный JSON) возвращает None, и система
-переходит на разбор правилами.
+LLM дополняет алгоритм в двух местах: доразбирает фразы критериев, которые не поняли правила,
+и перепроверяет готовую оценку (app.scoring.review). Процент оценки всегда считает алгоритм.
+Любая ошибка (нет модели, таймаут, невалидный JSON) возвращает None, и система работает без LLM.
 """
 
 import json
@@ -15,11 +15,11 @@ from app.config import get_settings
 log = logging.getLogger(__name__)
 
 
-def provider_status() -> dict:
+def provider_status(timeout: float = 1.5) -> dict:
     s = get_settings()
     if s.llm_provider == "ollama":
         try:
-            resp = httpx.get(f"{s.ollama_url}/api/tags", timeout=2.0)
+            resp = httpx.get(f"{s.ollama_url}/api/tags", timeout=timeout)
             names = [m.get("name", "") for m in resp.json().get("models", [])]
             ready = any(n == s.llm_model or n.startswith(s.llm_model + ":") or n.split(":")[0] == s.llm_model for n in names)
             return {"provider": "ollama", "model": s.llm_model, "ready": ready,
@@ -31,8 +31,9 @@ def provider_status() -> dict:
     return {"provider": "none", "model": None, "ready": False, "detail": "LLM отключена — работает разбор правилами"}
 
 
-def complete_json(system: str, user: str, schema: dict | None = None) -> dict | None:
+def complete_json(system: str, user: str, schema: dict | None = None, timeout: float | None = None) -> dict | None:
     s = get_settings()
+    timeout = timeout or s.llm_timeout_seconds
     try:
         if s.llm_provider == "ollama":
             body = {
@@ -42,7 +43,7 @@ def complete_json(system: str, user: str, schema: dict | None = None) -> dict | 
                 "format": schema or "json",
                 "options": {"temperature": 0, "num_ctx": 4096},
             }
-            resp = httpx.post(f"{s.ollama_url}/api/chat", json=body, timeout=s.llm_timeout_seconds)
+            resp = httpx.post(f"{s.ollama_url}/api/chat", json=body, timeout=timeout)
             resp.raise_for_status()
             return json.loads(resp.json()["message"]["content"])
         if s.llm_provider == "openai" and s.openai_api_key:
@@ -56,7 +57,7 @@ def complete_json(system: str, user: str, schema: dict | None = None) -> dict | 
                 f"{s.openai_base_url.rstrip('/')}/chat/completions",
                 json=body,
                 headers={"Authorization": f"Bearer {s.openai_api_key}"},
-                timeout=s.llm_timeout_seconds,
+                timeout=timeout,
             )
             resp.raise_for_status()
             return json.loads(resp.json()["choices"][0]["message"]["content"])

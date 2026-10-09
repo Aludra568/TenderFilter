@@ -17,7 +17,7 @@ from app.scoring.engine import evaluate
 ROOT = Path(__file__).resolve().parents[1]
 GOLDEN = ROOT / "eval" / "golden.yaml"
 REPORT = ROOT / "eval" / "report.json"
-VERDICTS = ["go", "consider", "skip", "manual"]
+VERDICTS = ["go", "consider", "skip"]
 
 
 def build_tender(spec: dict, now: datetime, idx: int) -> CanonicalTender:

@@ -110,6 +110,33 @@ class BatchFile(Base):
     done: Mapped[bool] = mapped_column(Boolean, default=False)
 
 
+class AuditLog(Base):
+    """Журнал событий: загрузки, оценки, запросы ЕГРЮЛ, разбор критериев, ошибки."""
+
+    __tablename__ = "audit_log"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, index=True)
+    event: Mapped[str] = mapped_column(String(64), index=True)
+    level: Mapped[str] = mapped_column(String(16), default="info")
+    message: Mapped[str] = mapped_column(Text)
+    duration_ms: Mapped[float | None] = mapped_column(Float, nullable=True)
+    detail: Mapped[dict] = mapped_column(JSON, default=dict)
+
+
+class Bid(Base):
+    """Участие компании в закупке: из этого считается, сколько денег уже занято в обеспечениях."""
+
+    __tablename__ = "bids"
+    __table_args__ = (UniqueConstraint("profile_id", "tender_id"),)
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    profile_id: Mapped[int] = mapped_column(ForeignKey("profiles.id", ondelete="CASCADE"), index=True)
+    tender_id: Mapped[int] = mapped_column(ForeignKey("tenders.id", ondelete="CASCADE"), index=True)
+    status: Mapped[str] = mapped_column(String(16))
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
 class Feedback(Base):
     __tablename__ = "feedback"
 

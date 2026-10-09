@@ -7,12 +7,16 @@ sys.path.insert(0, str(ROOT))
 
 # Тесты работают на отдельной SQLite-базе, без Redis, LLM и внешних API.
 TEST_DB = ROOT / "test.db"
-if TEST_DB.exists():
+if TEST_DB.exists() and not os.environ.get("_TF_TEST_DB_READY"):
+    # модуль может импортироваться повторно как tests.conftest — базу удаляем только один раз
     TEST_DB.unlink()
+os.environ["_TF_TEST_DB_READY"] = "1"
 os.environ["DATABASE_URL"] = f"sqlite:///{TEST_DB.as_posix()}"
 os.environ["REDIS_URL"] = ""
 os.environ["LLM_PROVIDER"] = "none"
 os.environ["EGRUL_PROVIDER"] = "mock"
+os.environ["EGRUL_PUBLIC_FNS"] = "false"  # тесты не ходят в сеть
+os.environ["EIS_TOKEN"] = ""
 
 import pytest  # noqa: E402
 

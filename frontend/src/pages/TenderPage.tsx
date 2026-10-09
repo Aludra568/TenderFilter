@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { api, type TenderCard } from "../api";
+import { api, BID_STATUSES, type BidStatus, type TenderCard } from "../api";
 import { useApp } from "../App";
 import { Bar, CountUp, ErrorBox, Skeleton, VerdictChip } from "../components/common";
 import { Radar, type RadarSeries } from "../components/Radar";
+import { CompanyBlock, DocsPicker, FactorList, FindingList, KeyParams, ReviewBlock } from "../components/ResultParts";
 import { LAW, deadlineInfo, rub } from "../format";
 
 const COMPARE_STYLE = [
@@ -16,17 +17,20 @@ export function TenderPage() {
   const { profile } = useApp();
   const [card, setCard] = useState<TenderCard | null>(null);
   const [error, setError] = useState<unknown>(null);
-  const [open, setOpen] = useState<string | null>(null);
   const [compare, setCompare] = useState<Record<number, boolean>>({});
   const [replay, setReplay] = useState(0);
   const [vote, setVote] = useState<boolean | null>(null);
   const [raw, setRaw] = useState<string | null>(null);
+  const [reviewing, setReviewing] = useState(false);
+  const [docs, setDocs] = useState<File[]>([]);
+  const [docsBusy, setDocsBusy] = useState(false);
+  const [bidNote, setBidNote] = useState<string | null>(null);
 
   useEffect(() => {
     setCard(null);
     setVote(null);
     setCompare({});
-    api.tender(Number(id)).then((c) => { setCard(c); setOpen(c.result.factors.find((f) => f.sources.length)?.key ?? null); }).catch(setError);
+    api.tender(Number(id)).then(setCard).catch(setError);
   }, [id, profile?.version]);
 
   if (error) return <ErrorBox error={error} />;
@@ -41,6 +45,32 @@ export function TenderPage() {
     const idx = card.similar.indexOf(s);
     return { key: String(s.tender_id), values: r.factors.map((f) => s.factors.find((x) => x.key === f.key)?.score ?? 0), ...COMPARE_STYLE[idx] };
   });
+
+  const reload = () => api.tender(Number(id)).then(setCard).catch(setError);
+
+  const uploadDocs = async () => {
+    setDocsBusy(true);
+    setError(null);
+    try {
+      await api.attachDocs(card.tender_id, docs);
+      setDocs([]);
+      await reload();
+    } catch (e) {
+      setError(e);
+    } finally {
+      setDocsBusy(false);
+    }
+  };
+
+  const changeBid = async (status: BidStatus | null) => {
+    try {
+      const res = await api.setBid(card.tender_id, status);
+      setBidNote(res.committed ? `В обеспечениях сейчас занято ${Math.round(res.committed).toLocaleString("ru-RU")} ₽ по ${res.committed_count} заявк${res.committed_count === 1 ? "е" : "ам"}` : null);
+      await reload();
+    } catch (e) {
+      setError(e);
+    }
+  };
 
   const sendVote = async (correct: boolean) => {
     setVote(correct);
@@ -86,7 +116,7 @@ export function TenderPage() {
           <div aria-hidden="true" style={{ position: "absolute", width: 220, height: 220, borderRadius: "50%", left: -70, bottom: -100, background: "radial-gradient(circle, rgba(232,0,61,.55), rgba(232,0,61,0) 70%)" }} />
           <div className="muted" style={{ position: "relative", fontWeight: 600 }}>Итоговая оценка</div>
           <span className="digits" style={{ position: "relative", fontSize: 88, lineHeight: 1, fontWeight: 800 }}>
-            {r.verdict === "manual" ? "—" : <CountUp value={r.score} suffix="%" />}
+            <CountUp value={r.score} suffix="%" />
           </span>
           <span className="pop" style={{ position: "relative", alignSelf: "flex-start", animationDelay: "0.9s" }}><VerdictChip verdict={r.verdict} big /></span>
           <div style={{ position: "relative", display: "flex", flexDirection: "column", gap: 8, fontSize: 14 }} className="muted">
@@ -141,72 +171,66 @@ export function TenderPage() {
             <h2 id="why">Почему такая оценка</h2>
             <span className="muted" style={{ fontSize: 14 }}>баллы из веса фактора</span>
           </div>
-          {r.factors.map((f, i) => (
-            <div className="factor" key={f.key} style={{ opacity: f.active ? 1 : 0.55 }}>
-              <div style={{ display: "flex", flexDirection: "column", gap: 4, minWidth: 0 }}>
-                <span className="name">{f.label}{f.stop && <span className="chip skip" style={{ marginLeft: 8, fontSize: 12 }}>стоп</span>}</span>
-                {f.value && <span className="muted" style={{ fontSize: 14 }}>{f.value}</span>}
-                {f.reasons.map((reason) => <span key={reason} className="why">{reason}</span>)}
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
-                <span className="num" style={{ fontSize: 17, fontWeight: 800 }}>
-                  {f.score == null ? "нет данных" : f.active ? `+${f.points.toString().replace(".", ",")} из ${f.max_points.toString().replace(".", ",")}` : "не учитывается"}
-                </span>
-                <span style={{ width: 140 }}><Bar value={f.score ?? 0} delay={400 + i * 70} /></span>
-              </div>
-              {f.sources.length > 0 && (
-                <button type="button" className="btn3" style={{ gridColumn: "1 / -1", justifySelf: "start" }} aria-expanded={open === f.key}
-                        onClick={() => setOpen(open === f.key ? null : f.key)}>
-                  Источник в извещении: {f.sources.map((s) => s.path.split("/").slice(-2).join("/")).join(", ")}
-                </button>
-              )}
-              {open === f.key && (
-                <div className="quote">
-                  {f.sources.map((s) => (
-                    <div key={s.field + s.path} style={{ marginBottom: 6 }}>
-                      <code>{s.path}</code>
-                      <div>{s.raw}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-          {r.rules.map((rule) => (
-            <div key={rule.id} className="kv"><span>Правило: {rule.label}</span><span>{rule.effect === "stop" ? "стоп" : `${rule.points > 0 ? "+" : ""}${rule.points}`}</span></div>
-          ))}
-          <div style={{ display: "flex", justifyContent: "space-between", paddingTop: 14 }}>
-            <span style={{ fontSize: 18, fontWeight: 800 }}>Итого</span>
-            <span className="digits" style={{ fontSize: 18, fontWeight: 800 }}>{r.verdict === "manual" ? "—" : `${Math.round(r.score)} из 100`}</span>
-          </div>
+          <FactorList result={r} />
         </section>
 
         <div className="side">
+          <section className="card fu" aria-labelledby="bid" style={{ display: "flex", flexDirection: "column", gap: 10, animationDelay: "310ms" }}>
+            <h3 id="bid">Ваше участие</h3>
+            <div className="seg" role="group" aria-label="Статус участия" style={{ borderRadius: 20 }}>
+              {(Object.keys(BID_STATUSES) as BidStatus[]).map((s) => (
+                <button key={s} type="button" className={card.bid_status === s ? "on" : ""} onClick={() => changeBid(card.bid_status === s ? null : s)}>
+                  {BID_STATUSES[s]}
+                </button>
+              ))}
+            </div>
+            <span className="muted" style={{ fontSize: 13 }}>
+              {bidNote ?? "Отметки учитываются в лимите обеспечений: деньги, замороженные в других заявках, уменьшают свободный лимит."}
+            </span>
+          </section>
+
+          <section className="card fu" aria-labelledby="docs" style={{ display: "flex", flexDirection: "column", gap: 12, animationDelay: "320ms" }}>
+            <h3 id="docs">Документы закупки</h3>
+            {t.contract ? (
+              <>
+                <span className="muted" style={{ fontSize: 13 }}>Разобрано: {t.contract.files.join(", ") || "—"}</span>
+                <FindingList findings={t.contract.findings.filter((f) => f.side !== "customer")} empty="Жёстких условий не найдено" />
+              </>
+            ) : (
+              <p className="muted" style={{ margin: 0, fontSize: 14 }}>Приложите проект контракта и ТЗ — найдём сроки оплаты и приёмки, санкции, аванс и требования к конкретной марке.</p>
+            )}
+            <DocsPicker files={docs} onChange={setDocs} label={t.contract ? "Добавить документы" : "Выбрать документы"} />
+            {docs.length > 0 && (
+              <button type="button" className="btn" style={{ alignSelf: "flex-start" }} onClick={uploadDocs} disabled={docsBusy}>
+                {docsBusy ? "Разбираю…" : "Разобрать и пересчитать"}
+              </button>
+            )}
+          </section>
+
+          <section className="card fu" aria-labelledby="ai" style={{ animationDelay: "330ms" }}>
+            <h3 id="ai" style={{ marginBottom: 8 }}>Проверка ИИ</h3>
+            <ReviewBlock review={r.review} running={reviewing} onRun={async () => {
+              setReviewing(true);
+              setError(null);
+              try {
+                const res = await api.review(card.score_id);
+                setCard((c) => (c ? { ...c, result: res.result } : c));
+              } catch (e) {
+                setError(e);
+              } finally {
+                setReviewing(false);
+              }
+            }} />
+          </section>
+
           <section className="card lift fu" aria-labelledby="params" style={{ animationDelay: "360ms" }}>
             <h3 id="params" style={{ marginBottom: 8 }}>Ключевые параметры</h3>
-            <div className="kv"><span>НМЦК</span><span className="num">{rub(t.nmck)}</span></div>
-            <div className="kv"><span>Обеспечение заявки</span><span className="num">{rub(t.app_guarantee_amount)}</span></div>
-            <div className="kv"><span>Обеспечение контракта</span><span className="num">{t.contract_guarantee_percent != null ? `${t.contract_guarantee_percent}% · ${rub(t.contract_guarantee_amount)}` : "—"}</span></div>
-            <div className="kv"><span>Аванс</span><span>{t.advance_percent != null ? `${t.advance_percent}%` : "в проекте контракта"}</span></div>
-            <div className="kv"><span>Место поставки</span><span>{t.delivery_place || "—"}</span></div>
-            <div className="kv"><span>Позиций</span><span className="num">{t.items.length}</span></div>
+            <KeyParams t={t} />
           </section>
 
           <section className="card lift fu" aria-labelledby="cust" style={{ animationDelay: "420ms" }}>
             <h3 id="cust" style={{ marginBottom: 8 }}>Заказчик по ЕГРЮЛ</h3>
-            {card.customer ? (
-              <>
-                <div className="kv"><span>Организация</span><span>{card.customer.name}</span></div>
-                <div className="kv"><span>Статус</span>
-                  <span style={{ color: card.customer.status === "ACTIVE" ? "var(--go-fg)" : "var(--skip-fg)" }}>
-                    {card.customer.status === "ACTIVE" ? "Действующая" : card.customer.status === "LIQUIDATING" ? "Ликвидируется" : card.customer.status === "BANKRUPT" ? "Банкротство" : card.customer.status}
-                  </span>
-                </div>
-                <div className="kv"><span>ИНН</span><span className="num">{card.customer.inn}</span></div>
-                {card.customer.registration_date && <div className="kv"><span>Зарегистрирована</span><span className="num">{new Date(card.customer.registration_date).getFullYear()} г.</span></div>}
-                <p className="muted" style={{ margin: "8px 0 0", fontSize: 13 }}>Источник: {card.customer.source === "dadata" ? "DaData" : "демо-данные"}</p>
-              </>
-            ) : <p className="muted" style={{ margin: 0 }}>Нет данных ЕГРЮЛ по ИНН заказчика{t.customer_inn ? ` ${t.customer_inn}` : ""}</p>}
+            <CompanyBlock company={card.customer} empty={`Нет данных ЕГРЮЛ по ИНН заказчика${t.customer_inn ? ` ${t.customer_inn}` : ""}`} />
           </section>
 
           <section className="card fu" aria-labelledby="fb" style={{ display: "flex", flexDirection: "column", gap: 12, animationDelay: "480ms" }}>

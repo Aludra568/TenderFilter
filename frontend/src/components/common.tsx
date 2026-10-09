@@ -47,15 +47,15 @@ export function VerdictChip({ verdict, big = false }: { verdict: Verdict; big?: 
   );
 }
 
-export function ScoreRing({ score, verdict, manual = false }: { score: number; verdict: Verdict; manual?: boolean }) {
-  const shown = useCountUp(manual ? 0 : score, 1200);
+export function ScoreRing({ score, verdict }: { score: number; verdict: Verdict }) {
+  const shown = useCountUp(score, 1200);
   return (
     <span
       className="ring"
       style={{ background: `conic-gradient(${VERDICT[verdict].color} ${shown}%, #eceaf5 0)` }}
-      aria-label={manual ? "Оценка не рассчитана" : `Оценка ${Math.round(score)} из 100`}
+      aria-label={`Оценка ${Math.round(score)} из 100`}
     >
-      <span className="num">{manual ? "—" : Math.round(shown)}</span>
+      <span className="num">{Math.round(shown)}</span>
     </span>
   );
 }
@@ -94,8 +94,10 @@ export function Layout({ children, company }: { children: React.ReactNode; compa
           </NavLink>
           <nav className="nav" aria-label="Основное меню">
             <NavLink to="/" end>Лента</NavLink>
+            <NavLink to="/quick">Оценить</NavLink>
             <NavLink to="/profile">Профиль</NavLink>
             <NavLink to="/upload">Загрузка</NavLink>
+            <NavLink to="/customer">Заказчику</NavLink>
             <NavLink to="/accuracy">Точность</NavLink>
           </nav>
           {company && (

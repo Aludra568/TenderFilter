@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
-import { api, type Accuracy, type Health, type Verdict } from "../api";
+import { api, type Accuracy, type Health, type LogEntry, type Verdict } from "../api";
 import { CountUp, ErrorBox, Skeleton, VerdictChip } from "../components/common";
 
-const ORDER: Verdict[] = ["go", "consider", "skip", "manual"];
+const ORDER: Verdict[] = ["go", "consider", "skip"];
 
 export function AccuracyPage() {
   const [acc, setAcc] = useState<Accuracy | null>(null);
   const [health, setHealth] = useState<Health | null>(null);
+  const [logs, setLogs] = useState<LogEntry[]>([]);
   const [error, setError] = useState<unknown>(null);
 
   useEffect(() => {
     api.accuracy().then(setAcc).catch(setError);
     api.health().then(setHealth).catch(() => {});
+    api.logs(40).then(setLogs).catch(() => {});
   }, []);
 
   if (error) return <ErrorBox error={error} />;
@@ -75,7 +77,7 @@ export function AccuracyPage() {
               <h3 style={{ marginBottom: 12 }}>Матрица ошибок</h3>
               <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}>
                 <thead>
-                  <tr><th style={{ textAlign: "left" }} className="muted">ожид. \ получ.</th>{ORDER.map((v) => <th key={v} style={{ fontSize: 18 }} title={v}>{({ go: "✓", consider: "!", skip: "✕", manual: "?" })[v]}</th>)}</tr>
+                  <tr><th style={{ textAlign: "left" }} className="muted">ожид. \ получ.</th>{ORDER.map((v) => <th key={v} style={{ fontSize: 18 }} title={v}>{({ go: "✓", consider: "!", skip: "✕" })[v]}</th>)}</tr>
                 </thead>
                 <tbody>
                   {ORDER.map((e) => (
@@ -94,13 +96,37 @@ export function AccuracyPage() {
               <section className="card fu" style={{ animationDelay: "420ms" }}>
                 <h3 style={{ marginBottom: 8 }}>Компоненты</h3>
                 <div className="kv"><span>LLM для разбора критериев</span><span>{health.llm.ready ? `${health.llm.provider} · ${health.llm.model}` : "правила (LLM не подключена)"}</span></div>
-                <div className="kv"><span>Источник ЕГРЮЛ</span><span>{health.egrul_provider === "dadata" ? "DaData" : "демо-данные"}</span></div>
+                <div className="kv"><span>Источник ЕГРЮЛ</span><span>{(health.egrul_chain ?? [health.egrul_provider]).map((x) => ({ dadata: "DaData", mock: "демо-данные", fns: "ФНС без ключа" } as Record<string, string>)[x] ?? x).join(" → ")}</span></div>
                 <div className="kv"><span>Очередь задач</span><span>{health.queue === "celery" ? "Celery + Redis" : "в процессе API"}</span></div>
               </section>
             )}
           </div>
         </div>
       )}
+
+      <section className="card fu" style={{ animationDelay: "480ms" }}>
+        <div className="field-head" style={{ marginBottom: 8 }}>
+          <h2>Журнал событий</h2>
+          <span className="muted" style={{ fontSize: 14 }}>хранится в PostgreSQL · GET /api/logs</span>
+        </div>
+        {logs.length === 0 ? <p className="muted" style={{ margin: 0 }}>Событий пока нет</p> : (
+          <div className="table-wrap">
+            <table className="feed" style={{ minWidth: 720 }}>
+              <thead><tr><th>Время</th><th>Событие</th><th>Что произошло</th><th style={{ textAlign: "right" }}>Длительность</th></tr></thead>
+              <tbody>
+                {logs.map((l) => (
+                  <tr key={l.id}>
+                    <td className="num muted" style={{ whiteSpace: "nowrap", fontSize: 13 }}>{new Date(l.created_at).toLocaleString("ru-RU", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit" })}</td>
+                    <td><span className={`chip ${l.level === "info" ? "manual" : "consider"}`} style={{ fontSize: 12 }}>{l.event_name}</span></td>
+                    <td style={{ fontSize: 14 }}>{l.message}</td>
+                    <td className="num" style={{ textAlign: "right", whiteSpace: "nowrap", fontSize: 14 }}>{l.duration_ms != null ? `${l.duration_ms.toString().replace(".", ",")} мс` : "—"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
     </>
   );
 }

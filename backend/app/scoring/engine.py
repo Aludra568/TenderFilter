@@ -85,15 +85,22 @@ def evaluate(
     customer: CompanyCard | None,
     prefs: Preferences,
     now: datetime | None = None,
+    committed: tuple[float, int] = (0.0, 0),
 ) -> ScoreResult:
     started = time.perf_counter()
-    ctx = Context(tender=tender, company=company, customer=customer, prefs=prefs, now=now or datetime.now(timezone.utc))
+    ctx = Context(tender=tender, company=company, customer=customer, prefs=prefs, now=now or datetime.now(timezone.utc),
+                  committed=committed[0], committed_count=committed[1])
 
     results: list[FactorResult] = []
     for f in FACTORS:
         settings = getattr(prefs, f.key)
         res = f.fn(ctx)
-        res.weight = 0.0 if settings.importance == 0 or not res.active else f.base_weight * settings.importance / 3
+        if settings.importance == 0 or not res.active:
+            res.weight = 0.0
+        elif prefs.weights:
+            res.weight = 100 * prefs.weights.get(f.key, 0.0)
+        else:
+            res.weight = f.base_weight * settings.importance / 3
         results.append(res)
 
     total_w = sum(r.weight for r in results)
@@ -126,8 +133,6 @@ def evaluate(
     th = prefs.thresholds
     if stops:
         verdict, score = "skip", 0.0
-    elif completeness < th.min_completeness:
-        verdict = "manual"
     elif len(zero_keys) >= 2:
         verdict = "skip"
     elif score >= th.go:
@@ -136,6 +141,11 @@ def evaluate(
         verdict = "consider"
     else:
         verdict = "skip"
+    # Мало данных в извещении: оцениваем по тому, что есть, но «Участвовать» не ставим —
+    # решение принимается автоматически, без отправки человеку на ручную проверку.
+    if completeness < th.min_completeness and not stops:
+        missing = [r.label.lower() for r in results if r.weight > 0 and r.score is None]
+        flags.append(f"Мало данных в извещении: нет — {', '.join(missing)}; оценка по {round(completeness * 100)}% данных")
     if verdict == "go" and flags:
         verdict = "consider"
 
@@ -144,9 +154,6 @@ def evaluate(
         main = stops[0]
     elif flags and verdict != "go":
         main = "; ".join(flags[:2])
-    elif verdict == "manual":
-        missing = [r.label.lower() for r in results if r.weight > 0 and r.score is None]
-        main = "Не хватает данных: " + ", ".join(missing)
     else:
         best = max(active, key=lambda r: r.weight * r.score, default=None)
         worst = min(active, key=lambda r: r.score, default=None)

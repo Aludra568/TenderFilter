@@ -18,13 +18,12 @@ PROCEDURE_NAMES: dict[str, str] = {
     "other": "Иной способ",
 }
 
-Verdict = Literal["go", "consider", "skip", "manual"]
+Verdict = Literal["go", "consider", "skip"]
 
 VERDICT_NAMES: dict[str, str] = {
     "go": "Участвовать",
     "consider": "Рассмотреть",
     "skip": "Не участвовать",
-    "manual": "Проверить вручную",
 }
 
 
@@ -43,6 +42,35 @@ class TenderItem(BaseModel):
     quantity: float | None = None
     unit: str | None = None
     price: float | None = None
+
+
+class Finding(BaseModel):
+    """Риск или нарушение, найденное в документах закупки. side — кого касается."""
+
+    code: str
+    side: Literal["supplier", "customer", "both"]
+    severity: Literal["info", "warn", "high"]
+    title: str
+    detail: str
+    quote: str | None = None
+    law: str | None = None  # ссылка на норму
+
+
+class ContractTerms(BaseModel):
+    """Условия из проекта контракта и ТЗ (вложения извещения), разобранные правилами."""
+
+    files: list[str] = Field(default_factory=list)
+    chars: int = 0
+    payment_days: int | None = None
+    payment_working: bool | None = None
+    acceptance_days: int | None = None
+    acceptance_working: bool | None = None
+    advance_percent: float | None = None
+    supplier_penalty: Literal["standard", "elevated"] | None = None
+    max_fine_percent: float | None = None
+    warranty_months: int | None = None
+    brands_without_equivalent: list[str] = Field(default_factory=list)
+    findings: list[Finding] = Field(default_factory=list)
 
 
 class CanonicalTender(BaseModel):
@@ -76,6 +104,7 @@ class CanonicalTender(BaseModel):
     url: str | None = None
     sources: dict[str, FieldSource] = Field(default_factory=dict)
     parse_warnings: list[str] = Field(default_factory=list)
+    contract: ContractTerms | None = None
 
     def text_for_matching(self) -> str:
         names = " ".join(i.name for i in self.items[:30])
@@ -136,6 +165,7 @@ class GeoPrefs(FactorSettings):
     regions: dict[str, float] = Field(default_factory=dict, description="код региона → балл 0–1")
     same_district_score: float = 0.5
     excluded: list[str] = Field(default_factory=list)
+    warehouses: list[str] = Field(default_factory=list, description="регионы складов и филиалов")
 
 
 class TimingPrefs(FactorSettings):
@@ -189,3 +219,6 @@ class Preferences(BaseModel):
     customer: CustomerPrefs = Field(default_factory=CustomerPrefs)
     custom_rules: list[CustomRule] = Field(default_factory=list)
     thresholds: Thresholds = Field(default_factory=Thresholds)
+    # Доли весов из мастера (МАИ или ранжирование); если заданы — заменяют «базовый вес × важность»
+    weights: dict[str, float] = Field(default_factory=dict)
+    weights_method: str | None = None

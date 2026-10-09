@@ -3,11 +3,13 @@
 import io
 import logging
 import threading
+import time
 import zipfile
 from datetime import datetime, timezone
 
 from celery import Celery
 
+from app.audit import audit
 from app.config import get_settings
 from app.db import SessionLocal
 from app.eis.parser import ParseError
@@ -39,6 +41,7 @@ def unpack(filename: str, content: bytes) -> list[tuple[str, bytes]]:
 
 
 def process_batch(batch_id: int) -> None:
+    started = time.perf_counter()
     db = SessionLocal()
     try:
         batch = db.get(Batch, batch_id)
@@ -73,6 +76,9 @@ def process_batch(batch_id: int) -> None:
         batch.status = "done"
         batch.finished_at = datetime.now(timezone.utc)
         db.commit()
+        audit("batch_done", f"Пакет № {batch_id}: обработано {batch.processed}, ошибок {batch.failed}",
+              duration_ms=(time.perf_counter() - started) * 1000,
+              batch_id=batch_id, processed=batch.processed, failed=batch.failed)
     except Exception:
         log.exception("Пакет %s упал", batch_id)
         db.rollback()

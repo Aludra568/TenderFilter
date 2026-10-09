@@ -13,3 +13,6 @@ celery[redis]==5.4.0
 redis==5.2.1
 openpyxl==3.1.5
 PyYAML==6.0.2
+pymorphy3==2.0.6
+yargy==0.16.0
+pypdf==5.1.0

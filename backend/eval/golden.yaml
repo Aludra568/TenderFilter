@@ -57,7 +57,7 @@ cases:
      tender: {subject: "Поставка ноутбуков и мониторов", okpd2: ["26.20.11.110", "26.20.17.110"], nmck: 3150000, place: "Новосибирская обл., г. Новосибирск", days: 9, method: proposal_request, smp_only: true, law: "223-FZ"}}
   - {id: it-15, profile: it_sib, expected: skip, why: "Самара вне регионов, 120 млн и обеспечение 30%",
      tender: {subject: "Поставка серверов и систем хранения данных", okpd2: ["26.20.14.000", "26.20.40.120"], nmck: 120000000, place: "Самарская обл., г. Самара", days: 18, method: open_contest, contract_guarantee_percent: 30, national_regime: true}}
-  - {id: it-16, profile: it_sib, expected: manual, why: "В извещении нет НМЦК, срока подачи и региона — решать по документации",
+  - {id: it-16, profile: it_sib, expected: consider, why: "Профильный товар, но нет НМЦК, срока подачи и региона — «Участвовать» при неполных данных не ставим",
      tender: {subject: "Поставка компьютерного оборудования", okpd2: ["26.20.15.000"], method: e_auction}}
   - {id: it-17, profile: it_sib, expected: skip, why: "Картриджи на 610 тыс. в Магадан — логистика съест маржу",
      tender: {subject: "Поставка расходных материалов для оргтехники", okpd2: ["20.59.12.120"], nmck: 610000, place: "Магаданская обл., г. Магадан", days: 6, method: quotation_request, smp_only: true}}

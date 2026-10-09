@@ -1,40 +1,58 @@
-"""Текст критериев → предпочтения профиля.
+"""Текст критериев → предпочтения профиля. Гибридная экспертная система без нейросетей в основе.
 
-Два движка с одним результатом:
-• правила (регулярные выражения + справочники) — работают всегда, мгновенно и предсказуемо;
-• LLM — разбирает свободные формулировки, которые правила не поняли.
+Конвейер разбора:
+1. Морфология (pymorphy3, словарь OpenCorpora): каждое слово приводится к начальной форме,
+   поэтому «аукционах», «аукционы», «аукциона» — одно и то же.
+2. Формальные грамматики (yargy) для сумм и сроков: «от 1 до 30 млн», «около 10 лямов»,
+   «не больше 2 млн руб.», «минимум 5 рабочих дней».
+3. Правила со справочниками (89 регионов, 8 федеральных округов, способы закупки) и областью
+   действия отрицания внутри части предложения: «конкурсы не берём, аукционы — да».
+4. Лингвистические модификаторы → нечёткая логика: «около» → нечёткий диапазон,
+   «если выгодно / желательно» → пониженная степень принадлежности, «только / строго» → жёсткое условие.
+5. LLM — необязательный модуль только для фраз, которые не поняли шаги 1–4.
 Каждое распознанное правило помнит фразу-источник, нераспознанные фразы возвращаются пользователю.
 """
 
 import json
 import re
+import time
 from dataclasses import dataclass, field
 
 from app.domain import Preferences
 from app.nlp import llm
+from app.nlp.grammar import extract_amounts, extract_durations
+from app.nlp.morph import tokens as morph_tokens
 from app.reference.regions import BY_CODE, find_districts, find_regions, normalize, regions_of_district
 
-UNITS = {"тыс": 1e3, "т": 1e3, "к": 1e3, "млн": 1e6, "лям": 1e6, "кк": 1e6, "м": 1e6, "млрд": 1e9}
-_NUM = r"(\d+(?:[.,]\d+)?)\s*(тыс|млн|млрд|лям\w*|кк|к)?\.?"
-
-SOFT = re.compile(r"если выгодн|по возможност|иногда|желательн|тоже можно|можно и|рассматрива|при случае|реже")
-NEG_STRONG = re.compile(r"не участв|не бер[её]м|исключ|никогда|не работаем|не рассматрива|без\b|кроме")
-NEG_SOFT = re.compile(r"не люб|избега|не очень|неохотно|не хотим")
+# Леммы-маркеры (сравниваются с начальными формами слов).
+SOFT = {"выгодно", "выгодный", "возможность", "иногда", "желательно", "желательный", "случай", "реже", "можно", "тоже"}
+STRICT = {"только", "строго", "исключительно", "обязательно", "обязательный", "жёстко", "жестко", "нужно", "нужный",
+          "минимум", "необходимо"}
+NEG_WORDS = {"без", "кроме", "исключить", "исключая", "никогда", "запрет", "исключение"}
+NEG_VERBS_STRONG = {"брать", "участвовать", "рассматривать", "работать", "интересовать", "подходить", "заходить"}
+NEG_VERBS_SOFT = {"любить", "любим", "любимый", "хотеть", "нравиться", "жаловать"}
+SOFT_AVOID = {"избегать", "неохотно"}
+MONEY_CTX = {"нмцк", "нмц", "цена", "сумма", "контракт", "лот", "бюджет", "стоимость", "закупка", "рубль", "руб"}
+GUARANTEE_CTX = {"обеспечение", "обеспечить", "банковский", "гарантия"}
+EXEC_CTX = {"исполнение", "исполнять", "поставка", "поставить", "выполнение", "выполнить", "отгрузка"}
+BID_CTX = {"заявка", "подготовка", "подача", "подготовить", "подать"}
+SUPPLY_VERBS = {"поставлять", "продавать", "торговать", "заниматься", "специализироваться", "возить", "делать",
+                "производить", "выпускать", "реализовывать", "оказывать", "выполнять", "привозить"}
 
 METHODS = [
-    (r"аукцион", "e_auction", "аукционы"),
-    (r"конкурс", "open_contest", "конкурсы"),
-    (r"котиров", "quotation_request", "запросы котировок"),
-    (r"запрос\w* предложени", "proposal_request", "запросы предложений"),
-    (r"единствен", "single_supplier", "закупки у единственного поставщика"),
+    ({"аукцион"}, "e_auction", "аукционы"),
+    ({"конкурс"}, "open_contest", "конкурсы"),
+    ({"котировка"}, "quotation_request", "запросы котировок"),
+    ({"предложение"}, "proposal_request", "запросы предложений"),
+    ({"единственный"}, "single_supplier", "закупки у единственного поставщика"),
 ]
-FACTOR_WORDS = {
-    "geo": r"регион|географ|доставк|логист",
-    "price": r"нмц|цен|сумм|бюджет",
-    "profile": r"профил|товар|ассортимент",
-    "timing": r"срок|время на заявк|успе",
-    "finance": r"аванс|обеспечени|деньг|финанс",
-    "customer": r"заказчик",
+FACTOR_LEMMAS = {
+    "geo": {"регион", "география", "доставка", "логистика"},
+    "price": {"нмцк", "цена", "сумма", "бюджет"},
+    "profile": {"профиль", "товар", "ассортимент"},
+    "timing": {"срок", "время"},
+    "finance": {"обеспечение", "деньга", "деньги", "финансы"},
+    "customer": {"заказчик"},
 }
 
 
@@ -51,6 +69,7 @@ class ParseOutcome:
     recognized: list[Recognized] = field(default_factory=list)
     unparsed: list[str] = field(default_factory=list)
     engine: str = "rules"
+    elapsed_ms: float = 0.0
 
     def to_dict(self) -> dict:
         return {
@@ -58,33 +77,58 @@ class ParseOutcome:
             "recognized": [r.__dict__ for r in self.recognized],
             "unparsed": self.unparsed,
             "engine": self.engine,
+            "elapsed_ms": round(self.elapsed_ms, 1),
         }
 
 
-def _amount(num: str, unit: str | None, default_unit: str | None = None) -> float:
-    value = float(num.replace(",", "."))
-    u = (unit or default_unit or "").lower()
-    for key in sorted(UNITS, key=len, reverse=True):
-        if u.startswith(key):
-            return value * UNITS[key]
-    return value
+@dataclass
+class Clause:
+    text: str
+    lemmas: list[str]
+
+    @property
+    def lset(self) -> set[str]:
+        return set(self.lemmas)
+
+    def has_bigram(self, a: set[str], b: set[str]) -> bool:
+        return any(x in a and y in b for x, y in zip(self.lemmas, self.lemmas[1:]))
+
+    def polarity(self) -> str:
+        """strong — исключить, soft — без приоритета, none — утверждение."""
+        if self.lset & NEG_WORDS or self.has_bigram({"не"}, NEG_VERBS_STRONG):
+            return "strong"
+        if self.has_bigram({"не"}, NEG_VERBS_SOFT) or self.lset & SOFT_AVOID or self.has_bigram({"не"}, {"очень"}):
+            return "soft"
+        return "none"
 
 
 def _rub(v: float) -> str:
     if v >= 1e6:
-        return f"{v / 1e6:g} млн ₽".replace(".", ",")
+        return f"{v / 1e6:g}".replace(".", ",") + " млн ₽"
     if v >= 1e3:
-        return f"{v / 1e3:g} тыс. ₽".replace(".", ",")
+        return f"{v / 1e3:g}".replace(".", ",") + " тыс. ₽"
     return f"{v:g} ₽"
 
 
+_ABBR = re.compile(r"\b(?:тыс|руб|млн|млрд|обл|г|ул|д|р|см|п|ст|ч)\.$", re.I)
+
+
 def split_sentences(text: str) -> list[str]:
-    parts = re.split(r"(?<=[.!?;])\s+|\n+", text.strip())
+    """Предложения по . ! ? ; и переводу строки, но не после сокращений («тыс.», «руб.», «обл.»)."""
+    pieces = [p for p in re.split(r"(?<=[.!?;])\s+|\n+", text.strip()) if p]
+    parts: list[str] = []
+    for piece in pieces:
+        # «500 тыс. до 30 млн» — после сокращения идёт строчная буква или цифра: это то же предложение.
+        if parts and _ABBR.search(parts[-1]) and (piece[:1].islower() or piece[:1].isdigit()):
+            parts[-1] = f"{parts[-1]} {piece}"
+        else:
+            parts.append(piece)
     return [p.strip(" .;") for p in parts if p.strip(" .;")]
 
 
-def _clauses(sentence: str) -> list[str]:
-    return [c.strip() for c in re.split(r",|\s—\s|\s-\s|;|\bа также\b|\bно\b", sentence) if c.strip()]
+def _clauses(sentence: str) -> list[Clause]:
+    parts = [c.strip() for c in re.split(r",|\s—\s|\s-\s|;|\bа также\b|\bно\b", sentence) if c.strip()]
+    return [Clause(p, [t.lemma for t in morph_tokens(p) if t.lemma[:1].isalnum()]) for p in parts]
 
 
 def parse_rules(text: str, base: Preferences | None = None) -> ParseOutcome:
@@ -92,18 +136,19 @@ def parse_rules(text: str, base: Preferences | None = None) -> ParseOutcome:
     out = ParseOutcome(preferences=prefs)
     for sentence in split_sentences(text):
         s = normalize(sentence)
+        clauses = _clauses(sentence)
+        lem = {lemma for c in clauses for lemma in c.lemmas}
         before = len(out.recognized)
-        _price(s, sentence, out)
-        _guarantee(s, sentence, out)
-        _days(s, sentence, out)
-        _regions(s, sentence, out)
-        _methods(s, sentence, out)
-        _advance(s, sentence, out)
-        _laws(s, sentence, out)
-        _smp_imports(s, sentence, out)
-        _customers(s, sentence, out)
-        _keywords(s, sentence, out)
-        _importance(s, sentence, out)
+        _money(sentence, lem, clauses, out)
+        _days(sentence, lem, out)
+        _regions(s, sentence, clauses, out)
+        _methods(sentence, clauses, out)
+        _advance(sentence, lem, out)
+        _laws(s, sentence, clauses, out)
+        _smp_imports(sentence, lem, clauses, out)
+        _customers(s, sentence, clauses, out)
+        _keywords(sentence, out)
+        _importance(sentence, lem, clauses, out)
         if len(out.recognized) == before:
             out.unparsed.append(sentence)
     return out
@@ -113,70 +158,89 @@ def _add(out: ParseOutcome, factor: str, label: str, src: str) -> None:
     out.recognized.append(Recognized(factor=factor, label=label, source_text=src))
 
 
-def _price(s: str, src: str, out: ParseOutcome) -> None:
-    if "обеспечен" in s:
-        return
-    money_ctx = re.search(r"нмц|цен|сумм|контракт|лот|бюджет|руб|₽|млн|млрд|тыс|лям", s)
-    if not money_ctx:
-        return
-    p = out.preferences.price
-    m = re.search(r"от\s*" + _NUM + r"\s*(?:₽|руб\w*)?\s*до\s*" + _NUM, s)
-    if m:
-        unit_hi = m.group(4)
-        lo = _amount(m.group(1), m.group(2), unit_hi)
-        hi = _amount(m.group(3), unit_hi, m.group(2))
-        p.min_rub, p.max_rub = lo, hi
-        _add(out, "price", f"НМЦК от {_rub(lo)} до {_rub(hi)}", src)
-        return
-    m = re.search(r"(?:до|не (?:больше|более|выше)|максимум|не дороже)\s*" + _NUM, s)
-    if m and (m.group(2) or re.search(r"млн|тыс|млрд", s)):
-        p.max_rub = _amount(m.group(1), m.group(2), "млн" if "млн" in s else None)
-        _add(out, "price", f"НМЦК до {_rub(p.max_rub)}", src)
-    m = re.search(r"(?:от|не (?:меньше|менее|ниже)|минимум|дороже)\s*" + _NUM, s)
-    if m and (m.group(2) or re.search(r"млн|тыс|млрд", s)) and not re.search(r"дн|день|дня", s[m.end():m.end() + 6]):
-        p.min_rub = _amount(m.group(1), m.group(2), "млн" if "млн" in s else None)
-        _add(out, "price", f"НМЦК от {_rub(p.min_rub)}", src)
+def _clause_at(clauses: list[Clause], sentence: str, pos: int) -> Clause:
+    acc = 0
+    for c in clauses:
+        idx = sentence.find(c.text, acc)
+        if idx <= pos < idx + len(c.text):
+            return c
+        acc = max(acc, idx + len(c.text))
+    return clauses[0] if clauses else Clause("", [])
 
 
-def _guarantee(s: str, src: str, out: ParseOutcome) -> None:
-    if "обеспечен" not in s:
+def _money(sentence: str, lem: set[str], clauses: list[Clause], out: ParseOutcome) -> None:
+    durations = extract_durations(sentence)
+    default_unit = 1e6 if {"млн", "миллион", "лям"} & lem else 1e3 if {"тыс", "тысяча"} & lem else None
+    for a in extract_amounts(sentence, default_unit=default_unit):
+        if any(d.start <= a.start < d.end or a.start <= d.start < a.end for d in durations):
+            continue  # «минимум 3 дня» — это срок, а не сумма
+        clause = _clause_at(clauses, sentence, a.start)
+        ctx = clause.lset | lem
+        # Что ограничивает сумма — НМЦК или обеспечения? Решает ближайшее слово-контекст перед суммой.
+        before = [t.lemma for t in morph_tokens(sentence[:a.start])][::-1]
+        nearest = next((w for w in before if w in GUARANTEE_CTX or w in MONEY_CTX), None)
+        is_guarantee = nearest in GUARANTEE_CTX if nearest else bool(lem & GUARANTEE_CTX and not lem & MONEY_CTX)
+        if not (a.has_unit or ctx & MONEY_CTX or is_guarantee):
+            continue
+        value_hi = a.high if a.high is not None else a.low
+        if is_guarantee:
+            fin = out.preferences.finance
+            fin.guarantee_limit_rub = value_hi
+            fin.required = bool(clause.lset & {"строго", "жёстко", "жестко", "обязательно"})
+            _add(out, "finance", f"Обеспечения не больше {_rub(fin.guarantee_limit_rub)}", sentence)
+            continue
+        p = out.preferences.price
+        if a.kind == "range":
+            p.min_rub, p.max_rub = a.low, a.high
+            _add(out, "price", f"НМЦК от {_rub(a.low)} до {_rub(a.high)}", sentence)
+        elif a.kind == "around":
+            # Нечёткий диапазон: «около N» = ядро N ±20 %, за краями — плавное убывание (см. scoring/fuzzy.py).
+            p.min_rub, p.max_rub = round(a.low * 0.8), round(a.low * 1.2)
+            _add(out, "price", f"НМЦК около {_rub(a.low)} (нечёткий диапазон {_rub(p.min_rub)} – {_rub(p.max_rub)})", sentence)
+        elif a.kind == "max" or (a.kind == "exact" and {"до", "максимум"} & clause.lset):
+            p.max_rub = value_hi
+            _add(out, "price", f"НМЦК до {_rub(value_hi)}", sentence)
+        elif a.kind == "min":
+            p.min_rub = a.low
+            _add(out, "price", f"НМЦК от {_rub(a.low)}", sentence)
+
+
+def _days(sentence: str, lem: set[str], out: ParseOutcome) -> None:
+    for d in extract_durations(sentence):
+        if lem & EXEC_CTX and not lem & BID_CTX:
+            out.preferences.timing.min_contract_days = d.days
+            _add(out, "timing", f"Срок исполнения не меньше {d.days} дн.", sentence)
+            continue
+        out.preferences.timing.min_days_to_deadline = d.days
+        strict = d.kind == "min" or bool(lem & STRICT)
+        out.preferences.timing.required = strict
+        _add(out, "timing", f"Минимум {d.days} дн. на подготовку заявки" + (" (обязательно)" if strict else ""), sentence)
         return
-    m = re.search(r"(?:не (?:больше|более)|до|максимум|не выше|в пределах)\s*" + _NUM, s)
-    if m:
-        out.preferences.finance.guarantee_limit_rub = _amount(m.group(1), m.group(2), "млн" if "млн" in s else None)
-        if re.search(r"строго|обязател|никак не больше|жестк", s):
-            out.preferences.finance.required = True
-        _add(out, "finance", f"Обеспечения не больше {_rub(out.preferences.finance.guarantee_limit_rub)}", src)
 
 
-def _days(s: str, src: str, out: ParseOutcome) -> None:
-    m = re.search(r"(\d{1,3})\s*(?:рабоч\w*|календарн\w*)?\s*(?:дн|день|дня|сут)", s)
-    if not m:
-        return
-    days = int(m.group(1))
-    if re.search(r"исполнени|поставк|выполнени", s) and not re.search(r"заявк|подготов|подач", s):
-        out.preferences.timing.min_contract_days = days
-        _add(out, "timing", f"Срок исполнения не меньше {days} дн.", src)
-        return
-    out.preferences.timing.min_days_to_deadline = days
-    strict = bool(re.search(r"минимум|не меньше|не менее|обязател|нужно|нужен|нужны|строго", s))
-    out.preferences.timing.required = strict
-    _add(out, "timing", f"Минимум {days} дн. на подготовку заявки" + (" (обязатело)" if strict else ""), src)
+WAREHOUSE = {"склад", "филиал", "представительство", "логистический", "дилер"}
 
 
-def _regions(s: str, src: str, out: ParseOutcome) -> None:
+def _regions(s: str, src: str, clauses: list[Clause], out: ParseOutcome) -> None:
     geo = out.preferences.geo
-    clauses = _clauses(s)
     hit = False
     for i, clause in enumerate(clauses):
-        regs = list(find_regions(clause))
-        for d in find_districts(clause):
+        regs = list(find_regions(clause.text))
+        for d in find_districts(clause.text):
             regs += [r for r in regions_of_district(d) if r not in regs]
         if not regs:
             continue
-        nxt = clauses[i + 1] if i + 1 < len(clauses) else ""
-        excluded = bool(NEG_STRONG.search(clause))
-        soft = bool(SOFT.search(clause)) or (bool(SOFT.search(nxt)) and not find_regions(nxt))
+        if clause.lset & WAREHOUSE:
+            # «склад в Красноярске», «филиал в Томске» — своя логистика в регионе
+            for r in regs:
+                if r.code not in geo.warehouses:
+                    geo.warehouses.append(r.code)
+            _add(out, "geo", "Склады и филиалы: " + ", ".join(r.name for r in regs[:4]), src)
+            hit = True
+            continue
+        nxt = clauses[i + 1] if i + 1 < len(clauses) else None
+        excluded = clause.polarity() == "strong"
+        soft = bool(clause.lset & SOFT) or bool(nxt and nxt.lset & SOFT and not find_regions(nxt.text))
         for r in regs:
             if excluded:
                 if r.code not in geo.excluded:
@@ -188,82 +252,87 @@ def _regions(s: str, src: str, out: ParseOutcome) -> None:
         label = ("Исключить регионы: " if excluded else ("Регионы с пониженным приоритетом: " if soft else "Регионы: ")) + names
         _add(out, "geo", label, src)
         hit = True
-    if hit and re.search(r"только|строго|исключительно", s):
+    if hit and any(c.lset & {"только", "строго", "исключительно"} for c in clauses):
         geo.required = True
 
 
-def _methods(s: str, src: str, out: ParseOutcome) -> None:
+def _methods(sentence: str, clauses: list[Clause], out: ParseOutcome) -> None:
     cond = out.preferences.conditions
-    for clause in _clauses(s):
-        _methods_clause(clause, src, out, cond)
-
-
-def _methods_clause(s: str, src: str, out: ParseOutcome, cond) -> None:
-    for pattern, key, name in METHODS:
-        if not re.search(pattern, s):
-            continue
-        if NEG_STRONG.search(s):
-            cond.methods[key] = "exclude"
-            _add(out, "conditions", f"Исключить {name}", src)
-        elif NEG_SOFT.search(s):
-            cond.methods[key] = "neutral"
-            for _, other, _ in METHODS:
-                if other != key and cond.methods.get(other) != "exclude":
-                    cond.methods.setdefault(other, "prefer")
-            _add(out, "conditions", f"{name.capitalize()} — без приоритета", src)
-        else:
-            cond.methods[key] = "prefer"
-            if re.search(r"только|исключительно", s):
+    for clause in clauses:
+        for lemmas, key, name in METHODS:
+            if not clause.lset & lemmas:
+                continue
+            if key == "proposal_request" and "запрос" not in clause.lset:
+                continue
+            if key == "single_supplier" and "поставщик" not in clause.lset:
+                continue
+            pol = clause.polarity()
+            if pol == "strong":
+                cond.methods[key] = "exclude"
+                _add(out, "conditions", f"Исключить {name}", sentence)
+            elif pol == "soft":
+                cond.methods[key] = "neutral"
                 for _, other, _ in METHODS:
-                    if other != key:
-                        cond.methods[other] = "exclude"
-            _add(out, "conditions", f"Предпочитаем {name}", src)
+                    if other != key and cond.methods.get(other) != "exclude":
+                        cond.methods.setdefault(other, "prefer")
+                _add(out, "conditions", f"{name.capitalize()} — без приоритета", sentence)
+            else:
+                cond.methods[key] = "prefer"
+                if clause.lset & {"только", "исключительно"}:
+                    for _, other, _ in METHODS:
+                        if other != key:
+                            cond.methods[other] = "exclude"
+                _add(out, "conditions", f"Предпочитаем {name}", sentence)
 
 
-def _advance(s: str, src: str, out: ParseOutcome) -> None:
-    if "аванс" not in s and "предоплат" not in s:
+def _advance(sentence: str, lem: set[str], out: ParseOutcome) -> None:
+    if not lem & {"аванс", "предоплата", "авансирование"}:
         return
     fin = out.preferences.finance
-    if re.search(r"не важ|неваж|без разницы|не принцип", s):
+    words = morph_tokens(sentence)
+    pairs = {(a.lemma, b.lemma) for a, b in zip(words, words[1:])}
+    if ("не", "важный") in pairs or ("не", "важно") in pairs or lem & {"неважный", "неважно", "разница", "принципиальный"}:
         fin.advance = "ignore"
-        _add(out, "finance", "Аванс не важен", src)
-    elif re.search(r"обязател|только с аванс|без аванса не|строго|нужен обязатело", s):
+        _add(out, "finance", "Аванс не важен", sentence)
+    elif lem & {"обязательный", "обязательно", "только", "строго", "необходимо", "необходимый"} or ("без", "аванс") in pairs:
         fin.advance = "must"
-        _add(out, "finance", "Аванс обязателен", src)
+        _add(out, "finance", "Аванс обязателен", sentence)
     else:
         fin.advance = "want"
-        _add(out, "finance", "Аванс важен", src)
-        if re.search(r"очень|критичн|главн", s):
+        _add(out, "finance", "Аванс важен", sentence)
+        if lem & {"очень", "критичный", "главный", "критично"}:
             fin.importance = 5
 
 
-def _laws(s: str, src: str, out: ParseOutcome) -> None:
+def _laws(s: str, src: str, clauses: list[Clause], out: ParseOutcome) -> None:
     has44, has223 = bool(re.search(r"44\s*-?\s*фз|\b44\b", s)), bool(re.search(r"223\s*-?\s*фз|\b223\b", s))
     if not (has44 or has223):
         return
     cond = out.preferences.conditions
-    if re.search(r"только", s):
+    lem = {x for c in clauses for x in c.lset}
+    if "только" in lem:
         cond.laws = ["44-FZ"] if has44 and not has223 else ["223-FZ"] if has223 and not has44 else ["44-FZ", "223-FZ"]
-    elif NEG_STRONG.search(s):
+    elif any(c.polarity() == "strong" for c in clauses):
         cond.laws = ["223-FZ"] if has44 and not has223 else ["44-FZ"] if has223 and not has44 else cond.laws
     else:
         return
     _add(out, "conditions", "Законы: " + ", ".join(x.replace("-FZ", "-ФЗ") for x in cond.laws), src)
 
 
-def _smp_imports(s: str, src: str, out: ParseOutcome) -> None:
+def _smp_imports(sentence: str, lem: set[str], clauses: list[Clause], out: ParseOutcome) -> None:
     cond = out.preferences.conditions
-    if re.search(r"\bсмп\b|малого (и среднего )?(бизнеса|предпринимательства)|мсп", s):
-        cond.prefer_smp = not NEG_STRONG.search(s)
-        _add(out, "conditions", "Приоритет закупкам для СМП" if cond.prefer_smp else "Без приоритета закупкам для СМП", src)
-    if re.search(r"импорт", s) and re.search(r"поставля|торгу|только|везем|возим", s):
+    if lem & {"смп", "мсп"} or ("малый" in lem and lem & {"предпринимательство", "бизнес"}):
+        cond.prefer_smp = not any(c.polarity() == "strong" for c in clauses)
+        _add(out, "conditions", "Приоритет закупкам для СМП" if cond.prefer_smp else "Без приоритета закупкам для СМП", sentence)
+    if lem & {"импорт", "импортный"} and lem & (SUPPLY_VERBS | {"только"}):
         cond.imports_only = True
-        _add(out, "conditions", "Поставляем импортные товары — нацрежим исключает закупку", src)
+        _add(out, "conditions", "Поставляем импортные товары — нацрежим исключает закупку", sentence)
 
 
-def _customers(s: str, src: str, out: ParseOutcome) -> None:
+def _customers(s: str, src: str, clauses: list[Clause], out: ParseOutcome) -> None:
     inns = re.findall(r"\b(\d{10}|\d{12})\b", s)
-    if inns and "заказчик" in s and NEG_STRONG.search(s):
+    lem = {x for c in clauses for x in c.lset}
+    if inns and "заказчик" in lem and any(c.polarity() == "strong" for c in clauses):
         for inn in inns:
             if inn not in out.preferences.customer.excluded_inns:
                 out.preferences.customer.excluded_inns.append(inn)
@@ -274,44 +343,59 @@ def _split_items(fragment: str) -> list[str]:
     items = re.split(r",|;|\bи\b|\bили\b|/", fragment)
     cleaned = []
     for it in items:
-        it = re.sub(r"^\s*(а также|также|еще|ещё)\s+", "", it).strip(" .:—-")
+        it = re.sub(r"^\s*(а также|также|еще|ещё)\s+", "", it, flags=re.I).strip(" .:—-")
         if 2 < len(it) <= 60 and not find_regions(it) and not re.search(r"\d", it):
-            cleaned.append(it)
+            cleaned.append(it.lower())
     return cleaned
 
 
-def _keywords(s: str, src: str, out: ParseOutcome) -> None:
+def _keywords(sentence: str, out: ParseOutcome) -> None:
     prof = out.preferences.profile
-    m = re.search(r"(?:поставляем|продаем|торгуем|занимаемся|специализируемся на|наш профиль[:\s—-]*|работаем с|возим|делаем)\s+(.+)", s)
-    if m and not re.search(r"не (поставляем|продаем|торгуем)", s):
-        items = _split_items(m.group(1))
-        if items:
-            for it in items:
-                if it not in prof.keywords:
-                    prof.keywords.append(it)
-            _add(out, "profile", "Ключевые слова: " + ", ".join(items), src)
-    m = re.search(r"(?:не (?:поставляем|продаем|торгуем|берем|берём)|исключить|кроме)\s+(.+)", s)
-    if m and not find_regions(m.group(1)) and not any(re.search(p, m.group(1)) for p, _, _ in METHODS):
-        items = _split_items(m.group(1))
-        if items:
-            for it in items:
-                if it not in prof.exclude_keywords:
-                    prof.exclude_keywords.append(it)
-            _add(out, "profile", "Исключить, если в предмете: " + ", ".join(items), src)
+    toks = morph_tokens(sentence)
+    for i, t in enumerate(toks):
+        if t.lemma not in SUPPLY_VERBS and not (t.lemma == "профиль" and i > 0 and toks[i - 1].lemma == "наш"):
+            continue
+        negated = i > 0 and toks[i - 1].lemma == "не"
+        j = i + 1
+        while j < len(toks) and toks[j].lemma in {"на", "с", "в", ":", "—", "-"}:
+            j += 1
+        if j >= len(toks):
+            return
+        items = _split_items(sentence[toks[j].start:])
+        items = [x for x in items if not any(m & {t.lemma for t in morph_tokens(x)} for m, _, _ in METHODS)]
+        if not items:
+            return
+        target = prof.exclude_keywords if negated else prof.keywords
+        for it in items:
+            if it not in target:
+                target.append(it)
+        label = "Исключить, если в предмете: " if negated else "Ключевые слова: "
+        _add(out, "profile", label + ", ".join(items), sentence)
+        return
+    # «кроме / исключить X» без глагола поставки — исключаемые товары, если это не регион и не способ закупки.
+    m = re.search(r"(?:исключить|кроме)\s+(.+)", sentence, flags=re.I)
+    if m and not find_regions(m.group(1)):
+        lem = {t.lemma for t in morph_tokens(m.group(1))}
+        if not any(lemmas & lem for lemmas, _, _ in METHODS):
+            items = _split_items(m.group(1))
+            if items:
+                prof.exclude_keywords += [x for x in items if x not in prof.exclude_keywords]
+                _add(out, "profile", "Исключить, если в предмете: " + ", ".join(items), sentence)
 
 
-def _importance(s: str, src: str, out: ParseOutcome) -> None:
-    high = re.search(r"очень важн|самое главное|главное|критичн|в первую очередь|приоритет", s)
-    low = re.search(r"не важн|неважн|не так важн|не критичн|без разницы", s)
+def _importance(sentence: str, lem: set[str], clauses: list[Clause], out: ParseOutcome) -> None:
+    pairs = {(a, b) for c in clauses for a, b in zip(c.lemmas, c.lemmas[1:])}
+    high = bool(lem & {"главный", "критичный", "критично", "приоритет"}) or ("очень", "важный") in pairs \
+        or ("самый", "важный") in pairs or ("первый", "очередь") in pairs
+    low = ("не", "важный") in pairs or bool(lem & {"неважный", "второстепенный"})
     if not (high or low):
         return
-    for key, pattern in FACTOR_WORDS.items():
-        if re.search(pattern, s):
-            if key == "finance" and "аванс" in s:
+    for key, words in FACTOR_LEMMAS.items():
+        if lem & words:
+            if key == "finance" and lem & {"аванс", "предоплата"}:
                 continue  # аванс обрабатывается отдельно
-            settings = getattr(out.preferences, key)
-            settings.importance = 5 if high else 1
-            _add(out, key, f"Важность «{key}» — {'высокая' if high else 'низкая'}", src)
+            getattr(out.preferences, key).importance = 5 if high else 1
+            _add(out, key, f"Важность «{key}» — {'высокая' if high else 'низкая'}", sentence)
 
 
 # ---------------- LLM ----------------
@@ -320,7 +404,7 @@ _SYSTEM = """Ты переводишь критерии отбора госза�
 Поля (заполняй только упомянутые):
 price_min_rub, price_max_rub — числа в рублях;
 regions — список {name, priority: 1 или 0.5}; excluded_regions — список названий;
-min_days_to_deadline — дней на подготовку заявки; days_required — true, если «минимум/обязатело»;
+min_days_to_deadline — дней на подготовку заявки; days_required — true, если «минимум/обязательно»;
 min_contract_days; guarantee_limit_rub; advance — "ignore" | "want" | "must";
 methods — объект {e_auction|open_contest|quotation_request|proposal_request: "prefer"|"neutral"|"exclude"};
 laws — список из "44-FZ", "223-FZ"; keywords, exclude_keywords — товары/работы;
@@ -390,9 +474,15 @@ def _apply_llm(data: dict, prefs: Preferences) -> list[Recognized]:
     return rec
 
 
-def parse_criteria(text: str, base: Preferences | None = None, use_llm: bool = True) -> ParseOutcome:
-    """Сначала правила; затем, если LLM доступна, она разбирает то, что правила не поняли."""
+def parse_criteria(text: str, base: Preferences | None = None, use_llm: bool = True,
+                   timeout: float | None = None) -> ParseOutcome:
+    """Сначала правила; затем, если LLM доступна, она разбирает то, что правила не поняли.
+
+    timeout ограничивает ожидание LLM: не успела — остаётся результат правил (ТЗ: оценка < 10 с).
+    """
+    started = time.perf_counter()
     outcome = parse_rules(text, base)
+    outcome.elapsed_ms = (time.perf_counter() - started) * 1000
     if not use_llm or not outcome.unparsed:
         return outcome
     if not llm.provider_status().get("ready"):
@@ -401,8 +491,11 @@ def parse_criteria(text: str, base: Preferences | None = None, use_llm: bool = T
     data = llm.complete_json(
         _SYSTEM,
         f"Пример.\nТекст: {_EXAMPLE_IN}\nJSON: {json.dumps(_EXAMPLE_OUT, ensure_ascii=False)}\n\nТекст: {leftover}\nJSON:",
+        timeout=timeout,
     )
+    outcome.elapsed_ms = (time.perf_counter() - started) * 1000
     if not isinstance(data, dict):
+        outcome.engine = "rules (LLM не ответила вовремя)"
         return outcome
     try:
         recognized = _apply_llm(data, outcome.preferences)
