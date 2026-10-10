@@ -195,3 +195,16 @@ def test_fns_lookup_respects_total_budget(monkeypatch):
     with pytest.raises(EgrulError, match="не успел"):
         FnsProvider(timeout=1.0).fetch("5406123450")
     assert time.monotonic() - started < 1.6
+
+
+def test_public_eis_maintenance_message(monkeypatch):
+    from app.eis import public
+
+    page = ("<html><h3>Служба технической поддержки ГИС ЕИС ЗАКУПКИ сообщает о проведении регламентных работ "
+            "в период с 22:00 09.10.2026 по 20:00 11.10.2026 по московскому времени.</h3></html>")
+    real_client = httpx.Client
+    monkeypatch.setattr(public.httpx, "Client",
+                        lambda **kw: real_client(transport=httpx.MockTransport(lambda r: httpx.Response(434, text=page)),
+                                                 **{k: v for k, v in kw.items() if k != "verify"}))
+    with pytest.raises(getdocs.EisApiError, match="регламентных работах до 20:00 11.10.2026"):
+        public.fetch_notice("0173100008726000065")

@@ -6,6 +6,7 @@ zakupki.gov.ru отдаёт XML-версию печатной формы изв�
 сертификату (app/eis/certs) — проверка не отключается.
 """
 
+import re
 import ssl
 from functools import lru_cache
 from pathlib import Path
@@ -34,6 +35,9 @@ def fetch_notice(reg_number: str, timeout: float = 15.0) -> tuple[str, bytes]:
     except httpx.HTTPError as exc:
         raise EisApiError(f"ЕИС недоступна: {exc.__class__.__name__}") from exc
     body = r.content.lstrip()
+    maintenance = re.search(r"регламентных\s+работ[\s\S]{0,200}?по\s+(\d{2}:\d{2}\s+\d{2}\.\d{2}\.\d{4})", r.text if not r.content.lstrip().startswith(b"<?xml") else "")
+    if maintenance:
+        raise EisApiError(f"ЕИС на регламентных работах до {maintenance.group(1)} (МСК) — загрузите извещение файлом")
     if r.status_code == 429:
         raise EisApiError("ЕИС временно ограничила частоту запросов — повторите через минуту")
     if r.status_code != 200 or not body.startswith(b"<?xml"):
