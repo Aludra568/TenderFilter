@@ -241,7 +241,9 @@ input[type="range"]:focus-visible { outline: 3px solid var(--violet); outline-of
   .who { display: none; }
   .main { padding: 24px 16px 48px; }
   .card { padding: 20px; }
-  .factor { grid-template-columns: 1fr; }
+  .factor { grid-template-columns: minmax(0, 1fr); }
+  .quote code, .quote div { overflow-wrap: anywhere; }
+  .factor .btn3 { white-space: normal; text-align: left; max-width: 100%; overflow-wrap: anywhere; height: auto; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, .radar * { animation: none !important; transition: none !important; }
