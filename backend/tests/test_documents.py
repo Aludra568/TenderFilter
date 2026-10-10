@@ -96,3 +96,22 @@ def test_documents_api(client):
     assert r2.status_code == 200 and r2.json()["contract"]["payment_days"] == 7
     card = client.get(f"/api/tenders/{tid}").json()
     assert card["tender"]["contract"]["advance_percent"] == 30
+
+
+# Фразы из реальных проектов контрактов ЕИС, на которых правила ошибались, — не должны давать ложных рисков.
+REAL_SNIPPETS = """
+Подрядчик обязан представлять Заказчику в течение 10 рабочих дней со дня оплаты Подрядчиком выполненных обязательств по договору с субподрядчиком, соисполнителем следующие документы.
+Заказчик обязан в срок не позднее 10 дней после получения требования Поставщика об уплате штрафа оплатить штраф.
+Работа клиентской части с операционными системами: Alt Linux, Astra Linux, MS Windows 7/8/10/11 32-bit и 64-bit.
+Факт внесения денежных средств подтверждается платёжным поручением либо оригинальной выпиской из банка.
+Оплата указанных в п.1.1 настоящего контракта услуг осуществляется Заказчиком ежемесячно по факту оказанных услуг, не более чем в течение семи рабочих дней с даты подписания заказчиком электронного документа о приемке.
+""" + "Прочие условия контракта. " * 20
+
+
+def test_real_contract_snippets_no_false_risks():
+    t = analyze(REAL_SNIPPETS)
+    assert (t.payment_days, t.payment_working) == (7, True)  # «семи рабочих дней», а не 10 дней субподрядчику
+    assert t.brands_without_equivalent == []
+    bad = {f.code for f in t.findings if f.severity != "info"}
+    assert not bad & {"payment_late", "brand_no_equivalent", "original_only"}
+    assert "compat_required" in {f.code for f in t.findings}

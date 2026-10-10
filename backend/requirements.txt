@@ -16,3 +16,4 @@ PyYAML==6.0.2
 pymorphy3==2.0.6
 yargy==0.16.0
 pypdf==5.1.0
+olefile==0.47

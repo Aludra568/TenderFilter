@@ -27,9 +27,21 @@ BRANDS = [
 _BRAND_RE = re.compile(r"(?<![\w-])(" + "|".join(re.escape(b) for b in sorted(BRANDS, key=len, reverse=True)) + r")(?![\w-])")
 
 _NUM_WORDS = re.compile(r"\(\s*[а-яё\s-]{2,40}\s*\)", re.I)
+WORD_DAYS = {"одного": 1, "двух": 2, "трех": 3, "трёх": 3, "четырех": 4, "пяти": 5, "шести": 6, "семи": 7,
+             "восьми": 8, "девяти": 9, "десяти": 10, "пятнадцати": 15, "двадцати": 20, "тридцати": 30,
+             "пять": 5, "семь": 7, "десять": 10, "пятнадцать": 15, "двадцать": 20, "тридцать": 30}
 _DAYS = re.compile(
-    r"(?:в\s+течени[еи]|не\s+позднее|не\s+более|в\s+срок(?:\s+не\s+более|\s+до)?|до)\s+(\d{1,3})\s*"
-    r"(рабоч\w*|календарн\w*)?\s*(?:дн|день|дня)", re.I)
+    r"(?:в\s+течени[еи]|не\s+позднее|не\s+более(?:\s+чем)?(?:\s+в\s+течени[еи])?|не\s+превышающ\w*|"
+    r"в\s+срок(?:,?\s+не\s+более|,?\s+не\s+превышающ\w*|\s+до)?|до)\s+"
+    r"(\d{1,3}|" + "|".join(WORD_DAYS) + r")\s*(рабоч\w*|календарн\w*)?\s*(?:дн|день|дня)", re.I)
+_PAYMENT_BY_CUSTOMER = re.compile(
+    r"оплат\w*\s+(?:\S+\s+){0,8}?(?:осуществля|производ|выполня|перечисля)|"
+    r"(?:осуществля|производ)\w*\s+(?:\S+\s+){0,3}?оплат|заказчик\w*\s+оплачива|"
+    r"оплата\s+(?:за|по\s+контракт|поставленн|выполненн|оказанн|указанн|товар|работ|услуг)|"
+    r"срок\w*\s+оплат|оплатить\s+(?:\S+\s+){0,2}?(?:выполненн|поставленн|оказанн|товар|работ|услуг)")
+_PAYMENT_NOISE = re.compile(r"субподряд|соисполнител|штраф|пен[иья]\b|неусто|требовани\w*\s+(?:об|о)\s+уплат|нарушен\w*\s+срок")
+_COMPAT = re.compile(r"совместим|работ\w*\s+(?:\S+\s+){0,3}?с\s+(?:операционн|по\b|програм)|поддерж\w*|"
+                     r"под\s+управлением|операционн\w*\s+систем|для\s+(?:принтер|мфу|копир|аппарат)")
 _PERCENT = re.compile(r"(\d{1,3}(?:[.,]\d{1,3})?)\s*%")
 
 
@@ -49,7 +61,9 @@ def _days(sentence: str) -> tuple[int, bool] | None:
     if not m:
         return None
     unit = (m.group(2) or "").lower()
-    return int(m.group(1)), not unit.startswith("календар")  # по умолчанию в 44-ФЗ — рабочие дни
+    raw = m.group(1).lower()
+    n = int(raw) if raw.isdigit() else WORD_DAYS[raw]
+    return n, not unit.startswith("календар")  # по умолчанию в 44-ФЗ — рабочие дни
 
 
 def _percents(sentence: str) -> list[float]:
@@ -75,15 +89,20 @@ def analyze(text: str, law: str = "44-FZ", files: list[str] | None = None) -> Co
         return terms
     is44 = law == "44-FZ"
     sents = sentences(text)
+    pay_from_acceptance = False
+    compat: list[str] = []
 
     for s in sents:
         low = s.lower()
-        # Оплата (кроме аванса)
-        if terms.payment_days is None and "оплат" in low and "аванс" not in low:
+        # Оплата заказчиком за товар (не аванс, не штрафы, не расчёты поставщика с субподрядчиками)
+        advance_only = "аванс" in low and not re.search(r"приемк|по\s+факту|оставш|окончательн", low)
+        if "оплат" in low and _PAYMENT_BY_CUSTOMER.search(low) and not _PAYMENT_NOISE.search(low) and not advance_only:
             d = _days(s)
-            if d:
+            # Приоритет — фразе, где срок оплаты считается от приёмки: это и есть основной срок.
+            if d and (terms.payment_days is None or ("приемк" in low and not pay_from_acceptance)):
                 terms.payment_days, terms.payment_working = d
                 pay_q = s
+                pay_from_acceptance = "приемк" in low
         # Приёмка
         if terms.acceptance_days is None and "приемк" in low and "оплат" not in low and \
                 any(w in low for w in ("подписыва", "осуществля", "провод", "срок приемки")):
@@ -120,10 +139,20 @@ def analyze(text: str, law: str = "44-FZ", files: list[str] | None = None) -> Co
                 terms.warranty_months = n * 12 if m.group(2) in ("год", "лет") else n
         # Марки без «или эквивалент»
         for b in _BRAND_RE.findall(s):
-            if "эквивалент" not in low and b not in terms.brands_without_equivalent:
+            if "эквивалент" in low:
+                continue
+            if _COMPAT.search(low):
+                # «работа с ОС Windows», «совместим с принтерами HP» — требование совместимости, а не марка товара
+                if b not in compat:
+                    compat.append(b)
+                    compat_q = s
+            elif b not in terms.brands_without_equivalent:
                 terms.brands_without_equivalent.append(b)
                 brand_q = s
-        if "оригинальн" in low and not re.search(r"эквивалент|совместим", low):
+        # «оригинальные картриджи», но не «оригинальная выписка из банка»
+        if re.search(r"оригинальн\w*\s+(?:\S+\s+){0,2}?(?:расходн|картридж|тонер|запасн|запчаст|комплектующ|"
+                     r"чернил|фотобарабан|деталей|детали|продукци)|(?:картридж|расходн|запасн|тонер)\w*\s+(?:\S+\s+){0,3}?"
+                     r"(?:только\s+)?оригинальн", low) and not re.search(r"эквивалент|совместим", low):
             if not any(x.code == "original_only" for x in f):
                 f.append(Finding(code="original_only", side="both", severity="warn",
                                  title="Требуются только оригинальные расходные материалы",
@@ -183,6 +212,11 @@ def analyze(text: str, law: str = "44-FZ", files: list[str] | None = None) -> Co
                          title=f"Нужна конкретная марка: {names}",
                          detail="Аналог не подойдёт — проверьте, можете ли поставить именно этот товар.",
                          quote=_short(brand_q)))
+    if compat:
+        f.append(Finding(code="compat_required", side="supplier", severity="info",
+                         title="Требуется совместимость: " + ", ".join(compat[:5]),
+                         detail="Это требование к среде работы, а не к марке товара — проверьте, что ваш товар его выполняет.",
+                         quote=_short(compat_q)))
     if terms.warranty_months:
         f.append(Finding(code="warranty", side="supplier", severity="info",
                          title=f"Гарантийный срок {terms.warranty_months} мес.", detail="Учтите в цене гарантийное обслуживание."))

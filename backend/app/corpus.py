@@ -111,12 +111,23 @@ def report() -> dict:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=["download", "report"])
+    ap.add_argument("cmd", choices=["download", "report", "contracts", "contracts-report"])
+    ap.add_argument("--limit", type=int, default=40)
     ap.add_argument("--pages", type=int, default=1)
     ap.add_argument("--delay", type=float, default=0.7)
     args = ap.parse_args()
     if args.cmd == "download":
         download(args.pages, args.delay)
+        return 0
+    if args.cmd == "contracts":
+        print(f"Скачано проектов контрактов: {download_contracts(args.limit, args.delay)}")
+        return 0
+    if args.cmd == "contracts-report":
+        r = contracts_report()
+        print(f"Файлов {r['files']}, читаемых {r['readable']}; найдено: " +
+              ", ".join(f"{k} {v:.0%}" for k, v in r["found"].items() if v is not None))
+        for u in r["unreadable"]:
+            print(f"  нечитаемо: {u['file']} — {u['why']}")
         return 0
     r = report()
     print(f"Файлов {r['files']}, разобрано {r['parsed']}, ошибок {len(r['parse_errors'])}; "
@@ -127,6 +138,79 @@ def main() -> int:
     for e in r["parse_errors"][:10]:
         print(f"  ✗ {e['file']} ({e['root']}): {e['error']}")
     return 0
+
+
+
+# ---------- проекты контрактов из вложений ----------
+
+CONTRACTS = CORPUS / "contracts"
+
+
+def contract_links() -> list[tuple[str, str, str]]:
+    from urllib.parse import unquote
+
+    out = []
+    for f in sorted(CORPUS.glob("*.xml")):
+        root = etree.fromstring(f.read_bytes(), etree.XMLParser(resolve_entities=False, huge_tree=True))
+        for att in root.iter():
+            if isinstance(att.tag, str) and etree.QName(att).localname == "attachmentInfo":
+                d = {etree.QName(c).localname: (c.text or "").strip() for c in att if isinstance(c.tag, str)}
+                name = unquote(d.get("fileName", ""))
+                if "контракт" in name.lower() and "обосн" not in name.lower() and d.get("url"):
+                    out.append((f.stem, name, d["url"]))
+                    break
+    return out
+
+
+def download_contracts(limit: int, delay: float) -> int:
+    CONTRACTS.mkdir(parents=True, exist_ok=True)
+    saved = 0
+    with httpx.Client(timeout=60, headers=HEADERS, verify=ssl_context(), follow_redirects=True) as client:
+        for reg, name, url in contract_links()[:limit]:
+            ext = name.rsplit(".", 1)[-1].lower()
+            path = CONTRACTS / f"{reg}.{ext}"
+            if path.exists():
+                continue
+            r = client.get(url)
+            if r.status_code == 429:
+                time.sleep(40)
+                r = client.get(url)
+            if r.status_code == 200 and r.content:
+                path.write_bytes(r.content)
+                saved += 1
+            else:
+                print(f"  {reg}: HTTP {r.status_code}")
+            time.sleep(delay)
+    return saved
+
+
+def contracts_report() -> dict:
+    from app.docs.contract import analyze
+    from app.docs.extract import DocumentError, extract_text
+
+    rows = []
+    for path in sorted(CONTRACTS.glob("*.*")):
+        row = {"file": path.name, "format": path.suffix.lstrip(".")}
+        try:
+            text = extract_text(path.name, path.read_bytes())
+        except DocumentError as exc:
+            row["error"] = str(exc)
+            rows.append(row)
+            continue
+        t = analyze(text)
+        row.update({"chars": len(text), "payment_days": t.payment_days, "acceptance_days": t.acceptance_days,
+                    "advance_percent": t.advance_percent, "supplier_penalty": t.supplier_penalty,
+                    "max_fine_percent": t.max_fine_percent, "warranty_months": t.warranty_months,
+                    "brands": t.brands_without_equivalent, "findings": [f.code for f in t.findings if f.severity != "info"]})
+        rows.append(row)
+    readable = [r for r in rows if "error" not in r and r["chars"] > 2000]
+    share = lambda key: round(sum(r[key] is not None for r in readable) / len(readable), 3) if readable else None  # noqa: E731
+    rep = {"files": len(rows), "readable": len(readable),
+           "unreadable": [{"file": r["file"], "why": r.get("error") or "мало текста (скан?)"} for r in rows if r not in readable],
+           "found": {k: share(k) for k in ("payment_days", "acceptance_days", "advance_percent", "supplier_penalty", "max_fine_percent")},
+           "rows": rows}
+    (ROOT / "contracts_report.json").write_text(json.dumps(rep, ensure_ascii=False, indent=2), encoding="utf-8")
+    return rep
 
 
 if __name__ == "__main__":
