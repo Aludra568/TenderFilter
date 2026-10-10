@@ -50,7 +50,10 @@ def parse_response(content: bytes) -> list[str]:
         root = etree.fromstring(content, etree.XMLParser(resolve_entities=False, no_network=True))
     except etree.XMLSyntaxError as exc:
         raise EisApiError("ЕИС вернула не XML") from exc
-    texts = lambda name: [(el.text or "").strip() for el in root.iter() if etree.QName(el).localname == name]
+
+    def texts(name: str) -> list[str]:
+        return [(el.text or "").strip() for el in root.iter() if etree.QName(el).localname == name]
+
     fault = texts("faultstring") or texts("errorInfo") or [m for m in texts("message") if m]
     urls = [u for u in texts("archiveUrl") if u]
     if not urls:

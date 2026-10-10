@@ -2,10 +2,10 @@ import json
 from datetime import datetime, timedelta, timezone
 
 import pytest
+from conftest import SAMPLES
 
 from app.eis.parser import ParseError, parse_bytes
 from app.seed.demo import SPECS, notice_223_xml, notice_xml
-from conftest import SAMPLES
 
 REAL = SAMPLES / "real_44fz_ef2020_0173100008726000065.xml"
 

@@ -1,6 +1,6 @@
 from app.scoring import review as rv
-from tests.test_engine import COMPANY, NOW, prefs, tender
 from app.scoring.engine import evaluate
+from tests.test_engine import COMPANY, NOW, prefs, tender
 
 
 def scored(**kw):

@@ -26,7 +26,7 @@ TRAIN = Path(__file__).resolve().parent / "okpd_train.json"
 
 def _features(text: str) -> list[str]:
     words = tokens(text)
-    return words + [f"{a}_{b}" for a, b in zip(words, words[1:])]
+    return words + [f"{a}_{b}" for a, b in zip(words, words[1:], strict=False)]
 
 
 class OkpdModel:

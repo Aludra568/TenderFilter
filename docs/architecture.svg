@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" width="1200" height="640" font-family="Segoe UI, Arial, sans-serif" role="img" aria-label="Архитектура Тендерного фильтра: входы, обработка, движок оценки, проверка ИИ, результат">
+  <rect width="1200" height="640" fill="#fbfbfe"/>
+  <text x="40" y="44" font-size="24" font-weight="700" fill="#0b0b2b">Тендерный фильтр — как данные превращаются в решение</text>
+  <text x="40" y="70" font-size="14" fill="#55577a">Без нейросети в основе; каждый балл ссылается на поле извещения или цитату из документа</text>
+
+  <!-- колонки -->
+  <g font-size="13" fill="#0b0b2b">
+    <text x="40" y="112" font-weight="700" fill="#5b3fd9">ВХОДЫ</text>
+    <text x="290" y="112" font-weight="700" fill="#5b3fd9">ОБРАБОТКА</text>
+    <text x="600" y="112" font-weight="700" fill="#5b3fd9">ОЦЕНКА</text>
+    <text x="930" y="112" font-weight="700" fill="#5b3fd9">РЕЗУЛЬТАТ</text>
+  </g>
+
+  <!-- входы -->
+  <g font-size="14">
+    <rect x="40" y="128" width="210" height="64" rx="12" fill="#ffffff" stroke="#d9d4ff" stroke-width="2"/>
+    <text x="56" y="154" font-weight="700" fill="#0b0b2b">Извещение ЕИС</text>
+    <text x="56" y="176" fill="#55577a">XML · JSON · номер закупки</text>
+    <rect x="40" y="206" width="210" height="64" rx="12" fill="#ffffff" stroke="#d9d4ff" stroke-width="2"/>
+    <text x="56" y="232" font-weight="700" fill="#0b0b2b">ИНН компании</text>
+    <text x="56" y="254" fill="#55577a">и ИНН заказчика из извещения</text>
+    <rect x="40" y="284" width="210" height="64" rx="12" fill="#ffffff" stroke="#d9d4ff" stroke-width="2"/>
+    <text x="56" y="310" font-weight="700" fill="#0b0b2b">Критерии текстом</text>
+    <text x="56" y="332" fill="#55577a">или ползунки, мастер весов</text>
+    <rect x="40" y="362" width="210" height="64" rx="12" fill="#ffffff" stroke="#d9d4ff" stroke-width="2"/>
+    <text x="56" y="388" font-weight="700" fill="#0b0b2b">Документы закупки</text>
+    <text x="56" y="410" fill="#55577a">.docx .doc .pdf .zip, сканы</text>
+  </g>
+
+  <!-- обработка -->
+  <g font-size="14">
+    <rect x="290" y="128" width="270" height="64" rx="12" fill="#efeaff"/>
+    <text x="306" y="154" font-weight="700" fill="#0b0b2b">Парсер ЕИС</text>
+    <text x="306" y="176" fill="#4a4c6e">поиск по имени элемента, карта полей</text>
+    <rect x="290" y="206" width="270" height="64" rx="12" fill="#efeaff"/>
+    <text x="306" y="232" font-weight="700" fill="#0b0b2b">ЕГРЮЛ: ФНС, DaData</text>
+    <text x="306" y="254" fill="#4a4c6e">кэш 24 ч, бюджет 3,5 с, размыкатель</text>
+    <rect x="290" y="284" width="270" height="64" rx="12" fill="#efeaff"/>
+    <text x="306" y="310" font-weight="700" fill="#0b0b2b">Разбор текста</text>
+    <text x="306" y="332" fill="#4a4c6e">морфология pymorphy3, грамматики yargy</text>
+    <rect x="290" y="362" width="270" height="64" rx="12" fill="#efeaff"/>
+    <text x="306" y="388" font-weight="700" fill="#0b0b2b">Документы</text>
+    <text x="306" y="410" fill="#4a4c6e">OCR Tesseract, контракт, сроки, ИНН</text>
+  </g>
+
+  <!-- стрелки вход→обработка -->
+  <g stroke="#9c8cf0" stroke-width="2" fill="none">
+    <path d="M250 160 H290"/><path d="M250 238 H290"/><path d="M250 316 H290"/><path d="M250 394 H290"/>
+  </g>
+
+  <!-- оценка -->
+  <g font-size="14">
+    <rect x="600" y="128" width="290" height="298" rx="16" fill="#0b0b2b"/>
+    <text x="620" y="160" font-weight="700" fill="#ffffff" font-size="16">Движок оценки · ~1 мс</text>
+    <text x="620" y="192" fill="#ffb3c1" font-weight="700">1. Стоп-факторы</text>
+    <text x="620" y="212" fill="#d9d4ff">срок, СМП, регион, аванс, документы</text>
+    <text x="620" y="246" fill="#b9f5d8" font-weight="700">2. Семь факторов</text>
+    <text x="620" y="266" fill="#d9d4ff">профиль, цена, гео, сроки, финансы,</text>
+    <text x="620" y="286" fill="#d9d4ff">условия, заказчик · нечёткая логика</text>
+    <text x="620" y="320" fill="#ffe08a" font-weight="700">3. Веса</text>
+    <text x="620" y="340" fill="#d9d4ff">важность, ROC или МАИ Саати,</text>
+    <text x="620" y="360" fill="#d9d4ff">подстройка по отметкам «верно/неверно»</text>
+    <text x="620" y="398" fill="#ffffff" font-weight="700">→ процент, вердикт, полнота данных</text>
+  </g>
+  <g stroke="#9c8cf0" stroke-width="2" fill="none">
+    <path d="M560 160 H600"/><path d="M560 238 H600"/><path d="M560 316 H600"/><path d="M560 394 H600"/>
+  </g>
+
+  <!-- проверка ИИ -->
+  <rect x="600" y="446" width="290" height="80" rx="14" fill="#ffffff" stroke="#ff4fa3" stroke-width="2" stroke-dasharray="6 5"/>
+  <text x="616" y="472" font-size="14" font-weight="700" fill="#0b0b2b">Проверка ИИ (необязательно)</text>
+  <text x="616" y="494" font-size="13" fill="#55577a">правит вердикт на ступень, только с цитатой;</text>
+  <text x="616" y="512" font-size="13" fill="#55577a">процент и стоп-факторы — от алгоритма</text>
+  <path d="M745 426 V446" stroke="#ff4fa3" stroke-width="2"/>
+
+  <!-- результат -->
+  <g font-size="14">
+    <rect x="930" y="128" width="230" height="110" rx="12" fill="#ffffff" stroke="#3ddc97" stroke-width="2"/>
+    <text x="946" y="156" font-weight="700" fill="#0b0b2b">Поставщику</text>
+    <text x="946" y="180" fill="#55577a">оценка, «паутинка», причины</text>
+    <text x="946" y="200" fill="#55577a">со ссылкой на поле, лента,</text>
+    <text x="946" y="220" fill="#55577a">пакеты, экспорт XLSX</text>
+    <rect x="930" y="254" width="230" height="90" rx="12" fill="#ffffff" stroke="#3ddc97" stroke-width="2"/>
+    <text x="946" y="282" font-weight="700" fill="#0b0b2b">Заказчику</text>
+    <text x="946" y="306" fill="#55577a">риски ФАС, интерес</text>
+    <text x="946" y="326" fill="#55577a">поставщиков, участники</text>
+    <rect x="930" y="360" width="230" height="66" rx="12" fill="#ffffff" stroke="#3ddc97" stroke-width="2"/>
+    <text x="946" y="388" font-weight="700" fill="#0b0b2b">REST API + Swagger</text>
+    <text x="946" y="410" fill="#55577a">/docs, журнал событий</text>
+  </g>
+  <g stroke="#3ddc97" stroke-width="2" fill="none">
+    <path d="M890 183 H930"/><path d="M890 299 H930"/><path d="M890 393 H930"/>
+  </g>
+
+  <!-- инфраструктура -->
+  <rect x="40" y="560" width="1120" height="52" rx="12" fill="#f3f1fb"/>
+  <text x="60" y="592" font-size="14" fill="#0b0b2b"><tspan font-weight="700">Инфраструктура:</tspan> React · FastAPI · PostgreSQL + pgvector (кэш, версии профилей, журнал) · Celery + Redis (пакеты) · Ollama (необязательно) · docker compose — проверяется в CI</text>
+</svg>

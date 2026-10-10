@@ -93,7 +93,7 @@ class Clause:
         return set(self.lemmas)
 
     def has_bigram(self, a: set[str], b: set[str]) -> bool:
-        return any(x in a and y in b for x, y in zip(self.lemmas, self.lemmas[1:]))
+        return any(x in a and y in b for x, y in zip(self.lemmas, self.lemmas[1:], strict=False))
 
     def polarity(self) -> str:
         """strong — исключить, soft — без приоритета, none — утверждение."""
@@ -311,7 +311,7 @@ def _advance(sentence: str, lem: set[str], out: ParseOutcome) -> None:
         return
     fin = out.preferences.finance
     words = morph_tokens(sentence)
-    pairs = {(a.lemma, b.lemma) for a, b in zip(words, words[1:])}
+    pairs = {(a.lemma, b.lemma) for a, b in zip(words, words[1:], strict=False)}
     if ("не", "важный") in pairs or ("не", "важно") in pairs or lem & {"неважный", "неважно", "разница", "принципиальный"}:
         fin.advance = "ignore"
         _add(out, "finance", "Аванс не важен", sentence)
@@ -422,7 +422,7 @@ def _keywords(sentence: str, out: ParseOutcome) -> None:
 
 
 def _importance(sentence: str, lem: set[str], clauses: list[Clause], out: ParseOutcome) -> None:
-    pairs = {(a, b) for c in clauses for a, b in zip(c.lemmas, c.lemmas[1:])}
+    pairs = {(a, b) for c in clauses for a, b in zip(c.lemmas, c.lemmas[1:], strict=False)}
     high = bool(lem & {"главный", "критичный", "критично", "приоритет"}) or ("очень", "важный") in pairs \
         or ("самый", "важный") in pairs or ("первый", "очередь") in pairs
     low = ("не", "важный") in pairs or bool(lem & {"неважный", "второстепенный"})

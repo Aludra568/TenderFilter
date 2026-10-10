@@ -9,7 +9,8 @@ from dataclasses import dataclass
 from functools import lru_cache
 
 from yargy import Parser, or_, rule
-from yargy.predicates import caseless, dictionary, in_, in_caseless, normalized, type as token_type
+from yargy.predicates import caseless, dictionary, in_, in_caseless
+from yargy.predicates import type as token_type
 
 from app.nlp.morph import tokenizer
 

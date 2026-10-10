@@ -6,7 +6,7 @@ _W12_2 = [3, 7, 2, 4, 10, 3, 5, 9, 4, 6, 8]
 
 
 def _check(digits: list[int], weights: list[int]) -> int:
-    return sum(d * w for d, w in zip(digits, weights)) % 11 % 10
+    return sum(d * w for d, w in zip(digits, weights, strict=False)) % 11 % 10
 
 
 def is_valid_inn(inn: str) -> bool:

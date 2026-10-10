@@ -1,9 +1,10 @@
 import time
 
+from conftest import SAMPLES
+
 from app.config import get_settings
 from app.egrul.providers import FnsProvider
 from app.nlp import criteria, llm
-from conftest import SAMPLES
 
 REAL = SAMPLES / "real_44fz_ef2020_0173100008726000065.xml"
 

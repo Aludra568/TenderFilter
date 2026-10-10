@@ -87,7 +87,7 @@ def export(n: int, seed: int = 7) -> Path:
     dv = DataValidation(type="list", formula1='"Участвовать,Рассмотреть,Не участвовать"', allow_blank=True)
     ws.add_data_validation(dv)
     dv.add(f"K2:L{len(chosen) + 1}")
-    for col, width in zip("ABCDEFGHIJKLM", (10, 60, 60, 14, 40, 22, 10, 8, 10, 30, 16, 16, 30)):
+    for col, width in zip("ABCDEFGHIJKLM", (10, 60, 60, 14, 40, 22, 10, 8, 10, 30, 16, 16, 30), strict=False):
         ws.column_dimensions[col].width = width
     xlsx = OUT / "to_label.xlsx"
     wb.save(xlsx)
@@ -100,7 +100,7 @@ def kappa(a: list[str], b: list[str]) -> float:
     n = len(a)
     if not n:
         return 0.0
-    po = sum(x == y for x, y in zip(a, b)) / n
+    po = sum(x == y for x, y in zip(a, b, strict=False)) / n
     pe = sum((a.count(c) / n) * (b.count(c) / n) for c in NAMES)
     return round((po - pe) / (1 - pe), 3) if pe < 1 else 1.0
 

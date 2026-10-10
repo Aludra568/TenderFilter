@@ -3,8 +3,9 @@ import time
 import zipfile
 from datetime import datetime, timedelta, timezone
 
-from app.seed.demo import SPECS, notice_xml
 from conftest import SAMPLES
+
+from app.seed.demo import SPECS, notice_xml
 
 
 def test_health(client):

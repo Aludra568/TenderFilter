@@ -21,6 +21,8 @@ jobs:
       - name: Tesseract для распознавания сканов
         run: sudo apt-get update && sudo apt-get install -y --no-install-recommends tesseract-ocr tesseract-ocr-rus fonts-dejavu-core
       - run: pip install -r requirements-dev.txt
+      - name: Линтер
+        run: python -m ruff check app tests
       - run: python -m pytest -q -rs
       - name: Эталонный набор (точность ≥ 80%, без критических ошибок)
         run: |

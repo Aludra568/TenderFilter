@@ -8,12 +8,12 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Callable
 
-from app.domain import PROCEDURE_NAMES, CanonicalTender, CompanyCard, Preferences
 from app.docs.contract import supplier_findings
+from app.domain import PROCEDURE_NAMES, CanonicalTender, CompanyCard, Preferences
 from app.reference import textvec
-from app.scoring import fuzzy
 from app.reference.okved import match_okved_okpd
 from app.reference.regions import BY_CODE
+from app.scoring import fuzzy
 
 
 @dataclass

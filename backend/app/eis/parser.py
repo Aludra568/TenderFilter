@@ -237,7 +237,7 @@ def _parse_tree(root, extracted_by: str) -> CanonicalTender:
     item_spec = spec.get("items", {})
     containers = [el for name in item_spec.get("container", []) for el in _descendants_by_name(root, name)]
     for container in containers[:300]:
-        def first(paths: list[str]):
+        def first(paths: list[str], container=container):
             for p in paths:
                 t = _text(find_path(container, p))
                 if t:

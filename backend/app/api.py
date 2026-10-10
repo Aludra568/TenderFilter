@@ -11,6 +11,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
+from app import services
 from app.audit import EVENT_NAMES, audit
 from app.config import get_settings
 from app.db import get_db
@@ -23,7 +24,6 @@ from app.nlp.criteria import parse_criteria
 from app.reference.regions import DISTRICTS, REGIONS
 from app.scoring import ahp
 from app.scoring.factors import FACTORS
-from app import services
 from app.worker import dispatch_batch, unpack
 
 router = APIRouter(prefix="/api")
@@ -71,11 +71,11 @@ def company(inn: str, refresh: bool = False, db: Session = Depends(get_db)):
     try:
         return get_company(db, inn, refresh=refresh)
     except InvalidInn as exc:
-        raise HTTPException(400, str(exc))
+        raise HTTPException(400, str(exc)) from exc
     except CompanyNotFound as exc:
-        raise HTTPException(404, str(exc))
+        raise HTTPException(404, str(exc)) from exc
     except EgrulError as exc:
-        raise HTTPException(502, str(exc))
+        raise HTTPException(502, str(exc)) from exc
 
 
 # ---------- профили ----------
@@ -183,9 +183,9 @@ def create_profile(body: ProfileCreate, db: Session = Depends(get_db)):
     try:
         profile = services.create_profile(db, body.name, body.company_inn, prefs, body.criteria_text)
     except InvalidInn as exc:
-        raise HTTPException(400, str(exc))
+        raise HTTPException(400, str(exc)) from exc
     except EgrulError as exc:
-        raise HTTPException(404, str(exc))
+        raise HTTPException(404, str(exc)) from exc
     services.rescore_all(db, profile)
     out = _profile_out(db, profile)
     out["parsed"] = parsed.to_dict() if parsed else None
@@ -238,7 +238,7 @@ async def parse_tender(file: UploadFile = File(...)) -> CanonicalTender:
     try:
         return parse_bytes(content, file.filename or "")
     except ParseError as exc:
-        raise HTTPException(422, str(exc))
+        raise HTTPException(422, str(exc)) from exc
 
 
 @router.post("/tenders", summary="Загрузить извещение (XML/JSON) и сразу оценить")
@@ -250,7 +250,7 @@ async def upload_tender(file: UploadFile = File(...), profile_id: int | None = F
         row = services.ingest(db, file.filename or "upload.xml", content)
     except ParseError as exc:
         audit("error", f"Файл {file.filename} не разобран — {exc}", level="warning")
-        raise HTTPException(422, str(exc))
+        raise HTTPException(422, str(exc)) from exc
     pv = services.current_version(db, profile)
     score = services.score_row(db, row, pv, services.profile_company(db, profile), force=True)
     audit("tender_uploaded", f"{row.purchase_number}: {score.score:.0f}% — {score.result.get('verdict_name')}",
@@ -269,7 +269,7 @@ def eis_notice(reestr_number: str):
     try:
         name, content = public.fetch_notice(reestr_number)
     except EisApiError as exc:
-        raise HTTPException(502, str(exc))
+        raise HTTPException(502, str(exc)) from exc
     return PlainTextResponse(content.decode("utf-8", errors="replace"), media_type="application/xml",
                              headers={"Content-Disposition": f'attachment; filename="{name}"'})
 
@@ -295,9 +295,9 @@ def tender_by_number(req: ByNumberRequest, db: Session = Depends(get_db)):
         row = services.ingest(db, filename, content)
     except EisApiError as exc:
         audit("error", f"ЕИС по номеру {req.reestr_number}: {exc}", level="warning")
-        raise HTTPException(502, str(exc))
+        raise HTTPException(502, str(exc)) from exc
     except ParseError as exc:
-        raise HTTPException(422, f"Документ из ЕИС не разобран: {exc}")
+        raise HTTPException(422, f"Документ из ЕИС не разобран: {exc}") from exc
     profile = _profile(db, req.profile_id)
     score = services.score_row(db, row, services.current_version(db, profile), services.profile_company(db, profile), force=True)
     audit("tender_uploaded", f"{row.purchase_number} из ЕИС: {score.score:.0f}% — {score.result.get('verdict_name')}",
@@ -528,7 +528,7 @@ def feed_export(profile_id: int | None = None, format: str = Query("xlsx", patte
         fill = fills.get(r[9])
         if fill:
             ws.cell(ws.max_row, 10).fill = PatternFill("solid", fgColor=fill)
-    for col, width in zip("ABCDEFGHIJK", (24, 60, 8, 24, 40, 28, 14, 18, 10, 18, 70)):
+    for col, width in zip("ABCDEFGHIJK", (24, 60, 8, 24, 40, 28, 14, 18, 10, 18, 70), strict=False):
         ws.column_dimensions[col].width = width
     ws.freeze_panes = "A2"
     out = io.BytesIO()
@@ -549,7 +549,7 @@ async def create_batch(files: list[UploadFile] = File(...), profile_id: int | No
         try:
             unpacked += unpack(f.filename or "file", content)
         except Exception:
-            raise HTTPException(422, f"Не удалось распаковать {f.filename}")
+            raise HTTPException(422, f"Не удалось распаковать {f.filename}") from None
     if not unpacked:
         raise HTTPException(422, "В загрузке нет файлов .xml или .json")
     batch = Batch(profile_id=profile.id, status="queued", total=len(unpacked), errors=[], tender_ids=[])
@@ -600,7 +600,7 @@ async def quick_score(
         tender = parse_bytes(content, file.filename or "")
     except ParseError as exc:
         audit("error", f"Быстрая оценка: файл {file.filename} не разобран — {exc}", level="warning")
-        raise HTTPException(422, str(exc))
+        raise HTTPException(422, str(exc)) from exc
     timings["parse_ms"] = (time.perf_counter() - t) * 1000
 
     doc_files = [(d.filename or "doc", await _read_upload(d)) for d in documents if d.filename]
@@ -617,11 +617,11 @@ async def quick_score(
         try:
             company_card = get_company(db, inn.strip())
         except InvalidInn as exc:
-            raise HTTPException(400, str(exc))
+            raise HTTPException(400, str(exc)) from exc
         except CompanyNotFound as exc:
-            raise HTTPException(404, str(exc))
+            raise HTTPException(404, str(exc)) from exc
         except EgrulError as exc:
-            raise HTTPException(502, f"{exc}. Можно оценить без ИНН или повторить позже.")
+            raise HTTPException(502, f"{exc}. Можно оценить без ИНН или повторить позже.") from exc
     customer = try_get_company(db, tender.customer_inn)
     timings["egrul_ms"] = (time.perf_counter() - t) * 1000
 
@@ -697,7 +697,7 @@ async def customer_check(
     try:
         tender = parse_bytes(content, file.filename or "")
     except ParseError as exc:
-        raise HTTPException(422, str(exc))
+        raise HTTPException(422, str(exc)) from exc
     docs = [(d.filename or "doc", await _read_upload(d)) for d in documents if d.filename]
     if docs:
         tender = attach(tender, services.read_documents(docs, tender.law, tender))
@@ -726,7 +726,7 @@ def customer_participants(req: ParticipantsRequest, db: Session = Depends(get_db
         try:
             card = get_company(db, p.inn.strip())
         except InvalidInn as exc:
-            raise HTTPException(400, f"{p.inn}: {exc}")
+            raise HTTPException(400, f"{p.inn}: {exc}") from exc
         except EgrulError:
             card = None
         out.append(cust.check_participant(req.tender, card, p))
