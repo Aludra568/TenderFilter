@@ -1,4 +1,5 @@
 import io
+import os
 from datetime import date, timedelta
 from pathlib import Path
 
@@ -84,7 +85,9 @@ def _font():
     return None
 
 
-@pytest.mark.skipif(not ocr.available() or not _font(), reason="нет Tesseract с русским языком — проверяется в CI")
+# В CI (GitHub Actions выставляет CI=true) Tesseract ставится — там тест обязан выполниться, а не пропуститься.
+@pytest.mark.skipif(not os.environ.get("CI") and (not ocr.available() or not _font()),
+                    reason="нет Tesseract с русским языком — проверяется в CI")
 def test_scanned_expired_license_via_ocr():
     from PIL import Image, ImageDraw, ImageFont
 
