@@ -8,7 +8,7 @@
     }
   ],
   "found": {
-    "payment_days": 0.744,
+    "payment_days": 0.846,
     "acceptance_days": 0.692,
     "advance_percent": 0.41,
     "supplier_penalty": 1.0,
@@ -86,7 +86,7 @@
       "file": "0111200000926000412.doc",
       "format": "doc",
       "chars": 35162,
-      "payment_days": null,
+      "payment_days": 7,
       "acceptance_days": 10,
       "advance_percent": null,
       "supplier_penalty": "standard",
@@ -311,7 +311,7 @@
       "file": "0137200001226007573.docx",
       "format": "docx",
       "chars": 33619,
-      "payment_days": null,
+      "payment_days": 7,
       "acceptance_days": 5,
       "advance_percent": null,
       "supplier_penalty": "standard",
@@ -337,14 +337,16 @@
       "file": "0145300016526000112.doc",
       "format": "doc",
       "chars": 31284,
-      "payment_days": null,
+      "payment_days": 7,
       "acceptance_days": 20,
       "advance_percent": 0.0,
       "supplier_penalty": "standard",
       "max_fine_percent": null,
       "warranty_months": null,
       "brands": [],
-      "findings": []
+      "findings": [
+        "cash_gap"
+      ]
     },
     {
       "file": "0150600008726000125.docx",
@@ -428,14 +430,16 @@
       "file": "0156200004926000045.docx",
       "format": "docx",
       "chars": 37819,
-      "payment_days": null,
+      "payment_days": 7,
       "acceptance_days": 20,
       "advance_percent": null,
       "supplier_penalty": "standard",
       "max_fine_percent": null,
       "warranty_months": null,
       "brands": [],
-      "findings": []
+      "findings": [
+        "cash_gap"
+      ]
     },
     {
       "file": "0157600002026000150.doc",
