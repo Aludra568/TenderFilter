@@ -44,8 +44,8 @@ def build_tender(spec: dict, now: datetime, idx: int) -> CanonicalTender:
     return _post_process(t, extracted_by="json")
 
 
-def run(write: bool = True) -> dict:
-    data = yaml.safe_load(GOLDEN.read_text(encoding="utf-8"))
+def run(write: bool = True, golden: Path = GOLDEN, report_path: Path = REPORT) -> dict:
+    data = yaml.safe_load(golden.read_text(encoding="utf-8"))
     now = datetime.fromisoformat(data["now"])
     mock = MockProvider()
     companies: dict[str, CompanyCard] = {inn: mock.fetch(inn) for inn in mock.data}
@@ -80,13 +80,15 @@ def run(write: bool = True) -> dict:
         "rows": rows,
     }
     if write:
-        REPORT.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+        report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     return report
 
 
 def main() -> int:
-    report = run()
-    print(f"Эталонный набор: {report['correct']}/{report['cases']} = {report['accuracy']:.0%}, "
+    name = sys.argv[1] if len(sys.argv) > 1 else "golden"
+    golden = ROOT / "eval" / f"{name}.yaml"
+    report = run(golden=golden, report_path=REPORT if name == "golden" else ROOT / "eval" / f"report_{name}.json")
+    print(f"Набор {name}: {report['correct']}/{report['cases']} = {report['accuracy']:.0%}, "
           f"критических ошибок (skip→go): {report['critical_errors']}, "
           f"среднее время {report['timing_ms']['avg']} мс")
     print("ожидалось \\ получено: " + "  ".join(f"{v:>8}" for v in VERDICTS))
