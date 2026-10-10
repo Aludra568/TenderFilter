@@ -6,8 +6,8 @@
   "phrase_accuracy": 0.833,
   "check_accuracy": 0.891,
   "checks": 46,
-  "ms_median": 2.85,
-  "ms_max": 70.83,
+  "ms_median": 2.66,
+  "ms_max": 65.74,
   "errors": [
     {
       "text": "Максимальная цена контракта — 8 млн",

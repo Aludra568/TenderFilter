@@ -71,11 +71,18 @@ def cosine(a: list[float], b: list[float]) -> float:
 
 
 def keyword_hits(keywords: list[str], text: str) -> list[str]:
-    """Ключевые слова профиля, чьи основы встречаются в тексте."""
-    words = {stem(w) for w in tokens(text)}
+    """Ключевые слова профиля, все слова которых (в начальной форме) есть в тексте.
+
+    Здесь общие слова не выбрасываются: «медицинское оборудование» требует и «медицинский»,
+    и «оборудование» — иначе фраза вырождалась в «медицинский» и совпадала с медосмотром.
+    """
+    words = {w for w in lemmas(text) if len(w) >= 3 or w.isdigit()}
     hits = []
     for kw in keywords:
-        kw_tokens = tokens(kw)
-        if kw_tokens and all(stem(w) in words for w in kw_tokens):
+        kw_words = [w for w in lemmas(kw) if len(w) >= 3 and w not in _FUNCTION_WORDS]
+        if kw_words and all(w in words for w in kw_words):
             hits.append(kw)
     return hits
+
+
+_FUNCTION_WORDS = {"для", "или", "под", "над", "без", "при", "про"}

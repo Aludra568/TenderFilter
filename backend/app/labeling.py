@@ -105,13 +105,15 @@ def kappa(a: list[str], b: list[str]) -> float:
     return round((po - pe) / (1 - pe), 3) if pe < 1 else 1.0
 
 
-def import_labels(xlsx: Path) -> dict:
+def import_labels(xlsx: Path, single: bool = False) -> dict:
     meta = yaml.safe_load((OUT / "cases.yaml").read_text(encoding="utf-8"))
     golden = yaml.safe_load(GOLDEN.read_text(encoding="utf-8"))
     ws = load_workbook(xlsx).active
     a_all, b_all, agreed, disagreed = [], [], [], []
     for row in ws.iter_rows(min_row=2, values_only=True):
         cid, l1, l2, comment = row[0], row[10], row[11], row[12]
+        if single and l1 and not l2:
+            l2 = l1  # один разметчик: эталон без проверки согласия, это пишется в отчёте
         if not cid or not l1 or not l2:
             continue
         v1, v2 = BY_NAME.get(str(l1).strip().lower()), BY_NAME.get(str(l2).strip().lower())
@@ -130,7 +132,7 @@ def import_labels(xlsx: Path) -> dict:
     (ROOT / "golden_real.yaml").write_text(
         "# Эталон на реальных извещениях ЕИС: только случаи, где два разметчика независимо согласны.\n"
         + yaml.safe_dump(out, allow_unicode=True, sort_keys=False), encoding="utf-8")
-    summary = {"labeled": len(a_all), "agreed": len(agreed), "agreement": round(len(agreed) / len(a_all), 3) if a_all else None,
+    summary = {"mode": "один разметчик" if single else "два разметчика", "labeled": len(a_all), "agreed": len(agreed), "agreement": round(len(agreed) / len(a_all), 3) if a_all else None,
                "kappa": kappa(a_all, b_all), "disagreements": disagreed}
     (OUT / "agreement.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
     return summary
@@ -141,12 +143,13 @@ def main() -> int:
     ap.add_argument("cmd", choices=["export", "import"])
     ap.add_argument("path", nargs="?")
     ap.add_argument("--n", type=int, default=120)
+    ap.add_argument("--single", action="store_true", help="один разметчик (колонка «Разметчик 2» пустая)")
     args = ap.parse_args()
     if args.cmd == "export":
         path = export(args.n)
         print(f"Таблица для разметки: {path} — два человека заполняют колонки «Разметчик 1» и «Разметчик 2» независимо.")
         return 0
-    s = import_labels(Path(args.path or OUT / "to_label.xlsx"))
+    s = import_labels(Path(args.path or OUT / "to_label.xlsx"), single=args.single)
     print(f"Размечено {s['labeled']}, согласны {s['agreed']} ({s['agreement']:.0%}), каппа Коэна {s['kappa']}. "
           f"Эталон: eval/golden_real.yaml; расхождения — eval/labeling/agreement.json")
     return 0

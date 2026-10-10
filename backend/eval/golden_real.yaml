@@ -1,0 +1,2398 @@
+# Эталон на реальных извещениях ЕИС: только случаи, где два разметчика независимо согласны.
+now: '2026-10-10T05:49:44.866486+00:00'
+profiles:
+  it_sib:
+    company_inn: '5406123450'
+    criteria: Работаем в Новосибирской и Томской областях, в Алтайском крае и Кемеровской
+      области — если выгодно. НМЦК от 500 тыс. до 30 млн. На обеспечения готовы отвлечь
+      не больше 2 млн. На заявку нужно минимум 3 дня. Конкурсы не любим. Аванс важен.
+      Поставляем ноутбуки, компьютеры, серверы, МФУ, картриджи и сетевое оборудование.
+  build_tomsk:
+    company_inn: '7017123451'
+    criteria: Работаем только в Томской области. Поставляем цемент, кирпич, строительные
+      материалы, отделочные работы. НМЦК до 10 млн.
+  med_msk:
+    company_inn: '7705123452'
+    criteria: Работаем только в Москве и Московской области. Поставляем медицинское
+      оборудование и лекарственные препараты. Аванс обязателен.
+  liquidating:
+    company_inn: '5406987651'
+    criteria: Поставляем ноутбуки.
+cases:
+- id: real-001
+  profile: it_sib
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Оказание услуг по изготовлению сувенирной продукции для победителей краевого
+      экологического конкурса "ЭкоЛидер-2026"
+    okpd2:
+    - '23.19'
+    - 23.19.91.000
+    method: e_auction
+    law: 44-FZ
+    nmck: 161175.0
+    place: край Хабаровский
+    days: 3.67
+    smp_only: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '2721180057'
+- id: real-002
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Запрос котировок №551 Поставка расходных материалов, применяемых в медицинских
+      целях
+    okpd2:
+    - 32.50.13.110
+    - 32.50.13.190
+    method: quotation_request
+    law: 44-FZ
+    nmck: 1500000.0
+    place: обл. Нижегородская, г.о. город Нижний Новгород
+    days: 5.97
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '5260101352'
+    app_guarantee_percent: 1.0
+- id: real-003
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Электронный запрос котировок на поставку моющего средства для ЦСО (лимонная
+      кислота) (этап 2) в 2026 году для нужд ГБУЗ МКНЦ имени А.С. Логинова ДЗМ
+    okpd2:
+    - 20.20.14.000
+    method: quotation_request
+    law: 44-FZ
+    nmck: 20948.0
+    place: г. Москва, вн.тер.г. муниципальный округ Перово, ул. Новогиреевская, д.
+      1 стр. 4
+    days: 6.01
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '7720093523'
+- id: real-004
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: 2026-07611**Поставка лекарственного препарата для медицинского применения
+      пропранолол
+    okpd2:
+    - '21.20'
+    - 21.20.10.146
+    method: e_auction
+    law: 44-FZ
+    nmck: 30642.5
+    place: обл. Воронежская, м.р-н Хохольский, с.п. Петинское, п. Орловка, ул. Резниковой,
+      д. 13
+    days: 10.01
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '3666159455'
+    app_guarantee_percent: 0.0
+- id: real-005
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: 'Услуги по  организации проживания и питания участников форума и модераторов
+      в целях реализации мероприятия (проекта) «Комплексная программа поддержки студенческих
+      инициатив в экосистеме молодежной политики в Нижегородском государственном педагогическом
+      университете им. К. Минина "Мининский: сохраняя традиции, создавая возможности"»
+      на основании соглашения с Федеральным агентством по делам молодежи на предоставлении
+      из федерального бюджета гранта в форме субсидии юридическому лицу – победителю
+      Всероссийского конкурса молодежных проектов среди образовательных организаций
+      высшего образования в 2026 году от «29» мая 2026 г. № 091-15-2026-025'
+    okpd2:
+    - 55.10.10.000
+    method: quotation_request
+    law: 44-FZ
+    nmck: 1124280.72
+    place: обл. Нижегородская, г.о. город Нижний Новгород, г. Нижний Новгород, ул.
+      Ульянова, д. 1
+    days: -0.99
+    smp_only: false
+    customer_inn: '5260001277'
+    app_guarantee_percent: 1.0
+- id: real-006
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Поставка лекарственного препарата для медицинского применения Ленватиниб  на
+      2027  год
+    okpd2:
+    - '21.20'
+    - 21.20.10.211
+    method: e_auction
+    law: 44-FZ
+    nmck: 4444288.2
+    place: обл. Белгородская, г.о. город Белгород, г. Белгород, ул. Куйбышева, д.
+      1
+    days: 11.01
+    smp_only: false
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '3123484942'
+    app_guarantee_percent: 1.0
+- id: real-007
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Запрос котировок №564/1 Поставка расходных материалов, применяемых в
+      медицинских целях
+    okpd2:
+    - 13.20.44.120
+    method: quotation_request
+    law: 44-FZ
+    nmck: 750000.0
+    place: обл. Нижегородская, г.о. город Нижний Новгород, г. Нижний Новгород, ул.
+      Маршала Воронова, д. 20А
+    days: 5.97
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '5260101352'
+- id: real-008
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Открытый конкурс в электронной форме на право заключения контракта на
+      оказание услуг по проведению обязательных  периодических   медицинских осмотров
+      работников  ГБУ «Автомобильные дороги» в 2026-2029 годах
+    okpd2:
+    - 86.21.10.120
+    method: open_contest
+    law: 44-FZ
+    nmck: 49898072.0
+    place: г. Москва
+    days: -25.95
+    smp_only: false
+    contract_guarantee_percent: 5.0
+    customer_inn: '7704515009'
+    app_guarantee_percent: 2.0
+- id: real-009
+  profile: it_sib
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Выполнение работ по текущему ремонту внутренних помещений
+    okpd2:
+    - '43.39'
+    - 43.39.19.190
+    method: e_auction
+    law: 44-FZ
+    nmck: 5147096.91
+    place: обл. Тверская, г.о. город Тверь, г. Тверь, пр-кт Комсомольский, д. 4/4
+    days: 5.97
+    smp_only: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '6950233646'
+    app_guarantee_percent: 0.5
+- id: real-010
+  profile: med_msk
+  expected: consider
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Запрос котировок  в электронной форме на поставку медицинских изделий
+      (трубка трахеостомическая, одноразового использования) для обеспечения граждан,
+      имеющих право на получение государственной социальной помощи в городе Москве
+      (ВК2026-297П2)
+    okpd2:
+    - 32.50.50.190
+    method: quotation_request
+    law: 44-FZ
+    nmck: 94612.5
+    place: г. Москва
+    days: 6.01
+    smp_only: false
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '7714338609'
+- id: real-011
+  profile: med_msk
+  expected: consider
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Запрос котировок в электронной форме на поставку медицинских изделий
+      (гипертонический стерильный раствор для ингаляции) для обеспечения граждан,
+      имеющих право на получение государственной социальной помощи в городе Москве
+      (ВК2026-367)
+    okpd2:
+    - 32.50.13.190
+    method: quotation_request
+    law: 44-FZ
+    nmck: 1233840.0
+    place: г. Москва
+    days: 6.01
+    smp_only: false
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '7714338609'
+    app_guarantee_percent: 1.0
+- id: real-012
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Оказание услуг по изготовлению и монтажу пожарных лестниц, противопожарных
+      дверей и люков в 2026 году
+    okpd2:
+    - 25.12.10.190
+    - 25.11.23.119
+    - 43.99.90.190
+    method: quotation_request
+    law: 44-FZ
+    nmck: 3112605.02
+    place: г. Санкт-Петербург, вн.тер.г. муниципальный округ Народный, пр-кт Большевиков,
+      д. 52 к. 1 литера К
+    days: 5.03
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 10.0
+    customer_inn: '7811060211'
+    app_guarantee_percent: 1.0
+- id: real-013
+  profile: med_msk
+  expected: consider
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: 'Электронный запрос котировок на право заключения контракта на поставку
+      лекарственного средства: Фосфомицин (повторно).'
+    okpd2:
+    - 21.20.10.191
+    method: quotation_request
+    law: 44-FZ
+    nmck: 3320100.0
+    place: г. Москва
+    days: 5.01
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '7734115329'
+    app_guarantee_percent: 1.0
+- id: real-014
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: 'Выполнение работ по монтажу спортивного покрытия и нанесения разметки
+      для игры в волейбол и гандбол в спортивно-оздоровительном комплексе в г. Саратове,
+      расположенном по адресу: Российская Федерация, Саратовская область, г. Саратов,
+      ул. им. Тархова С.Ф., зд. 64'
+    okpd2:
+    - '43.33'
+    - 43.33.29.110
+    method: quotation_request
+    law: 44-FZ
+    nmck: 1880324.45
+    place: обл. Саратовская, г.о. город Саратов, г. Саратов, ул. им Тархова С.Ф.,
+      зд. 64
+    days: 5.97
+    smp_only: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '6453167506'
+    app_guarantee_percent: 1.0
+- id: real-015
+  profile: build_tomsk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Электронный запрос котировок на поставку шовного материала (431-зк (этап
+      1)) для нужд ГБУЗ «ГКБ № 67 им. Л.А.Ворохобова»
+    okpd2:
+    - 21.20.24.120
+    method: quotation_request
+    law: 44-FZ
+    nmck: 1490000.0
+    place: г. Москва
+    days: 6.05
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 1.0
+    customer_inn: '7734091519'
+    app_guarantee_percent: 0.5
+- id: real-016
+  profile: build_tomsk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: 'Электронный запрос котировок на право заключения контракта на поставку
+      лекарственного средства: Инклисиран.'
+    okpd2:
+    - 21.20.10.149
+    method: quotation_request
+    law: 44-FZ
+    nmck: 1920599.1
+    place: г. Москва
+    days: 10.01
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '7734115329'
+    app_guarantee_percent: 1.0
+- id: real-017
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Поставка медицинских изделий (пипетки, стекла предметные)
+    okpd2:
+    - 32.50.50.190
+    - 32.50.50.000
+    method: e_auction
+    law: 44-FZ
+    nmck: 57104.0
+    place: обл. Рязанская, г.о. город Рязань, г. Рязань, пр-кт Первомайский, д. 1/117
+    days: 9.09
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 10.0
+    customer_inn: '6228013199'
+- id: real-018
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: на оказание услуг по организации и проведению торжественного мероприятия
+      по подведению итогов ежегодных районных конкурсов по присвоению почетных званий
+      и признанию вклада работников агропромышленного комплекса Лужского района
+    okpd2:
+    - '93.29'
+    - 93.29.29.000
+    method: e_auction
+    law: 44-FZ
+    nmck: 1346121.54
+    place: обл. Ленинградская, м.р-н Лужский, г.п. Лужское, г. Луга
+    days: 6.01
+    smp_only: true
+    contract_guarantee_percent: 30.0
+    customer_inn: '4710026064'
+    app_guarantee_percent: 1.0
+- id: real-019
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Поставка медицинских изделий для автоматического коагулометра Sysmex
+      CS-2000i I  на 2027 г.
+    okpd2:
+    - '32.50'
+    - 32.50.50.190
+    method: e_auction
+    law: 44-FZ
+    nmck: 5799000.0
+    place: обл. Белгородская
+    days: 9.01
+    smp_only: false
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '3123484942'
+    app_guarantee_percent: 0.07
+- id: real-020
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Выполнение работ по содержанию автомобильных дорог общего пользования
+      регионального и межмуниципального значения  и сооружений на них в Пензенском
+      районе Пензенской области в 2027г.
+    okpd2:
+    - '42.11'
+    - 42.11.20.300
+    method: e_auction
+    law: 44-FZ
+    nmck: 24593747.98
+    place: обл. Пензенская
+    days: 10.01
+    smp_only: true
+    contract_guarantee_percent: 1.0
+    customer_inn: '5800021055'
+    app_guarantee_percent: 1.0
+- id: real-021
+  profile: it_sib
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Оказание услуг по обучению сотрудников Заказчика
+    okpd2:
+    - '85.42'
+    - 85.42.19.900
+    method: quotation_request
+    law: 44-FZ
+    nmck: 111283.37
+    place: обл. Свердловская, г.о. город Екатеринбург, г. Екатеринбург
+    days: -0.74
+    smp_only: true
+    customer_inn: '6661002456'
+- id: real-022
+  profile: med_msk
+  expected: consider
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Поставка медицинских изделий для артроскопии (Лот 1) на 2027 год для
+      нужд ГБУЗ МОСКОВСКОЙ ОБЛАСТИ  «ЖУКОВСКАЯ ОКБ»
+    okpd2:
+    - '21.10'
+    - 21.10.60.191
+    method: quotation_request
+    law: 44-FZ
+    nmck: 14280000.0
+    place: обл. Московская, г.о. Жуковский
+    days: 6.05
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 10.0
+    customer_inn: '5013006048'
+    app_guarantee_percent: 1.0
+- id: real-023
+  profile: med_msk
+  expected: consider
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Закупка на поставку расходных материалов для КДЛ (для анализатора ORTHO)
+      лот 368 для нужд ГБУЗ Московской области "Лобненская больница" 2026 г.
+    okpd2:
+    - '21.20'
+    - 21.20.23.110
+    method: e_auction
+    law: 44-FZ
+    nmck: 1173279.85
+    place: обл. Московская, г.о. Лобня
+    days: 5.05
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 10.0
+    customer_inn: '5025000080'
+    app_guarantee_percent: 1.0
+- id: real-024
+  profile: it_sib
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: зз-0017-37167 - 2026 Устройство входной группы в парк "Сосновый бор"
+      села Кильмезь, в рамках реализации проекта "Тропа предков" ежегодного конкурса
+      "Лучшие муниципальные проекты в Удмуртской Республике"
+    okpd2:
+    - 43.99.70.000
+    method: quotation_request
+    law: 44-FZ
+    nmck: 450000.0
+    place: респ. Удмуртская
+    days: 4.88
+    smp_only: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '1841075736'
+- id: real-025
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Оказание услуг по мойке автотранспортных средств
+    okpd2:
+    - '45.20'
+    - 45.20.30.000
+    method: quotation_request
+    law: 44-FZ
+    nmck: 165000.0
+    place: г. Москва
+    days: 6.01
+    smp_only: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '4345233451'
+- id: real-026
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Конкурс в электронной форме на оказание услуг по техническому обслуживанию
+      и ремонту систем пожарной сигнализации, систем оповещения и управления эвакуацией
+      людей при пожаре, автоматических установок пожаротушения и внутреннего противопожарного
+      водопровода на объектах защиты ГБУЗ «ЦЛО ДЗМ» в 2027-2028 гг.
+    okpd2:
+    - 80.20.10.000
+    method: open_contest
+    law: 44-FZ
+    nmck: 9217354.44
+    place: г. Москва
+    days: 12.05
+    smp_only: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '7720023269'
+    app_guarantee_percent: 1.0
+- id: real-027
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Запрос котировок в электронной форме на поставку медицинского изделия
+      ВИЧ - инфекции (МИ2026-310)
+    okpd2:
+    - 32.50.50.190
+    method: quotation_request
+    law: 44-FZ
+    nmck: 2000000.0
+    place: г. Москва
+    days: -0.99
+    smp_only: false
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '7714338609'
+    app_guarantee_percent: 0.5
+- id: real-028
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Выполнение работ по монтажу системы экстренного оповещения работников
+      и посетителей о потенциальной угрозе или возникновении чрезвычайной ситуации
+      МКДОУ Березовский детский сад Даниловского муниципального района Волгоградской
+      области
+    okpd2:
+    - '33.20'
+    - 33.20.39.900
+    method: e_auction
+    law: 44-FZ
+    nmck: 102134.84
+    place: обл. Волгоградская, м.р-н Даниловский, с.п. Березовское, ст-ца Березовская,
+      ул. Ловягина, д. 42
+    days: 8.88
+    smp_only: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '3404102606'
+- id: real-029
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Электронный запрос котировок на поставку лекарственного препарата  Силденафил  на
+      2026 год для нужд ГБУЗ «Морозовская ДГКБ ДЗМ».
+    okpd2:
+    - 21.20.10.142
+    method: quotation_request
+    law: 44-FZ
+    nmck: 75744.0
+    place: г. Москва
+    days: -0.95
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '7705039232'
+- id: real-030
+  profile: it_sib
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Электронный запрос котировок на поставку лекарственных средств (Эмпаглифлозин)
+      для ГБУЗ «ГКБ имени М.П. Кончаловского ДЗМ»
+    okpd2:
+    - 21.20.10.119
+    method: quotation_request
+    law: 44-FZ
+    nmck: 49331.0
+    place: г. Москва
+    days: -0.99
+    smp_only: false
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '7735069192'
+    app_guarantee_percent: 1.0
+- id: real-031
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Запрос котировок №551-2 Поставка расходных материалов, применяемых в
+      медицинских целях
+    okpd2:
+    - 32.50.13.110
+    - 32.50.13.190
+    method: quotation_request
+    law: 44-FZ
+    nmck: 1500000.0
+    place: обл. Нижегородская, г.о. город Нижний Новгород
+    days: 5.97
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '5260101352'
+    app_guarantee_percent: 1.0
+- id: real-032
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: на поставку лекарственных препаратов для медицинского применения (МНН:БЕТАГИСТИН)
+    okpd2:
+    - 21.20.10.239
+    method: e_auction
+    law: 44-FZ
+    nmck: 205725.0
+    place: обл. Калининградская, г.о. город Калининград, г. Калининград, мкр. Прибрежный,
+      ул. Заводская, зд. 13 к. 6
+    days: 18.05
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '3904612235'
+- id: real-033
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Электронный запрос котировок на поставку медицинских изделий (держатель
+      электрода) для нужд ГБУЗ «ГКБ им. Д.Д. Плетнёва ДЗМ»
+    okpd2:
+    - 32.50.50.190
+    method: quotation_request
+    law: 44-FZ
+    nmck: 1530000.0
+    place: г. Москва
+    days: -0.95
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '7719047184'
+    app_guarantee_percent: 0.5
+- id: real-034
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Оказание услуг по осуществлению поверки счётчиков холодной воды для нужд
+      ГБНОУ «Академия талантов» в 2027 году
+    okpd2:
+    - 71.12.40.129
+    method: quotation_request
+    law: 44-FZ
+    nmck: 34133.32
+    place: г. Санкт-Петербург, вн.тер.г. муниципальный округ Чкаловское, наб. Реки
+      Малой Невки, д. 1 литера Д
+    days: 9.09
+    smp_only: true
+    contract_guarantee_percent: 10.0
+    customer_inn: '7813604570'
+    app_guarantee_percent: 1.0
+- id: real-035
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: 'Выполнение работ по одновременной подготовке проектной документации
+      и капитальному ремонту объекта капитального строительства: «Капитальный ремонт
+      (с разработкой ПСД) зданий ОГБУЗ «Больница медицинской реабилитации» (Смоленская
+      область, г. Смоленск, ул. Шевченко, д. 61а)» (помещений водолечебницы)'
+    okpd2:
+    - 71.12.19.100
+    - 41.20.40.900
+    method: open_contest
+    law: 44-FZ
+    nmck: 110000000.0
+    place: обл. Смоленская, г.о. город Смоленск, г. Смоленск, ул. Шевченко, д. 61А
+    days: 16.01
+    smp_only: true
+    contract_guarantee_percent: 10.0
+    customer_inn: '6730076910'
+    app_guarantee_percent: 1.0
+- id: real-036
+  profile: med_msk
+  expected: consider
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Запрос котировок  в электронной форме на поставку медицинских изделий
+      (трубка трахеостомическая, неармированная, стандартная, многоразового использования)
+      для обеспечения граждан, имеющих право на получение государственной социальной
+      помощи в городе Москве (ВК2026-304)
+    okpd2:
+    - 22.21.29.120
+    method: quotation_request
+    law: 44-FZ
+    nmck: 240181.32
+    place: г. Москва
+    days: 6.01
+    smp_only: false
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '7714338609'
+- id: real-037
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Открытый конкурс в электронной форме на оказание услуг по выполнению
+      функций младшего медицинского персонала в Государственном бюджетном учреждении
+      здравоохранения города Москвы «Городская клиническая больница имени В.В. Вересаева
+      Департамента здравоохранения города Москвы» в 2026г.
+    okpd2:
+    - 86.90.12.190
+    method: open_contest
+    law: 44-FZ
+    nmck: 29167063.2
+    place: г. Москва, вн.тер.г. муниципальный округ Дмитровский, ул. Лобненская, д.
+      10 стр. 4
+    days: 2.01
+    smp_only: false
+    contract_guarantee_percent: 5.0
+    customer_inn: '7713034164'
+    app_guarantee_percent: 0.5
+- id: real-038
+  profile: med_msk
+  expected: consider
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Запрос котировок в электронной форме на поставку медицинских изделий
+      (гипертонический стерильный раствор для ингаляции) для обеспечения граждан,
+      имеющих право на получение государственной социальной помощи в городе Москве
+      (ВК2026-366)
+    okpd2:
+    - 32.50.13.190
+    method: quotation_request
+    law: 44-FZ
+    nmck: 1936166.4
+    place: г. Москва
+    days: 6.01
+    smp_only: false
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '7714338609'
+    app_guarantee_percent: 1.0
+- id: real-039
+  profile: build_tomsk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: 'Выполнение комплекса работ по социокультурному исследованию и соучаствующему
+      проектированию, разработке содержательной программы, архитектурной концепции
+      и проектно-сметной документации капитального ремонта молодежного центра в рамках
+      подготовки к Всероссийскому конкурсу программ комплексного развития молодежной
+      политики в субъектах Российской Федерации «Регион для молодых» по объекту: нежилое
+      одноэтажное здание бывшего крытого рынка, планируемое к приспособлению под молодежный
+      центр площадью 674,6 м² по адресу: Свердловская область, г. Сухой Лог, ул. Артиллеристов,
+      д. 44А'
+    okpd2:
+    - '71.12'
+    - 71.12.12.190
+    method: open_contest
+    law: 44-FZ
+    nmck: 5000000.0
+    place: обл. Свердловская, м.о. Сухой Лог, г. Сухой Лог, ул. Юбилейная, д. 2
+    days: 6.09
+    smp_only: false
+    contract_guarantee_percent: 10.0
+    customer_inn: '6633019673'
+    app_guarantee_percent: 0.5
+- id: real-040
+  profile: build_tomsk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Выполнение работ по разработке проектно-сметной документации (в части
+      разработки архитектурных решений и пояснительной записки, составлению укрупненного
+      локального сметного расчета), выполнению инженерных изысканий (топографическая
+      съемка), подготовке конкурсной заявки и документации для участия во Всероссийском
+      конкурсе лучших проектов создания комфортной городской среды для субъектов Российской
+      Федерации, входящих в состав ДФО
+    okpd2:
+    - '71.12'
+    - 71.12.19.100
+    method: open_contest
+    law: 44-FZ
+    nmck: 2363333.33
+    place: край Хабаровский, м.о. Солнечный, рп. Солнечный
+    days: 15.72
+    smp_only: true
+    contract_guarantee_percent: 10.0
+    customer_inn: '2700062824'
+    app_guarantee_percent: 1.0
+- id: real-041
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: 'на поставку лекарственных препаратов для медицинского применения (МНН:
+      ТРИПТОРЕЛИН)'
+    okpd2:
+    - 21.20.10.212
+    method: e_auction
+    law: 44-FZ
+    nmck: 97973033.4
+    place: обл. Калининградская, г.о. город Калининград, г. Калининград, мкр. Прибрежный,
+      ул. Заводская, зд. 13 к. 6
+    days: 18.05
+    smp_only: false
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '3904612235'
+    app_guarantee_percent: 1.0
+- id: real-042
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Выполнение работ по содержанию мостов и локальных очистных сооружений
+      на автомобильных дорогах общего пользования регионального или межмуниципального
+      значения в Республике Марий Эл
+    okpd2:
+    - '42.11'
+    - 42.11.20.300
+    method: e_auction
+    law: 44-FZ
+    nmck: 80660405.87
+    place: респ. Марий Эл
+    days: 9.97
+    smp_only: true
+    contract_guarantee_percent: 10.0
+    customer_inn: '1200008200'
+    app_guarantee_percent: 1.0
+- id: real-043
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Открытый конкурс в электронной форме на право заключения контракта на
+      оказание услуг по выполнению функций младшего медицинского персонала в Государственном
+      бюджетном учреждении здравоохранения города Москвы «Городская клиническая больница
+      № 67 имени Л.А. Ворохобова Департамента здравоохранения города Москвы».
+    okpd2:
+    - 86.90.12.190
+    method: open_contest
+    law: 44-FZ
+    nmck: 496678676.88
+    place: г. Москва
+    days: -4.95
+    smp_only: false
+    contract_guarantee_percent: 10.0
+    customer_inn: '7704515009'
+    app_guarantee_percent: 0.5
+- id: real-044
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Организация и проведение праздничного торжественного мероприятия «Ясенево
+      – жемчужина Москвы», посвященное 50-летию получения ордеров первыми жителями
+      района Ясенево
+    okpd2:
+    - '93.29'
+    - 93.29.2
+    method: e_auction
+    law: 44-FZ
+    nmck: 1400000.0
+    place: г. Москва, вн.тер.г. муниципальный округ Ясенево, пр-д Карамзина, д. 13
+      к. 1
+    days: 8.97
+    smp_only: true
+    contract_guarantee_percent: 20.0
+    customer_inn: '7728116250'
+    app_guarantee_percent: 1.0
+- id: real-045
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: 'на поставку лекарственных препаратов для медицинского применения (МНН:
+      ЭМПАГЛИФЛОЗИН)'
+    okpd2:
+    - 21.20.10.119
+    method: e_auction
+    law: 44-FZ
+    nmck: 14137534.2
+    place: обл. Калининградская, г.о. город Калининград, г. Калининград, мкр. Прибрежный,
+      ул. Заводская, зд. 13 к. 6
+    days: 18.05
+    smp_only: false
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '3904612235'
+    app_guarantee_percent: 1.0
+- id: real-046
+  profile: build_tomsk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Оказание услуг по сопровождению отраслевого регионального социального
+      регистра населения Ростовской области
+    okpd2:
+    - '62.03'
+    - 62.03.12.130
+    method: e_auction
+    law: 44-FZ
+    nmck: 1000500.0
+    place: обл Ростовская, г.о. город Ростов-на-Дону, г Ростов-на-Дону, ул Лермонтовская,
+      д. 161
+    days: 9.05
+    smp_only: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '6163022298'
+    app_guarantee_percent: 1.0
+- id: real-047
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: 'Выполнение работ по объекту: «Устройство спортивной площадки на территории
+      набережной г. Советска Калининградской области»'
+    okpd2:
+    - '43.99'
+    - 43.99.90.190
+    method: e_auction
+    law: 44-FZ
+    nmck: 15602048.1
+    place: обл. Калининградская, г.о. Советский, г. Советск
+    days: 9.05
+    smp_only: true
+    contract_guarantee_percent: 30.0
+    customer_inn: '3911001371'
+    app_guarantee_percent: 1.0
+- id: real-048
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Открытый конкурс в электронной форме на оказание услуг по выполнению
+      функций младшего медицинского персонала в Государственном бюджетном учреждении
+      здравоохранения города Москвы «Городская клиническая больница имени В.В. Вересаева
+      Департамента здравоохранения города Москвы» в 2026г.
+    okpd2:
+    - 86.90.12.190
+    method: open_contest
+    law: 44-FZ
+    nmck: 28161336.96
+    place: г. Москва, вн.тер.г. муниципальный округ Дмитровский, ул. Лобненская, д.
+      10 стр. 4
+    days: -32.99
+    smp_only: false
+    contract_guarantee_percent: 5.0
+    customer_inn: '7713034164'
+    app_guarantee_percent: 0.5
+- id: real-049
+  profile: med_msk
+  expected: consider
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Электронный запрос котировок на поставку расходных медицинских материалов
+      (Лот № 151-45/26) для нужд ГБУЗ ММНКЦ им. С.П. Боткина ДЗМ
+    okpd2:
+    - 32.50.50.190
+    method: quotation_request
+    law: 44-FZ
+    nmck: 8116000.0
+    place: г. Москва
+    days: 5.05
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '7714082636'
+    app_guarantee_percent: 0.5
+- id: real-050
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: 2026-07624**Поставка лекарственного препарата для медицинского применения
+      амиодарон
+    okpd2:
+    - '21.20'
+    - 21.20.10.141
+    method: e_auction
+    law: 44-FZ
+    nmck: 1709544.2
+    place: обл. Воронежская, м.р-н Новохопёрский, г.п. город Новохопёрск, г. Новохопёрск,
+      ул. Клиническая, зд. 2б
+    days: 10.01
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '3666159455'
+    app_guarantee_percent: 0.0
+- id: real-051
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Оказание услуг по охране объектов и имущества таможенных органов Приволжского
+      региона
+    okpd2:
+    - '80.10'
+    - 80.10.12.900
+    method: e_auction
+    law: 44-FZ
+    nmck: 28572337.44
+    place: обл. Нижегородская, г.о. город Нижний Новгород, г. Нижний Новгород, ш.
+      Московское, д. 302Н
+    days: 9.05
+    smp_only: false
+    contract_guarantee_percent: 30.0
+    customer_inn: '5262036613'
+    app_guarantee_percent: 1.0
+- id: real-052
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Поставка лекарственного препарата для медицинского применения Винорелбин
+      (1) на 2027г.
+    okpd2:
+    - '21.20'
+    - 21.20.10.211
+    method: e_auction
+    law: 44-FZ
+    nmck: 38680.6
+    place: обл. Белгородская, м.о. Яковлевский, г. Строитель, ул. Заводская, зд. 3
+    days: 9.01
+    smp_only: false
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '3123484942'
+- id: real-053
+  profile: med_msk
+  expected: consider
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Запрос котировок в электронной форме на поставку медицинских изделий
+      для обеспечения граждан, имеющих право на получение государственной социальной
+      помощи в городе Москве (ВК2026-278)
+    okpd2:
+    - 32.50.13.190
+    method: quotation_request
+    law: 44-FZ
+    nmck: 50750.01
+    place: г. Москва
+    days: 6.01
+    smp_only: false
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '7714338609'
+- id: real-054
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Обеспечение продуктами питания (поставка, хранение, перевозка до пункта
+      назначения, погрузо-разгрузочные работы, очистка и санитарная обработка транспортных
+      средств) для организации питания в государственных бюджетных образовательных
+      учреждениях Пушкинского района Санкт-Петербурга (кисломолочная продукция)
+    okpd2:
+    - '10.51'
+    - 10.51.52.110
+    - 10.51.52.130
+    - 10.51.52.140
+    - 10.51.52.200
+    method: open_contest
+    law: 44-FZ
+    nmck: 3907613.49
+    place: г. Санкт-Петербург
+    days: 20.01
+    smp_only: false
+    national_regime: true
+    contract_guarantee_percent: 10.0
+    customer_inn: '7820033454'
+    app_guarantee_percent: 0.12
+- id: real-055
+  profile: it_sib
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Оказание охранных услуг
+    okpd2:
+    - '80.10'
+    - 80.10.12.000
+    method: e_auction
+    law: 44-FZ
+    nmck: 2328758.4
+    place: обл. Калининградская, г.о. город Калининград, г. Калининград, пр-кт Московский,
+      д. 95
+    days: 9.05
+    smp_only: true
+    contract_guarantee_percent: 10.0
+    customer_inn: '3905015320'
+    app_guarantee_percent: 1.0
+- id: real-056
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: 'Капитальный ремонт кабинетов под установку томографа рентгеновского
+      компьютерного в здании поликлиники ГУЗ "СГП № 16", расположенного по адресу:
+      Саратовская область, городской округ город Саратов, город Саратов, улица Вишневая,
+      здание 6.'
+    okpd2:
+    - '41.20'
+    - 41.20.40
+    method: quotation_request
+    law: 44-FZ
+    nmck: 3540505.1
+    place: обл. Саратовская, г.о. город Саратов, г. Саратов
+    days: 6.01
+    smp_only: false
+    contract_guarantee_percent: 10.0
+    customer_inn: '6453007975'
+    app_guarantee_percent: 1.0
+- id: real-057
+  profile: it_sib
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Обеспечение продуктами питания (поставка, хранение, перевозка до пункта
+      назначения, погрузо-разгрузочные работы, очистка и санитарная обработка транспортных
+      средств) для организации питания в государственных бюджетных образовательных
+      учреждениях Пушкинского района Санкт-Петербурга (овощи)
+    okpd2:
+    - '01.13'
+    - 01.13.41.110
+    - 01.13.12.120
+    - 01.13.41.120
+    - 01.13.42.000
+    method: open_contest
+    law: 44-FZ
+    nmck: 4532077.68
+    place: г. Санкт-Петербург
+    days: 20.01
+    smp_only: false
+    national_regime: true
+    contract_guarantee_percent: 10.0
+    customer_inn: '7820033454'
+    app_guarantee_percent: 0.17
+- id: real-058
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Электронный конкурс на выполнение работ по обустройству помещений под
+      сложное медицинское оборудование в стерилизационном отделении ГБУЗ ММНКЦ им.
+      С.П. Боткина ДЗМ.
+    okpd2:
+    - 41.20.40.900
+    method: open_contest
+    law: 44-FZ
+    nmck: 5495414.67
+    place: г. Москва, вн.тер.г. муниципальный округ Беговой, пр-д 2-й Боткинский,
+      д. 5 к. 22
+    days: 9.01
+    smp_only: false
+    contract_guarantee_percent: 5.0
+    customer_inn: '7714082636'
+    app_guarantee_percent: 1.0
+- id: real-059
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Запрос котировок №551-1 Поставка расходных материалов, применяемых в
+      медицинских целях
+    okpd2:
+    - 32.50.13.110
+    - 32.50.13.190
+    method: quotation_request
+    law: 44-FZ
+    nmck: 1500000.0
+    place: обл. Нижегородская, г.о. город Нижний Новгород
+    days: 5.97
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '5260101352'
+    app_guarantee_percent: 1.0
+- id: real-060
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: 'Поставка и ввод в эксплуатацию оборудования инженерно-технических средств,
+      обеспечивающих контроль доступа или блокирование несанкционированного доступа,
+      контроль и оповещение о возникновении угроз, на объектах медицинских организаций
+      государственной системы здравоохранения Московской области», для нужд ГБУЗ Московской
+      области «Жуковская ОКБ», по адресу: г.о. Жуковский, г. Жуковский, ул. Фрунзе,
+      д.1 Лот 5'
+    okpd2:
+    - '25.11'
+    - 25.11.2
+    method: e_auction
+    law: 44-FZ
+    nmck: 2002705.22
+    place: обл. Московская, г.о. Жуковский
+    days: 9.05
+    smp_only: false
+    national_regime: true
+    contract_guarantee_percent: 10.0
+    customer_inn: '5013006048'
+    app_guarantee_percent: 1.0
+- id: real-061
+  profile: med_msk
+  expected: consider
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Закупка на поставку расходных материалов для КДЛ (для анализатора ORTHO)
+      лот 369 для нужд ГБУЗ Московской области "Лобненская больница" 2026 г.
+    okpd2:
+    - '21.20'
+    - 21.20.23.110
+    method: e_auction
+    law: 44-FZ
+    nmck: 770196.95
+    place: обл. Московская, г.о. Лобня
+    days: 5.05
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 10.0
+    customer_inn: '5025000080'
+- id: real-062
+  profile: med_msk
+  expected: consider
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Запрос котировок  в электронной форме на поставку  медицинских изделий
+      (набор для трахеостомии, одноразового использования) для обеспечения граждан,
+      имеющих право на получение государственной социальной помощи в городе Москве
+      (ВК2026-302П1)
+    okpd2:
+    - 32.50.50.190
+    method: quotation_request
+    law: 44-FZ
+    nmck: 323008.32
+    place: г. Москва
+    days: 6.01
+    smp_only: false
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '7714338609'
+- id: real-063
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Оказание услуг по проведению периодического медицинского осмотра
+    okpd2:
+    - '86.21'
+    - 86.21.10.190
+    method: e_auction
+    law: 44-FZ
+    nmck: 8391400.0
+    place: г. Москва, вн.тер.г. муниципальный округ Кунцево, ш. Рублёвское, д. 135
+      стр. 1
+    days: 9.01
+    smp_only: true
+    contract_guarantee_percent: 10.0
+    customer_inn: '7706137673'
+    app_guarantee_percent: 1.0
+- id: real-064
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Открытый конкурс в электронной форме на оказание услуг по выполнению
+      функций младшего медицинского персонала в Государственном бюджетном учреждении
+      здравоохранения города Москвы «Городская клиническая больница имени В.В. Вересаева
+      Департамента здравоохранения города Москвы» в 2026г.
+    okpd2:
+    - 86.90.12.190
+    method: open_contest
+    law: 44-FZ
+    nmck: 29167063.2
+    place: г. Москва, вн.тер.г. муниципальный округ Дмитровский, ул. Лобненская, д.
+      10 стр. 4
+    days: 12.01
+    smp_only: false
+    contract_guarantee_percent: 5.0
+    customer_inn: '7713034164'
+    app_guarantee_percent: 0.5
+- id: real-065
+  profile: build_tomsk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Организация и проведение межфакультетского конкурса "Жемчужина ВолгГТУ"
+    okpd2:
+    - '93.29'
+    - 93.29.29.000
+    method: quotation_request
+    law: 44-FZ
+    nmck: 150000.0
+    place: обл. Волгоградская, г.о. город-герой Волгоград, г. Волгоград, пр-кт им.
+      В.И. Ленина, д. 28
+    days: -0.99
+    smp_only: true
+    contract_guarantee_percent: 10.0
+    customer_inn: '3444049170'
+- id: real-066
+  profile: it_sib
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: ОКАЗАНИЕ УСЛУГ ПО ВЫВОЗУ И РАЗМЕЩЕНИЮ ОТХОДОВ ПРОИЗВОДСТВА И ПОТРЕБЛЕНИЯ
+      4-5 КЛАССА ОПАСНОСТИ (ИСКЛЮЧАЯ ТКО)
+    okpd2:
+    - 38.11.11.000
+    method: quotation_request
+    law: 44-FZ
+    nmck: 133660.2
+    place: г. Санкт-Петербург, вн.тер.г. муниципальный округ Купчино, пр-кт Славы,
+      д. 30 к. 2 литера А
+    days: 6.01
+    smp_only: true
+    customer_inn: '7816157506'
+- id: real-067
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Выполнение работ по содержанию автомобильных дорог общего пользования
+      регионального и межмуниципального значения и сооружений на них в Бековском  районе
+      Пензенской области в 2027г.
+    okpd2:
+    - '42.11'
+    - 42.11.20.300
+    method: e_auction
+    law: 44-FZ
+    nmck: 60108663.4
+    place: обл. Пензенская
+    days: 10.01
+    smp_only: true
+    contract_guarantee_percent: 1.0
+    customer_inn: '5800021055'
+    app_guarantee_percent: 1.0
+- id: real-068
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: на поставку лекарственных препаратов для медицинского применения (МНН:ТИОТРОПИЯ
+      БРОМИД)
+    okpd2:
+    - 21.20.10.254
+    method: e_auction
+    law: 44-FZ
+    nmck: 5172349.2
+    place: обл. Калининградская, г.о. город Калининград, г. Калининград, мкр. Прибрежный,
+      ул. Заводская, зд. 13 к. 6
+    days: 18.05
+    smp_only: false
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '3904612235'
+    app_guarantee_percent: 1.0
+- id: real-069
+  profile: med_msk
+  expected: consider
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: 'Электронный запрос котировок на право заключения контракта на поставку
+      лекарственного средства: Будесонид.'
+    okpd2:
+    - 21.20.10.254
+    method: quotation_request
+    law: 44-FZ
+    nmck: 270043.2
+    place: г. Москва
+    days: 10.01
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '7734115329'
+    app_guarantee_percent: 1.0
+- id: real-070
+  profile: build_tomsk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: 'Открытый конкурс в электронной форме на право заключения контракта на
+      выполнение работ по разработке проектной и рабочей документации для технологического
+      присоединения к электрическим сетям объекта, расположенного по адресу: г. Москва,
+      вн. тер. г. муниципальный округ, Марьина роща, площадь Рижская, з/у 5А/4/1 для
+      нужд ГБУ «Автомобильные дороги»'
+    okpd2:
+    - 71.12.13.000
+    method: open_contest
+    law: 44-FZ
+    nmck: 1313508.1
+    place: г. Москва
+    days: 11.05
+    smp_only: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '7727656790'
+    app_guarantee_percent: 1.0
+- id: real-071
+  profile: it_sib
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Выполнение работ по разработке концепции благоустройства территории,
+      расположенной на ул. Коммунальной (территория возле структурного подразделения
+      "Гимназия им. А.Д.Петрова" МБОУ "Центр образования Опочецкого района") и подготовке
+      заявки на участие во Всероссийском конкурсе лучших проектов формирования комфортной
+      городской среды
+    okpd2:
+    - '71.11'
+    - 71.11.41.100
+    method: e_auction
+    law: 44-FZ
+    nmck: 750000.0
+    place: обл. Псковская, м.о. Опочецкий, г. Опочка, ул. Коммунальная
+    days: 9.09
+    smp_only: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '6000006540'
+- id: real-072
+  profile: it_sib
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Оказание услуг по организации и проведению торжественной церемонии вручения
+      свидетельств стипендиатов Губернатора Новосибирской области и Правительства
+      Новосибирской области, дипломов победителей и сертификатов участников конкурсного
+      отбора на предоставление адресной финансовой поддержки
+    okpd2:
+    - '93.19'
+    - 93.19.11.000
+    method: e_auction
+    law: 44-FZ
+    nmck: 579833.34
+    place: обл. Новосибирская, г.о. город Новосибирск, г. Новосибирск
+    days: 4.8
+    smp_only: true
+    contract_guarantee_percent: 10.0
+    customer_inn: '5406313324'
+- id: real-073
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Поставка лекарственного препарата для медицинского применения Алектиниб  на
+      2027  год
+    okpd2:
+    - '21.20'
+    - 21.20.10.211
+    method: e_auction
+    law: 44-FZ
+    nmck: 3008006.4
+    place: обл. Белгородская, г.о. город Белгород, г. Белгород, ул. Куйбышева, д.
+      1
+    days: 11.01
+    smp_only: false
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '3123484942'
+    app_guarantee_percent: 1.0
+- id: real-074
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Электронный запрос котировок на поставку реагентов для создания библиотек
+      в 2026 году для нужд ГБУЗ МКНЦ имени А.С. Логинова ДЗМ.
+    okpd2:
+    - 20.59.52.199
+    method: quotation_request
+    law: 44-FZ
+    nmck: 9764121.1
+    place: г. Москва
+    days: 6.01
+    smp_only: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '7720093523'
+    app_guarantee_percent: 1.0
+- id: real-075
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Поставка, монтаж и пуско-наладка лифта для ГБУ РД "Городская клиническая
+      больница"
+    okpd2:
+    - '28.22'
+    - 28.22.16.111
+    method: e_auction
+    law: 44-FZ
+    nmck: 4056000.0
+    place: респ. Дагестан, г.о. город Махачкала, г. Махачкала, ул. Лаптиева, зд. 89
+    days: 8.92
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: 0572005870
+    app_guarantee_percent: 1.0
+- id: real-076
+  profile: it_sib
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Оказание услуг по заправке, восстановлению картриджей и по ремонту прочего
+      периферийного оборудования
+    okpd2:
+    - 28.23.25.000
+    - 95.11.10.190
+    - 95.11.10.120
+    method: quotation_request
+    law: 44-FZ
+    nmck: 25000.0
+    place: обл. Пензенская, г.о. ЗАТО город Заречный, г. Заречный, пр-кт 30-летия
+      Победы, д. 27
+    days: 5.97
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 30.0
+    customer_inn: '5838005430'
+- id: real-077
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: ЗК-№-16404/26 «Запрос котировок в электронной форме на право заключения
+      контракта на поставку медицинских изделий для травматолого-ортопедического отделения»
+    okpd2:
+    - 32.50.22.110
+    method: quotation_request
+    law: 44-FZ
+    nmck: 4400000.0
+    place: край Красноярский
+    days: -1.2
+    smp_only: false
+    national_regime: true
+    contract_guarantee_percent: 10.0
+    customer_inn: '2460071692'
+    app_guarantee_percent: 1.0
+- id: real-078
+  profile: it_sib
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: оказание услуг по продлению сертификата технической поддержки средств
+      защиты информации от несанкционированного доступа СДЗ Dallas Lock PCIe
+    okpd2:
+    - '62.02'
+    - 62.02.3
+    method: quotation_request
+    law: 44-FZ
+    nmck: 755556.35
+    place: 238420, Калининградская область, Багратионовский район, г. Багратионовск,
+      ул. Иркутско-Пинской Дивизии, д. 24.
+    days: 6.3
+    smp_only: false
+    national_regime: true
+    contract_guarantee_percent: 10.0
+    customer_inn: '3915004550'
+- id: real-079
+  profile: it_sib
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Оказание услуг по техническому обслуживанию медицинской техники (компьютерный
+      томограф)
+    okpd2:
+    - 33.12.29.900
+    method: e_auction
+    law: 44-FZ
+    nmck: 154332523.2
+    place: край Пермский
+    days: 3.84
+    smp_only: false
+    contract_guarantee_percent: 10.0
+    customer_inn: '5902046771'
+    app_guarantee_percent: 1.06
+- id: real-080
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Электронный запрос котировок на поставку медицинских расходных материалов
+      для эндопротезирования (ЭПС2026-40) для нужд ГБУЗ ММНКЦ им. С.П. Боткина ДЗМ
+    okpd2:
+    - 32.50.22.110
+    method: quotation_request
+    law: 44-FZ
+    nmck: 5236749.0
+    place: г. Москва
+    days: -0.95
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '7714082636'
+    app_guarantee_percent: 1.0
+- id: real-081
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: 2026-06293/ Оказание охранных услуг
+    okpd2:
+    - '80.10'
+    - 80.10.12.200
+    method: open_contest
+    law: 44-FZ
+    nmck: 911040.0
+    place: обл. Воронежская, г.о. город Воронеж, г. Воронеж, ул. Богачева, д. 1В
+    days: 16.01
+    smp_only: true
+    contract_guarantee_percent: 10.0
+    customer_inn: '3666159455'
+- id: real-082
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Электронный запрос котировок на поставку лекарственного препарата Меропенем
+      на 2026 год для нужд ГБУЗ «Морозовская ДГКБ ДЗМ»
+    okpd2:
+    - 21.20.10.191
+    method: quotation_request
+    law: 44-FZ
+    nmck: 1040000.0
+    place: г. Москва
+    days: -0.99
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '7705039232'
+    app_guarantee_percent: 1.0
+- id: real-083
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Поставка СИЗов (жилет, нарукавники)
+    okpd2:
+    - '32.99'
+    - 32.99.11.199
+    method: e_auction
+    law: 44-FZ
+    nmck: 60787.51
+    place: обл. Владимирская, м.о. Юрьев-Польский, г. Юрьев-Польский, ул. Павших борцов,
+      д. 6
+    days: 10.97
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 10.0
+    customer_inn: '3329013633'
+- id: real-084
+  profile: build_tomsk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Поставка продуктов питания (мука пшеничная хлебопекарная)
+    okpd2:
+    - '10.61'
+    - 10.61.21.113
+    method: e_auction
+    law: 44-FZ
+    nmck: 97600.0
+    place: край Краснодарский, г.о. город Краснодар, г. Краснодар, ул. 16-й Полевой
+      Участок
+    days: 11.01
+    smp_only: false
+    national_regime: true
+    contract_guarantee_percent: 10.0
+    customer_inn: '2311038748'
+- id: real-085
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: 2026-07628**Поставка лекарственного препарата для медицинского применения
+      хлоропирамин
+    okpd2:
+    - '21.20'
+    - 21.20.10.256
+    method: e_auction
+    law: 44-FZ
+    nmck: 1107848.8
+    place: обл. Воронежская, м.р-н Петропавловский, с.п. Петропавловское, с. Петропавловка,
+      ул. Восточная, зд. 11
+    days: 10.01
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '3666159455'
+    app_guarantee_percent: 0.01
+- id: real-086
+  profile: it_sib
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Оказание услуг по организации и проведению торжественной церемонии награждения
+      победителей XXVI городского конкурса «Мы выбираем, нас выбирают»
+    okpd2:
+    - '93.29'
+    - 93.29.29.000
+    method: quotation_request
+    law: 44-FZ
+    nmck: 378660.0
+    place: обл. Вологодская, г.о. город Вологда, г. Вологда
+    days: 5.97
+    smp_only: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '3525269286'
+    app_guarantee_percent: 1.0
+- id: real-087
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Поставка изделий медицинского назначения для отделения офтальмологии.
+    okpd2:
+    - 32.50.13.120
+    - 21.20.24.120
+    - 32.50.13.190
+    - 21.20.23.199
+    method: quotation_request
+    law: 44-FZ
+    nmck: 1497700.0
+    place: респ. Северная Осетия - Алания, м.р-н Правобережный, г.п. Бесланское, г.
+      Беслан, ул. Фриева, д. 139 к. А
+    days: 6.01
+    smp_only: false
+    national_regime: true
+    contract_guarantee_percent: 30.0
+    customer_inn: '1511017599'
+    app_guarantee_percent: 1.0
+- id: real-088
+  profile: it_sib
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Поставка фоторамок для награждения Почетным знаком Тульской области «Материнская
+      слава» и участников областного конкурса «Отцовство – долг и дар»
+    okpd2:
+    - '22.29'
+    - 22.29.26.190
+    method: quotation_request
+    law: 44-FZ
+    nmck: 14640.0
+    place: обл. Тульская, г.о. город Тула, г. Тула, ул. Гоголевская, д. 71
+    days: -9.03
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '7106000652'
+    app_guarantee_percent: 0.5
+- id: real-089
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Разработка проектно-сметной документации по благоустройству площади им.
+      Г.А. Потемкина и прилегающей территории в городе Духовщина Смоленской области,
+      в рамках концепции "Соловей души моей"-победителя XI Всероссийского конкурса
+      лучших проектов создания комфортной городской среды в малых городах и исторических
+      поселениях.
+    okpd2:
+    - '71.12'
+    - 71.12.19.100
+    method: open_contest
+    law: 44-FZ
+    nmck: 3000000.0
+    place: обл. Смоленская, м.о. Духовщинский, г. Духовщина
+    days: 2.01
+    smp_only: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '6700027432'
+    app_guarantee_percent: 1.0
+- id: real-090
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Электронный запрос котировок на поставку лекарственного препарата Цефепим
+      на 2026 год для нужд ГБУЗ «Морозовская ДГКБ ДЗМ»
+    okpd2:
+    - 21.20.10.191
+    method: quotation_request
+    law: 44-FZ
+    nmck: 563680.0
+    place: г. Москва
+    days: -0.95
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '7705039232'
+- id: real-091
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Поставка медицинских изделий для оказания специализированной медицинской
+      помощи I на 2027г.
+    okpd2:
+    - '32.50'
+    - 32.50.50.190
+    method: e_auction
+    law: 44-FZ
+    nmck: 442268.4
+    place: обл. Белгородская
+    days: 12.01
+    smp_only: false
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '3123484942'
+    app_guarantee_percent: 0.07
+- id: real-092
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Организация и проведение торжественного концерта церемонии награждения
+      победителей Всероссийского конкурса «СМИротворец» на лучшее освещение вопросов
+      межнациональных и этноконфессиональных отношений
+    okpd2:
+    - '84.12'
+    - 84.12.14.000
+    method: open_contest
+    law: 44-FZ
+    nmck: 8758247.0
+    place: г. Москва
+    days: 9.09
+    smp_only: true
+    contract_guarantee_percent: 10.0
+    customer_inn: '7708257207'
+    app_guarantee_percent: 1.0
+- id: real-093
+  profile: med_msk
+  expected: consider
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Электронный запрос котировок на поставку медицинских изделий (контур
+      дыхательный) для нужд ГБУЗ «ГКБ им. Д.Д. Плетнёва ДЗМ»
+    okpd2:
+    - 32.50.21.129
+    method: quotation_request
+    law: 44-FZ
+    nmck: 1200000.0
+    place: г. Москва
+    days: 6.05
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '7719047184'
+    app_guarantee_percent: 1.0
+- id: real-094
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Оказание услуг по сбору, обобщению и анализу информации для проведения
+      независимой оценки качества условий осуществления образовательной деятельности
+      муниципальных организаций, осуществляющих образовательную деятельность
+    okpd2:
+    - '63.99'
+    - 63.99.10.130
+    method: e_auction
+    law: 44-FZ
+    nmck: 16800.0
+    place: обл. Смоленская, м.о. Гагаринский, г. Гагарин
+    days: 9.05
+    smp_only: true
+    customer_inn: '6723002924'
+- id: real-095
+  profile: it_sib
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Реализация проектов, победивших на городском конкурсе социально-значимых
+      инициатив
+    okpd2:
+    - '94.99'
+    - 94.99.16.190
+    method: quotation_request
+    law: 44-FZ
+    nmck: 565140.0
+    place: край Ставропольский, г.о. город Ставрополь, г. Ставрополь
+    days: 4.01
+    smp_only: true
+    customer_inn: '2636023448'
+- id: real-096
+  profile: med_msk
+  expected: consider
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Электронный запрос котировок на поставку расходных медицинских материалов
+      (Лот № 155-45/26) для нужд ГБУЗ ММНКЦ им. С.П. Боткина ДЗМ
+    okpd2:
+    - 32.50.50.190
+    method: quotation_request
+    law: 44-FZ
+    nmck: 1290900.0
+    place: г. Москва
+    days: 6.05
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '7714082636'
+    app_guarantee_percent: 0.5
+- id: real-097
+  profile: it_sib
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Поставка энтерального питания
+    okpd2:
+    - '10.86'
+    - 10.86.10.191
+    method: e_auction
+    law: 44-FZ
+    nmck: 572521.6
+    place: край Ставропольский, м.о. Александровский, с. Александровское, ул. Красноармейская
+    days: 4.97
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 10.0
+    customer_inn: '2601002398'
+    app_guarantee_percent: 1.0
+- id: real-098
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Организация и проведение фестиваля - конкурса военно-патриотической песни
+      «ПЕСНИ ОГНЕННЫХ ДОРОГ»
+    okpd2:
+    - '93.29'
+    - 93.29.29.000
+    method: e_auction
+    law: 44-FZ
+    nmck: 295800.0
+    place: обл. Московская
+    days: 5.05
+    smp_only: true
+    contract_guarantee_percent: 10.0
+    customer_inn: '5040136688'
+- id: real-099
+  profile: it_sib
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: 'Электронный запрос котировок на право заключения контракта на поставку
+      лекарственного средства: Доксорубицин.'
+    okpd2:
+    - 21.20.10.211
+    method: quotation_request
+    law: 44-FZ
+    nmck: 708995.0
+    place: г. Москва
+    days: 10.01
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '7734115329'
+    app_guarantee_percent: 1.0
+- id: real-100
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Электронный конкурс на оказание услуг по выполнению функций младшего
+      медицинского персонала в ССК для нужд ГБУЗ ММНКЦ им. С.П. Боткина ДЗМ
+    okpd2:
+    - 86.90.12.190
+    method: open_contest
+    law: 44-FZ
+    nmck: 29717572.8
+    place: г. Москва, вн.тер.г. муниципальный округ Беговой, пр-д 2-й Боткинский,
+      д. 5 к. 30
+    days: 12.05
+    smp_only: false
+    contract_guarantee_percent: 5.0
+    customer_inn: '7714082636'
+    app_guarantee_percent: 0.5
+- id: real-101
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Запрос котировок №564 Поставка расходных материалов, применяемых в медицинских
+      целях
+    okpd2:
+    - 21.20.24.131
+    method: quotation_request
+    law: 44-FZ
+    nmck: 750000.0
+    place: обл. Нижегородская, г.о. город Нижний Новгород, г. Нижний Новгород, ул.
+      Маршала Воронова, д. 20А
+    days: 5.97
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '5260101352'
+- id: real-102
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Электронный запрос котировок на поставку эндопротезов тазобедренного
+      сустава для нужд ГБУЗ «ГКБ им. Д.Д. Плетнёва ДЗМ»
+    okpd2:
+    - 32.50.22.110
+    method: quotation_request
+    law: 44-FZ
+    nmck: 2400000.0
+    place: г. Москва
+    days: -0.95
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '7719047184'
+    app_guarantee_percent: 1.0
+- id: real-103
+  profile: build_tomsk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Оказание услуг по предоставлению Сертификатов активации сервиса совместной
+      технической поддержки на средства криптографической защиты информации (ViPNet
+      сеть № 2365)
+    okpd2:
+    - 58.29.50.000
+    method: quotation_request
+    law: 44-FZ
+    nmck: 5238548.0
+    place: респ. Дагестан, г.о. город Махачкала, г. Махачкала, ул. Дахадаева, д. 107
+    days: 5.92
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 1.0
+    customer_inn: 0572005870
+    app_guarantee_percent: 1.0
+- id: real-104
+  profile: med_msk
+  expected: consider
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: 'Электронный запрос котировок на право заключения контракта на поставку
+      лекарственного средства: Ифосфамид.'
+    okpd2:
+    - 21.20.10.211
+    method: quotation_request
+    law: 44-FZ
+    nmck: 890900.0
+    place: г. Москва
+    days: 10.01
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '7734115329'
+    app_guarantee_percent: 1.0
+- id: real-105
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Электронный запрос котировок на поставку - распылитель аэрозоля в комплекте
+      с Т-образным коннектором,коннектор трубки/маски дыхательного контура, аппарат
+      искусственной вентиляции легких, ручной, мешок для дыхательного контура для
+      нужд ГБУЗ «ГКБ им. И.В. Давыдовского ДЗМ» (183447)
+    okpd2:
+    - 32.50.21.123
+    - 32.50.21.129
+    - 32.50.21.122
+    method: quotation_request
+    law: 44-FZ
+    nmck: 370130.4
+    place: г. Москва
+    days: -0.95
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '7709129423'
+- id: real-106
+  profile: med_msk
+  expected: consider
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Электронный запрос котировок на поставку линз офтальмологических для
+      ГБУЗ "ГП № 108 ДЗМ".
+    okpd2:
+    - 32.50.13.120
+    - 32.50.13.129
+    method: quotation_request
+    law: 44-FZ
+    nmck: 886260.66
+    place: г. Москва
+    days: 6.05
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '7710125487'
+- id: real-107
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Выполнение работ по содержанию автомобильных дорог общего пользования
+      регионального и межмуниципального значения и сооружений на них в Вадинском и
+      Нижнеломовском  районах Пензенской области  в 2027г.
+    okpd2:
+    - '42.11'
+    - 42.11.20.300
+    method: e_auction
+    law: 44-FZ
+    nmck: 60529905.36
+    place: обл. Пензенская
+    days: 9.01
+    smp_only: true
+    contract_guarantee_percent: 1.0
+    customer_inn: '5800021055'
+    app_guarantee_percent: 1.0
+- id: real-108
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: 'Открытый конкурс в электронной форме на право заключения контракта на
+      выполнение работ по разработке проектной и рабочей документации для технологического
+      присоединения к электрическим сетям объекта, расположенного по адресу: г. Москва,
+      вн.тер.г. муниципальный округ Бирюлево Западное, ул. Подольских Курсантов, з/у
+      18 для нужд ГБУ «Автомобильные дороги» среди субъектов малого предпринимательства
+      и социально ориентированных некоммерческих организаций'
+    okpd2:
+    - 71.12.13.000
+    method: open_contest
+    law: 44-FZ
+    nmck: 900766.89
+    place: г. Москва
+    days: -39.95
+    smp_only: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '7727656790'
+- id: real-109
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Выполнение работ по содержанию автомобильных дорог общего пользования
+      регионального и межмуниципального значения  и сооружений на них в Сердобском
+      районе Пензенской области в 2027г.
+    okpd2:
+    - '42.11'
+    - 42.11.20.300
+    method: e_auction
+    law: 44-FZ
+    nmck: 56599438.47
+    place: обл. Пензенская
+    days: 11.01
+    smp_only: true
+    contract_guarantee_percent: 1.0
+    customer_inn: '5800021055'
+    app_guarantee_percent: 1.0
+- id: real-110
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Запрос котировок в электронной форме № К.512-26 на право заключения контракта
+      на поставку медицинских изделий для отделения хирургического лечения сложных
+      нарушений ритма сердца и электрокардиостимуляции
+    okpd2:
+    - 32.50.13.190
+    method: quotation_request
+    law: 44-FZ
+    nmck: 596751.0
+    place: край Красноярский, г.о. город Красноярск
+    days: 5.84
+    smp_only: false
+    national_regime: true
+    contract_guarantee_percent: 10.0
+    customer_inn: '2465030876'
+- id: real-111
+  profile: it_sib
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: На поставку кровезаменителей и перфузионных растворов для нужд ГБУЗ МО
+      «Пушкинская клиническая больница им. проф. Розанова В.Н.» на 2027г.
+    okpd2:
+    - '21.20'
+    - 21.20.10.134
+    method: e_auction
+    law: 44-FZ
+    nmck: 587488.0
+    place: обл. Московская, г.о. Пушкинский
+    days: 9.05
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 10.0
+    customer_inn: '5038165353'
+    app_guarantee_percent: 1.0
+- id: real-112
+  profile: it_sib
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Поставка медицинских изделий Моющий/чистящий раствор ИВД, для автоматических/полуавтоматических
+      систем на 2027 г
+    okpd2:
+    - '21.20'
+    - 21.20.23.110
+    method: e_auction
+    law: 44-FZ
+    nmck: 968968.05
+    place: обл. Белгородская, м.о. Белгородский, с. Стрелецкое, ул. Королева, зд.
+      54
+    days: 11.01
+    smp_only: false
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '3123484942'
+    app_guarantee_percent: 0.5
+- id: real-113
+  profile: med_msk
+  expected: consider
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: 'Электронный запрос котировок на право заключения контракта на поставку
+      лекарственного средства: Аминокислоты для парентерального питания.'
+    okpd2:
+    - 21.20.10.134
+    method: quotation_request
+    law: 44-FZ
+    nmck: 305250.0
+    place: г. Москва
+    days: 10.01
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '7734115329'
+    app_guarantee_percent: 1.0
+- id: real-114
+  profile: build_tomsk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: 'Открытый конкурс в электронной форме на оказание в 2026 году услуг по
+      организации и проведению Межрегиональной конференции «Сила России в согласии:
+      правовой диалог народов»'
+    okpd2:
+    - 82.30.11.000
+    method: open_contest
+    law: 44-FZ
+    nmck: 4500000.0
+    place: г. Москва, вн.тер.г. муниципальный округ Тверской, пер. Успенский, д. 14
+      стр. 1
+    days: 2.05
+    smp_only: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '7704741657'
+    app_guarantee_percent: 1.0
+- id: real-115
+  profile: med_msk
+  expected: consider
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: 'Электронный запрос котировок на право заключения контракта на поставку
+      лекарственного средства: Рекомбинантный белок, содержащий аминокислотную последовательность
+      стафилокиназы.'
+    okpd2:
+    - 21.20.10.131
+    method: quotation_request
+    law: 44-FZ
+    nmck: 817102.0
+    place: г. Москва
+    days: 10.01
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '7734115329'
+    app_guarantee_percent: 1.0
+- id: real-116
+  profile: it_sib
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Услуги по организации и проведению мероприятий в области молодежной политики
+      (Церемония чествования победителей и участников конкурса на присуждение денежных
+      поощрений для одаренной молодежи "Большие надежды")
+    okpd2:
+    - '93.29'
+    - 93.29.29.000
+    method: quotation_request
+    law: 44-FZ
+    nmck: 249000.0
+    place: обл. Ивановская
+    days: 2.01
+    smp_only: true
+    customer_inn: '3702184467'
+- id: real-117
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Поставка книжной продукции для комплектования книжного фонда центральной
+      библиотеки им. Ю. Гагарина
+    okpd2:
+    - '58.11'
+    - 58.11.19.000
+    method: quotation_request
+    law: 44-FZ
+    nmck: 592000.0
+    place: Чувашия Чувашская Республика -, г.о. город Новочебоксарск, г. Новочебоксарск,
+      пр-д Энергетиков, д. 8
+    days: -1.99
+    smp_only: true
+    national_regime: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '2130225986'
+    app_guarantee_percent: 0.5
+- id: real-118
+  profile: it_sib
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: 'Оказание услуг по организации и проведению Всероссийского съезда СНО
+      педагогических вузов в рамках Всероссийского конкурса молодежных проектов среди
+      образовательных организаций высшего образования в 2026 году. ИГК: 000000Ю109125PU50002'
+    okpd2:
+    - '93.29'
+    - 93.29.29.000
+    method: quotation_request
+    law: 44-FZ
+    nmck: 1640000.0
+    place: обл. Ульяновская, г.о. город Ульяновск, г. Ульяновск
+    days: 2.97
+    smp_only: true
+    contract_guarantee_percent: 5.0
+    customer_inn: '7325001698'
+    app_guarantee_percent: 1.0
+- id: real-119
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Запрос котировок в электронной форме № К.511-26 на право заключения контракта
+      на поставку медицинских изделий для операционного отделения
+    okpd2:
+    - 22.21.29.120
+    method: quotation_request
+    law: 44-FZ
+    nmck: 496458.4
+    place: край Красноярский, г.о. город Красноярск
+    days: 5.84
+    smp_only: false
+    national_regime: true
+    contract_guarantee_percent: 10.0
+    customer_inn: '2465030876'
+- id: real-120
+  profile: med_msk
+  expected: skip
+  why: Разметка ИИ-ассистента вслепую, до прогона системы
+  tender:
+    subject: Оказание услуги по обеспечению (аутсорсингу) питанием пациентов, находящихся
+      на стационарном лечении в ГБУЗ РБ Балтачевская ЦРБ на 2026 год
+    okpd2:
+    - '56.29'
+    - 56.29.19.000
+    method: e_auction
+    law: 44-FZ
+    nmck: 750546.0
+    place: респ. Башкортостан, м.р-н Балтачевский, с.п. Старобалтачевский сельсовет,
+      с. Старобалтачево, ул. Комсомольская, д. 23
+    days: 9.88
+    smp_only: true
+    contract_guarantee_percent: 5.0
+    customer_inn: 0208001204
+    app_guarantee_percent: 1.0

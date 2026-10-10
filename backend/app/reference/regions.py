@@ -157,7 +157,14 @@ def detect_region(text: str | None) -> Region | None:
     if not text:
         return None
     hits = find_regions(text)
-    return hits[0] if hits else None
+    if len(hits) <= 1:
+        return hits[0] if hits else None
+    # Несколько совпадений («Калининградская обл., ул. Иркутско-Пинской Дивизии») — берём первое по тексту.
+    t = normalize(text)
+    def first_pos(region):
+        positions = [m.start() for p in dict(_COMPILED)[region] for m in [p.search(t)] if m]
+        return min(positions) if positions else len(t)
+    return min(hits, key=first_pos)
 
 
 def find_districts(text: str) -> list[str]:

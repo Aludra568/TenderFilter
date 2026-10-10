@@ -26,6 +26,8 @@ jobs:
         run: |
           python -m app.evaluation
           python -c "import json,sys; r=json.load(open('eval/report.json',encoding='utf-8')); print(r.get('accuracy'), r.get('critical_errors')); sys.exit(0 if r['accuracy']>=0.8 and r.get('critical_errors',0)==0 else 1)"
+      - name: Эталон на реальных извещениях ЕИС
+        run: python -m app.evaluation golden_real
 
   frontend:
     name: Фронтенд — сборка

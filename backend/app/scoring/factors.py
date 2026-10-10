@@ -107,17 +107,28 @@ def profile_factor(ctx: Context) -> FactorResult:
             reasons.append(f"Товар по профилю: ОКПД 2 {okpd} ↔ ваш ОКВЭД {okved}")
             if name:
                 reasons.append(f"ОКВЭД {okved} — {name}")
+    code_score = best  # совпадение по кодам ОКПД 2 / ОКВЭД
+    codes_conflict = bool(t.okpd2 and (okveds or p.okpd2_prefixes) and code_score == 0)
     kw_hits = textvec.keyword_hits(p.keywords, text)
     if kw_hits:
-        best = max(best, 1.0)
-        reasons.append("Ключевые слова профиля: " + ", ".join(kw_hits[:3]))
+        trade_only = bool(okveds) and all(o.startswith(("46", "47")) for o in okveds)
+        works = bool(t.okpd2) and all(c[:2] in WORKS_SERVICES for c in t.okpd2)
+        if trade_only and works:
+            # Торговая компания, а закупаются работы или услуги («обустройство помещений под оборудование»)
+            best = max(best, 0.6)
+            reasons.append("Слова профиля есть в предмете («" + ", ".join(kw_hits[:2]) + "»), но закупаются работы или услуги, а не поставка")
+        else:
+            best = max(best, 1.0)
+            reasons.append("Ключевые слова профиля: " + ", ".join(kw_hits[:3]))
 
     profile_text = " ".join(p.keywords)
     if ctx.company and p.use_okved:
         profile_text += " " + " ".join(o.name or "" for o in ctx.company.okveds)
     if profile_text.strip():
         sim = textvec.cosine(textvec.embed(text), textvec.embed(profile_text))
-        sem = max(0.0, min(1.0, (sim - 0.1) / 0.3)) * 0.85
+        sem = max(0.0, min(1.0, (sim - 0.15) / 0.35)) * 0.85
+        if codes_conflict:
+            sem = min(sem, 0.35)  # коды закупки явно чужие — похожесть слов не делает её профильной
         if sem > best:
             best = sem
             reasons.append(f"Смысловая близость предмета к профилю {round(sim * 100)}%")
@@ -140,6 +151,10 @@ def _explain_fuzzy(r: FactorResult, inf: "fuzzy.Inference") -> None:
     """Пояснение только для пограничных значений, где нечёткая логика и правда что-то решает."""
     if 0.001 < r.score < 0.999:
         r.reasons.append("Нечёткая оценка — " + inf.describe())
+
+
+# Разделы ОКПД 2 с работами и услугами (стройка, проектирование, охрана, медицина, мероприятия…)
+WORKS_SERVICES = {"41", "42", "43", "71", "74", "80", "81", "82", "84", "85", "86", "87", "88", "90", "91", "93", "94", "96"}
 
 
 def price_factor(ctx: Context) -> FactorResult:
