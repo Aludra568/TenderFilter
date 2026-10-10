@@ -111,13 +111,17 @@ def report() -> dict:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=["download", "report", "contracts", "contracts-report"])
+    ap.add_argument("cmd", choices=["download", "report", "contracts", "contracts-report", "okpd-train"])
     ap.add_argument("--limit", type=int, default=40)
     ap.add_argument("--pages", type=int, default=1)
     ap.add_argument("--delay", type=float, default=0.7)
     args = ap.parse_args()
     if args.cmd == "download":
         download(args.pages, args.delay)
+        return 0
+    if args.cmd == "okpd-train":
+        n = build_okpd_train()
+        print(f"Обучающих позиций ОКПД 2: {n} → app/reference/okpd_train.json")
         return 0
     if args.cmd == "contracts":
         print(f"Скачано проектов контрактов: {download_contracts(args.limit, args.delay)}")
@@ -139,6 +143,29 @@ def main() -> int:
         print(f"  ✗ {e['file']} ({e['root']}): {e['error']}")
     return 0
 
+
+
+# ---------- обучающие данные классификатора ОКПД 2 ----------
+
+def build_okpd_train() -> int:
+    """Позиции извещений (название + код ОКПД 2 от заказчика) → app/reference/okpd_train.json."""
+    from app.reference.okpd_model import TRAIN
+
+    seen, items = set(), []
+    for f in sorted(CORPUS.glob("*.xml")):
+        try:
+            t = parse_bytes(f.read_bytes(), f.name)
+        except ParseError:
+            continue
+        for it in t.items:
+            code = (it.okpd2 or "").strip()
+            name = " ".join(it.name.split())[:300]
+            key = (name.lower(), code)
+            if len(code) >= 5 and len(name) > 3 and key not in seen:
+                seen.add(key)
+                items.append({"name": name, "code": code, "notice": f.stem})
+    TRAIN.write_text(json.dumps(items, ensure_ascii=False, indent=0), encoding="utf-8")
+    return len(items)
 
 
 # ---------- проекты контрактов из вложений ----------

@@ -1,0 +1,13 @@
+{
+  "items": 1252,
+  "notices": 180,
+  "folds": 5,
+  "section_2_digits": {
+    "top1": 0.225,
+    "top3": 0.423
+  },
+  "class_5_chars": {
+    "top1": 0.202,
+    "top3": 0.398
+  }
+}
