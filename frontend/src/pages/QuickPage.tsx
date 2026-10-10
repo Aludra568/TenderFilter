@@ -4,7 +4,7 @@ import { api, ApiError, type Company, type QuickResult } from "../api";
 import { CountUp, ErrorBox, VerdictChip } from "../components/common";
 import { Radar } from "../components/Radar";
 import { EisNumberLoader } from "../components/EisNumberLoader";
-import { CompanyBlock, DocsPicker, FactorList, FindingList, KeyParams, ReviewBlock } from "../components/ResultParts";
+import { CompanyBlock, DocList, DocsPicker, FactorList, FindingList, KeyParams, ReviewBlock } from "../components/ResultParts";
 
 const EXAMPLE_CRITERIA =
   "Работаем в Москве и Московской области. НМЦК от 1 до 150 млн. На обеспечения готовы отвлечь не больше 15 млн. " +
@@ -215,6 +215,7 @@ export function QuickPage() {
               {res.tender.contract && (
                 <section className="card fu" style={{ animationDelay: "210ms" }}>
                   <h3 style={{ marginBottom: 8 }}>Риски контракта</h3>
+                  <DocList docs={res.tender.contract.documents} />
                   <FindingList findings={res.tender.contract.findings.filter((f) => f.side !== "customer")}
                                empty="Жёстких условий в документах не найдено" />
                 </section>

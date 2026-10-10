@@ -6,6 +6,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONIOENCODING=utf-8
 
 WORKDIR /app
+# OCR для сканов (лицензии, сертификаты, проекты контрактов без текстового слоя)
+RUN apt-get update && apt-get install -y --no-install-recommends tesseract-ocr tesseract-ocr-rus     && rm -rf /var/lib/apt/lists/*
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 

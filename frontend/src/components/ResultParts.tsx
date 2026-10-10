@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import type { Company, Finding, Review, ScoreResult, Tender } from "../api";
+import type { Company, ContractTerms, Finding, Review, ScoreResult, Tender } from "../api";
 import { rub } from "../format";
 import { Bar, VerdictChip } from "./common";
 import { FuzzyChart } from "./FuzzyChart";
@@ -167,14 +167,14 @@ export function FindingList({ findings, empty, showSide = true }: { findings: Fi
 }
 
 /** Выбор вложений закупки: проект контракта, ТЗ (.docx, .pdf, .txt). */
-export function DocsPicker({ files, onChange, label = "Приложить проект контракта и ТЗ" }: { files: File[]; onChange: (f: File[]) => void; label?: string }) {
+export function DocsPicker({ files, onChange, label = "Приложить документы закупки" }: { files: File[]; onChange: (f: File[]) => void; label?: string }) {
   const input = useRef<HTMLInputElement>(null);
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
       <button type="button" className="btn3" style={{ alignSelf: "flex-start" }} onClick={() => input.current?.click()}>
         📎 {label}
       </button>
-      <input ref={input} type="file" multiple accept=".docx,.pdf,.txt,.html,.htm" hidden
+      <input ref={input} type="file" multiple accept=".docx,.doc,.pdf,.zip,.txt,.html,.htm,.jpg,.jpeg,.png,.tif,.tiff" hidden
              onChange={(e) => onChange([...files, ...Array.from(e.target.files ?? [])])} />
       {files.length > 0 && (
         <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
@@ -187,7 +187,22 @@ export function DocsPicker({ files, onChange, label = "Приложить про
           ))}
         </div>
       )}
-      <span className="muted" style={{ fontSize: 12 }}>Необязательно. .docx, .pdf (с текстом), .txt — найдём сроки оплаты, санкции, аванс, марки без эквивалента.</span>
+      <span className="muted" style={{ fontSize: 12 }}>Необязательно. Проект контракта, ТЗ, лицензии, выписки, гарантии: .docx, .doc, .pdf, .zip, сканы .jpg/.png/.tif — найдём сроки оплаты, санкции, просроченные документы.</span>
+    </div>
+  );
+}
+
+/** Какие документы разобраны: тип, как прочитан (текст или скан), срок действия. */
+export function DocList({ docs }: { docs: ContractTerms["documents"] }) {
+  if (!docs?.length) return null;
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+      {docs.map((d, i) => (
+        <div key={`${d.name}-${i}`} className="kv" style={{ fontSize: 14 }}>
+          <span><b>{d.type_name}</b> · {d.name}{d.method === "ocr" ? " · распознан со скана" : ""}</span>
+          <span className="muted">{d.indefinite ? "бессрочно" : d.valid_until ? `до ${d.valid_until}` : ""}</span>
+        </div>
+      ))}
     </div>
   );
 }

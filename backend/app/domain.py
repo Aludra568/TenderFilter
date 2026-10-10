@@ -71,6 +71,7 @@ class ContractTerms(BaseModel):
     warranty_months: int | None = None
     brands_without_equivalent: list[str] = Field(default_factory=list)
     findings: list[Finding] = Field(default_factory=list)
+    documents: list[dict] = Field(default_factory=list)  # тип, способ чтения, срок действия каждого вложения
 
 
 class CanonicalTender(BaseModel):

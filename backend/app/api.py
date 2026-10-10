@@ -341,8 +341,8 @@ async def tender_documents(tender_id: int, files: list[UploadFile] = File(...), 
         raise HTTPException(404, "Закупка не найдена")
     started = time.perf_counter()
     docs = [(f.filename or "doc", await _read_upload(f)) for f in files]
-    terms = services.attach_documents(db, row, docs)
     profile = _profile(db, profile_id)
+    terms = services.attach_documents(db, row, docs, profile.company_inn)
     score = services.score_row(db, row, services.current_version(db, profile), services.profile_company(db, profile))
     audit("documents", f"{row.purchase_number}: разобрано {len(terms.files)} док., находок {len(terms.findings)}",
           duration_ms=(time.perf_counter() - started) * 1000, purchase_number=row.purchase_number,
@@ -608,7 +608,7 @@ async def quick_score(
         from app.docs.contract import attach
 
         t = time.perf_counter()
-        tender = attach(tender, services.read_documents(doc_files, tender.law))
+        tender = attach(tender, services.read_documents(doc_files, tender.law, tender, (inn or "").strip() or None))
         timings["documents_ms"] = (time.perf_counter() - t) * 1000
 
     t = time.perf_counter()
@@ -700,7 +700,7 @@ async def customer_check(
         raise HTTPException(422, str(exc))
     docs = [(d.filename or "doc", await _read_upload(d)) for d in documents if d.filename]
     if docs:
-        tender = attach(tender, services.read_documents(docs, tender.law))
+        tender = attach(tender, services.read_documents(docs, tender.law, tender))
     findings = cust.check_notice(tender)
     interest = cust.supplier_interest(tender)
     summary = {lvl: sum(1 for f in findings if f.severity == lvl) for lvl in ("high", "warn", "info")}

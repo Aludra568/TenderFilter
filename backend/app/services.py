@@ -44,29 +44,46 @@ def ingest(db: Session, filename: str, content: bytes) -> Tender:
     return row
 
 
-def read_documents(files: list[tuple[str, bytes]], law: str):
-    """Тексты вложений → условия контракта. Нечитаемые файлы не роняют разбор, а попадают в находки."""
+def read_documents(files: list[tuple[str, bytes]], law: str, tender: CanonicalTender | None = None,
+                   company_inn: str | None = None):
+    """Вложения любого вида → условия контракта + проверка каждого документа (тип, срок, ИНН).
+
+    Проект контракта и ТЗ идут в разбор условий; лицензии, выписки, сертификаты, гарантии —
+    в проверку срока действия против дат закупки. Нечитаемые файлы не роняют разбор, а попадают в находки.
+    """
+    from dataclasses import asdict
+
+    from app.docs.checks import check
     from app.docs.contract import analyze
-    from app.docs.extract import DocumentError, extract_text
+    from app.docs.extract import DocumentError, extract_document
     from app.domain import Finding
 
-    texts, names, errors = [], [], []
+    texts, names, errors, doc_findings, docs = [], [], [], [], []
     for name, content in files:
         try:
-            texts.append(extract_text(name, content))
-            names.append(name)
+            doc = extract_document(name, content)
         except DocumentError as exc:
-            errors.append(Finding(code="unreadable", side="both", severity="info", title=f"Не прочитан: {name}",
-                                  detail=str(exc)))
-    terms = analyze("\n".join(texts), law, names)
-    terms.findings = errors + terms.findings
+            errors.append(Finding(code="unreadable", side="both", severity="warn" if "Tesseract" in str(exc) else "info",
+                                  title=f"Не прочитан: {name}", detail=str(exc)))
+            continue
+        info, findings = check(name, doc.text, doc.method, tender, company_inn)
+        docs.append(asdict(info))
+        doc_findings += findings
+        if info.doc_type in ("contract", "tz", "other"):
+            texts.append(doc.text)
+            names.append(name)
+    terms = analyze("\n".join(texts), law, names) if texts else analyze("", law, names)
+    if not texts:
+        terms.findings = [f for f in terms.findings if f.code != "no_text"]
+    terms.findings = errors + doc_findings + terms.findings
+    terms.documents = docs
     return terms
 
 
-def attach_documents(db: Session, row: Tender, files: list[tuple[str, bytes]]):
+def attach_documents(db: Session, row: Tender, files: list[tuple[str, bytes]], company_inn: str | None = None):
     from app.docs.contract import attach
 
-    terms = read_documents(files, row.law)
+    terms = read_documents(files, row.law, tender_model(row), company_inn)
     tender = attach(tender_model(row), terms)
     row.data = json.loads(tender.model_dump_json())
     db.query(Score).filter(Score.tender_id == row.id).delete()

@@ -5,7 +5,7 @@ import { useApp } from "../App";
 import { Bar, CountUp, ErrorBox, Skeleton, VerdictChip } from "../components/common";
 import { Radar, type RadarSeries } from "../components/Radar";
 import { WhatIf } from "../components/WhatIf";
-import { CompanyBlock, DocsPicker, FactorList, FindingList, KeyParams, ReviewBlock } from "../components/ResultParts";
+import { CompanyBlock, DocList, DocsPicker, FactorList, FindingList, KeyParams, ReviewBlock } from "../components/ResultParts";
 import { LAW, deadlineInfo, rub } from "../format";
 
 const COMPARE_STYLE = [
@@ -202,6 +202,7 @@ export function TenderPage() {
             {t.contract ? (
               <>
                 <span className="muted" style={{ fontSize: 13 }}>Разобрано: {t.contract.files.join(", ") || "—"}</span>
+                <DocList docs={t.contract.documents} />
                 <FindingList findings={t.contract.findings.filter((f) => f.side !== "customer")} empty="Жёстких условий не найдено" />
               </>
             ) : (

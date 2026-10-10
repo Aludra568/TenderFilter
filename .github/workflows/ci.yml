@@ -18,8 +18,10 @@ jobs:
           python-version: "3.12"
           cache: pip
           cache-dependency-path: backend/requirements*.txt
+      - name: Tesseract для распознавания сканов
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends tesseract-ocr tesseract-ocr-rus fonts-dejavu-core
       - run: pip install -r requirements-dev.txt
-      - run: python -m pytest -q
+      - run: python -m pytest -q -rs
       - name: Эталонный набор (точность ≥ 80%, без критических ошибок)
         run: |
           python -m app.evaluation

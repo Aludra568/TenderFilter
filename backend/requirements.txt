@@ -17,3 +17,6 @@ pymorphy3==2.0.6
 yargy==0.16.0
 pypdf==5.1.0
 olefile==0.47
+pypdfium2==4.30.0
+pytesseract==0.3.13
+Pillow==11.0.0

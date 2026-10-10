@@ -9,6 +9,7 @@ DOCX разбирается как ZIP с XML без сторонних библ
 import io
 import re
 import zipfile
+from dataclasses import dataclass
 
 from lxml import etree
 
@@ -98,16 +99,57 @@ def _decode(content: bytes) -> str:
     return content.decode("utf-8", errors="ignore")
 
 
-def extract_text(filename: str, content: bytes, depth: int = 0) -> str:
+IMAGE_MAGIC = (bytes.fromhex("89504e47"), bytes.fromhex("49492a00"), bytes.fromhex("4d4d002a"))  # PNG, TIFF
+JPEG_MAGIC = bytes.fromhex("ffd8ff")
+IMAGE_EXT = (".jpg", ".jpeg", ".png", ".tif", ".tiff", ".bmp", ".webp", ".gif")
+
+
+@dataclass
+class Extracted:
+    name: str
+    text: str
+    method: str  # text | ocr
+
+
+def _ocr_or_error(fn, content: bytes) -> str:
+    from app.docs import ocr
+
+    try:
+        return fn(content)
+    except ocr.OcrUnavailable as exc:
+        raise DocumentError(str(exc)) from exc
+    except Exception as exc:  # noqa: BLE001 — битая картинка/PDF
+        raise DocumentError("Скан не удалось распознать") from exc
+
+
+def _docx_images(content: bytes) -> list[bytes]:
+    with zipfile.ZipFile(io.BytesIO(content)) as zf:
+        return [zf.read(n) for n in zf.namelist()
+                if n.startswith("word/media/") and n.lower().endswith((".png", ".jpg", ".jpeg", ".tif", ".tiff", ".bmp"))][:20]
+
+
+def extract_document(filename: str, content: bytes, depth: int = 0) -> Extracted:
+    """Текст документа любого формата; сканы — через OCR. method показывает, как получен текст."""
+    from app.docs import ocr
+
     name = (filename or "").lower()
-    if name.endswith(".zip") or (content[:2] == b"PK" and not name.endswith((".docx", ".xlsx"))):
+    method = "text"
+    if name.endswith(IMAGE_EXT) or content[:4] in IMAGE_MAGIC or content[:3] == JPEG_MAGIC:
+        text, method = _ocr_or_error(ocr.image_text, content), "ocr"
+    elif name.endswith(".zip") or (content[:2] == b"PK" and not name.endswith((".docx", ".xlsx"))):
         if depth > 1:
             raise DocumentError("Слишком глубоко вложенный архив")
         text = _zip(content, depth)
     elif name.endswith(".docx"):
         text = _docx(content)
+        if len(text.strip()) < 200:  # в Word вставлены сканы страниц
+            images = _docx_images(content)
+            if images:
+                text, method = "\n".join(_ocr_or_error(ocr.image_text, img) for img in images), "ocr"
     elif name.endswith(".pdf") or content[:5] == b"%PDF-":
         text = _pdf(content)
+        if len(text.strip()) < 200:  # PDF без текстового слоя — скан
+            text, method = _ocr_or_error(ocr.pdf_text, content), "ocr"
     elif name.endswith(".doc") or content[:8] == OLE_MAGIC:
         text = _doc(content)
     elif name.endswith((".html", ".htm", ".xml")):
@@ -118,4 +160,8 @@ def extract_text(filename: str, content: bytes, depth: int = 0) -> str:
         raise DocumentError("Формат .rtf не поддерживается — сохраните документ как .docx или .pdf")
     else:
         raise DocumentError(f"Неизвестный формат документа: {filename}")
-    return text[:MAX_CHARS]
+    return Extracted(filename, text[:MAX_CHARS], method)
+
+
+def extract_text(filename: str, content: bytes, depth: int = 0) -> str:
+    return extract_document(filename, content, depth).text

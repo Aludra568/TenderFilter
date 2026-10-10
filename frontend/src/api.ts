@@ -155,6 +155,7 @@ export interface ContractTerms {
   warranty_months: number | null;
   brands_without_equivalent: string[];
   findings: Finding[];
+  documents?: { name: string; doc_type: string; type_name: string; method: string; valid_until: string | null; indefinite: boolean }[];
 }
 
 export type BidStatus = "preparing" | "submitted" | "won" | "lost" | "declined";
