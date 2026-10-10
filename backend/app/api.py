@@ -646,7 +646,9 @@ async def quick_score(
     if settings.llm_review:
         from app.scoring import review as llm_review
 
-        budget = min(settings.llm_review_timeout_seconds, 9.0 - (time.perf_counter() - t0))
+        # Общий бюджет 8 с из 10 по ТЗ (запас на сеть и интерфейс); меньше 2 с — проверку не начинаем.
+        budget = min(settings.llm_review_timeout_seconds, 8.0 - (time.perf_counter() - t0))
+        budget = budget if budget >= 2.0 else 0.0
         rv = llm_review.review(tender, result, criteria_text, timeout=budget)
         result = llm_review.apply(result, rv)
         timings["review_ms"] = rv.elapsed_ms

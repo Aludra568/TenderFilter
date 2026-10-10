@@ -1,0 +1,13 @@
+{
+  "mode": "hybrid",
+  "model": "qwen2.5:1.5b",
+  "dataset": "phrases",
+  "phrases": 50,
+  "phrases_fully_correct": 50,
+  "phrase_accuracy": 1.0,
+  "check_accuracy": 1.0,
+  "checks": 81,
+  "ms_median": 2.41,
+  "ms_max": 64.99,
+  "errors": []
+}

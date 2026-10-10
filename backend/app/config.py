@@ -23,15 +23,15 @@ class Settings(BaseSettings):
     # LLM: ollama, openai (любой OpenAI-совместимый API) или none (только правила).
     llm_provider: str = "none"
     ollama_url: str = "http://ollama:11434"
-    llm_model: str = "qwen2.5:1.5b"
+    llm_model: str = "qwen2.5:3b"
     openai_base_url: str = "https://api.openai.com/v1"
     openai_api_key: str | None = None
     llm_timeout_seconds: float = 90.0
     # Сколько ждать LLM при разборе критериев в «быстрой оценке», чтобы уложиться в 10 с из ТЗ.
-    llm_parse_timeout_seconds: float = 5.0
+    llm_parse_timeout_seconds: float = 4.0
     # Второе мнение LLM по оценке алгоритма: не меняет процент, спорное отправляет на ручную проверку
     llm_review: bool = True
-    llm_review_timeout_seconds: float = 3.0
+    llm_review_timeout_seconds: float = 6.0
     # Официальный API ЕИС для физлиц (getDocsIP). Токен выдаётся в ЛК ЕИС через Госуслуги.
     eis_token: str = ""
     eis_getdocs_url: str = "https://int44.zakupki.gov.ru/eis-integration/services/getDocsIP"

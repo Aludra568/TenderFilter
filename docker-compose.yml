@@ -9,12 +9,12 @@ x-backend-env: &backend-env
   EIS_TOKEN: ${EIS_TOKEN:-}
   LLM_PROVIDER: ${LLM_PROVIDER:-ollama}
   OLLAMA_URL: http://ollama:11434
-  LLM_MODEL: ${LLM_MODEL:-qwen2.5:1.5b}
+  LLM_MODEL: ${LLM_MODEL:-qwen2.5:3b}
   OPENAI_BASE_URL: ${OPENAI_BASE_URL:-https://api.openai.com/v1}
   OPENAI_API_KEY: ${OPENAI_API_KEY:-}
-  LLM_PARSE_TIMEOUT_SECONDS: ${LLM_PARSE_TIMEOUT_SECONDS:-5}
+  LLM_PARSE_TIMEOUT_SECONDS: ${LLM_PARSE_TIMEOUT_SECONDS:-4}
   LLM_REVIEW: ${LLM_REVIEW:-true}
-  LLM_REVIEW_TIMEOUT_SECONDS: ${LLM_REVIEW_TIMEOUT_SECONDS:-3}
+  LLM_REVIEW_TIMEOUT_SECONDS: ${LLM_REVIEW_TIMEOUT_SECONDS:-6}
   SEED_DEMO_DATA: ${SEED_DEMO_DATA:-true}
 
 services:
@@ -80,7 +80,7 @@ services:
     image: ollama/ollama:0.5.7
     environment:
       OLLAMA_HOST: ollama:11434
-    entrypoint: ["/bin/sh", "-c", "for i in $$(seq 1 30); do ollama list >/dev/null 2>&1 && break; sleep 2; done; ollama pull ${LLM_MODEL:-qwen2.5:1.5b}"]
+    entrypoint: ["/bin/sh", "-c", "for i in $$(seq 1 30); do ollama list >/dev/null 2>&1 && break; sleep 2; done; ollama pull ${LLM_MODEL:-qwen2.5:3b}"]
     depends_on:
       - ollama
     restart: "no"

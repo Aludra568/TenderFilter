@@ -17,6 +17,7 @@ from pathlib import Path
 
 import yaml
 
+from app.config import get_settings
 from app.domain import Preferences
 from app.nlp.criteria import parse_criteria
 
@@ -63,10 +64,33 @@ LLM_SYSTEM = (
 )
 
 
+def _code(name) -> str | None:
+    from app.reference.regions import BY_CODE, find_regions
+
+    name = str(name).strip()
+    if name.zfill(2) in BY_CODE:
+        return name.zfill(2)
+    found = find_regions(name)
+    return found[0].code if found else None
+
+
+def _regions_to_codes(raw: dict) -> None:
+    """Модель часто пишет «Москва» вместо кода 77 — переводим справочником, чтобы сравнение было честным."""
+    geo = raw.get("geo")
+    if not isinstance(geo, dict):
+        return
+    if isinstance(geo.get("regions"), dict):
+        geo["regions"] = {c: w for k, w in geo["regions"].items() if (c := _code(k))}
+    for key in ("excluded", "warehouses"):
+        if isinstance(geo.get(key), list):
+            geo[key] = [c for k in geo[key] if (c := _code(k))]
+
+
 def llm_only(text: str, timeout: float) -> Preferences:
     from app.nlp import llm
 
     raw = llm.complete_json(LLM_SYSTEM, text, None, timeout) or {}
+    _regions_to_codes(raw)
     base = json.loads(Preferences().model_dump_json())
     for section, values in raw.items():
         if isinstance(values, dict) and isinstance(base.get(section), dict):
@@ -93,6 +117,7 @@ def run(mode: str = "rules", write: bool = True, timeout: float = 30.0, dataset:
     ok_checks = sum(c["ok"] for r in rows for c in r["checks"])
     report = {
         "mode": mode,
+        "model": None if mode == "rules" else get_settings().llm_model,
         "dataset": dataset,
         "phrases": len(rows),
         "phrases_fully_correct": sum(r["ok"] for r in rows),
@@ -104,7 +129,8 @@ def run(mode: str = "rules", write: bool = True, timeout: float = 30.0, dataset:
         "errors": [{"text": r["text"], "failed": [c for c in r["checks"] if not c["ok"]]} for r in rows if not r["ok"]],
     }
     if write:
-        (ROOT / f"{dataset}_report_{mode}.json").write_text(json.dumps(report, ensure_ascii=False, indent=2, default=str),
+        suffix = mode if mode == "rules" else f"{mode}_{get_settings().llm_model.replace(':', '-')}"
+        (ROOT / f"{dataset}_report_{suffix}.json").write_text(json.dumps(report, ensure_ascii=False, indent=2, default=str),
                                                           encoding="utf-8")
     return report
 

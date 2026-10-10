@@ -1,0 +1,524 @@
+{
+  "mode": "llm",
+  "model": "qwen2.5:3b",
+  "dataset": "phrases",
+  "phrases": 50,
+  "phrases_fully_correct": 16,
+  "phrase_accuracy": 0.32,
+  "check_accuracy": 0.395,
+  "checks": 81,
+  "ms_median": 3060.83,
+  "ms_max": 16368.3,
+  "errors": [
+    {
+      "text": "НМЦК от 1 до 30 млн",
+      "failed": [
+        {
+          "key": "price.max_rub",
+          "expected": 30000000,
+          "got": 3000000.0,
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Берём лоты до 5 лямов",
+      "failed": [
+        {
+          "key": "price.max_rub",
+          "expected": 5000000,
+          "got": null,
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Работаем по Новосибирской области",
+      "failed": [
+        {
+          "key": "geo.regions.54",
+          "expected": 1.0,
+          "got": null,
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Поставляем по Москве и МО",
+      "failed": [
+        {
+          "key": "geo.regions.77",
+          "expected": 1.0,
+          "got": null,
+          "ok": false
+        },
+        {
+          "key": "geo.regions.50",
+          "expected": 1.0,
+          "got": null,
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Регион — Санкт-Петербург и Ленобласть",
+      "failed": [
+        {
+          "key": "geo.regions.78",
+          "expected": 1.0,
+          "got": null,
+          "ok": false
+        },
+        {
+          "key": "geo.regions.47",
+          "expected": 1.0,
+          "got": null,
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "В Алтайском крае — только если выгодно",
+      "failed": [
+        {
+          "key": "geo.regions.22",
+          "expected": 0.5,
+          "got": null,
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Работаем только в Татарстане",
+      "failed": [
+        {
+          "key": "geo.regions.16",
+          "expected": 1.0,
+          "got": null,
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Возим по всей Сибири",
+      "failed": [
+        {
+          "key": "geo.regions.54",
+          "expected": 1.0,
+          "got": null,
+          "ok": false
+        },
+        {
+          "key": "geo.regions.24",
+          "expected": 1.0,
+          "got": null,
+          "ok": false
+        },
+        {
+          "key": "geo.regions.38",
+          "expected": 1.0,
+          "got": null,
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Кроме Тывы и Якутии",
+      "failed": [
+        {
+          "key": "geo.excluded[]",
+          "expected": [
+            "17",
+            "14"
+          ],
+          "got": [],
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "На Дальний Восток не поставляем",
+      "failed": [
+        {
+          "key": "geo.excluded[]",
+          "expected": [
+            "25",
+            "27",
+            "41"
+          ],
+          "got": [
+            "42",
+            "43",
+            "44",
+            "45",
+            "46",
+            "47",
+            "48",
+            "49"
+          ],
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Есть склад в Красноярске",
+      "failed": [
+        {
+          "key": "geo.warehouses[]",
+          "expected": [
+            "24"
+          ],
+          "got": [
+            "66"
+          ],
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Филиалы в Екатеринбурге и Челябинске",
+      "failed": [
+        {
+          "key": "geo.warehouses[]",
+          "expected": [
+            "66",
+            "74"
+          ],
+          "got": [],
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Нужно хотя бы 5 рабочих дней на подготовку документов",
+      "failed": [
+        {
+          "key": "timing.min_days_to_deadline",
+          "expected": 7,
+          "got": 5,
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "На обеспечения готовы отвлечь не больше 1 млн",
+      "failed": [
+        {
+          "key": "finance.guarantee_limit_rub",
+          "expected": 1000000,
+          "got": null,
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Обеспечение заявки и контракта в сумме до 3 млн",
+      "failed": [
+        {
+          "key": "finance.guarantee_limit_rub",
+          "expected": 3000000,
+          "got": null,
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Без аванса не работаем",
+      "failed": [
+        {
+          "key": "finance.advance",
+          "expected": "must",
+          "got": "ignore",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Конкурсы не любим",
+      "failed": [
+        {
+          "key": "conditions.methods.open_contest",
+          "expected": "neutral",
+          "got": "exclude",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Конкурсы не берём",
+      "failed": [
+        {
+          "key": "conditions.methods.open_contest",
+          "expected": "exclude",
+          "got": null,
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Только электронные аукционы",
+      "failed": [
+        {
+          "key": "conditions.methods.open_contest",
+          "expected": "exclude",
+          "got": null,
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Предпочитаем запросы котировок",
+      "failed": [
+        {
+          "key": "conditions.methods.quotation_request",
+          "expected": "prefer",
+          "got": null,
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Единственный поставщик нам не интересен",
+      "failed": [
+        {
+          "key": "conditions.methods.single_supplier",
+          "expected": "exclude",
+          "got": null,
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Работаем только по 44-ФЗ",
+      "failed": [
+        {
+          "key": "conditions.laws",
+          "expected": [
+            "44-FZ"
+          ],
+          "got": [
+            "44-FZ",
+            "223-FZ"
+          ],
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Закупки по 223-ФЗ не рассматриваем",
+      "failed": [
+        {
+          "key": "conditions.laws",
+          "expected": [
+            "44-FZ"
+          ],
+          "got": [
+            "44-FZ",
+            "223-FZ"
+          ],
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Поставляем только импортное оборудование",
+      "failed": [
+        {
+          "key": "conditions.imports_only",
+          "expected": true,
+          "got": false,
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Занимаемся поставкой медицинского оборудования",
+      "failed": [
+        {
+          "key": "profile.keywords~",
+          "expected": [
+            "медицинск"
+          ],
+          "got": [],
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Продаём цемент, кирпич, сухие смеси",
+      "failed": [
+        {
+          "key": "profile.keywords~",
+          "expected": [
+            "цемент",
+            "кирпич"
+          ],
+          "got": [],
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Мебель не поставляем",
+      "failed": [
+        {
+          "key": "profile.exclude_keywords~",
+          "expected": [
+            "мебел"
+          ],
+          "got": [],
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Поставляем канцтовары, кроме бумаги",
+      "failed": [
+        {
+          "key": "profile.keywords~",
+          "expected": [
+            "канцтовар"
+          ],
+          "got": [],
+          "ok": false
+        },
+        {
+          "key": "profile.exclude_keywords~",
+          "expected": [
+            "бумаг"
+          ],
+          "got": [],
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Работаем в Омской области, НМЦК до 15 млн, на заявку минимум 4 дня",
+      "failed": [
+        {
+          "key": "geo.regions.55",
+          "expected": 1.0,
+          "got": null,
+          "ok": false
+        },
+        {
+          "key": "price.max_rub",
+          "expected": 15000000,
+          "got": null,
+          "ok": false
+        },
+        {
+          "key": "timing.min_days_to_deadline",
+          "expected": 4,
+          "got": 3,
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Работаем в Новосибирской и Томской областях, в Алтайском крае — если выгодно. НМЦК от 1 до 30 млн. На обеспечения готовы отвлечь не больше 1 млн. На заявку нужно минимум 3 дня. Конкурсы не любим. Аванс очень важен.",
+      "failed": [
+        {
+          "key": "geo.regions.54",
+          "expected": 1.0,
+          "got": null,
+          "ok": false
+        },
+        {
+          "key": "geo.regions.70",
+          "expected": 1.0,
+          "got": null,
+          "ok": false
+        },
+        {
+          "key": "geo.regions.22",
+          "expected": 0.5,
+          "got": null,
+          "ok": false
+        },
+        {
+          "key": "finance.guarantee_limit_rub",
+          "expected": 1000000,
+          "got": null,
+          "ok": false
+        },
+        {
+          "key": "conditions.methods.open_contest",
+          "expected": "neutral",
+          "got": "exclude",
+          "ok": false
+        },
+        {
+          "key": "finance.advance",
+          "expected": "want",
+          "got": "must",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Москва, лоты 2–20 млн, только аукционы, аванс обязателен",
+      "failed": [
+        {
+          "key": "price.min_rub",
+          "expected": 2000000,
+          "got": 20000000.0,
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "НМЦК около 10 млн",
+      "failed": [
+        {
+          "key": "price.min_rub",
+          "expected": 8000000,
+          "got": null,
+          "ok": false
+        },
+        {
+          "key": "price.max_rub",
+          "expected": 12000000,
+          "got": null,
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Контракты от 50 млн нам не по силам",
+      "failed": [
+        {
+          "key": "price.max_rub",
+          "expected": 50000000,
+          "got": null,
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Поставляем спецодежду и СИЗ по Уралу",
+      "failed": [
+        {
+          "key": "profile.keywords~",
+          "expected": [
+            "спецодежд"
+          ],
+          "got": [],
+          "ok": false
+        },
+        {
+          "key": "geo.regions.66",
+          "expected": 1.0,
+          "got": null,
+          "ok": false
+        },
+        {
+          "key": "geo.regions.74",
+          "expected": 1.0,
+          "got": null,
+          "ok": false
+        }
+      ]
+    }
+  ]
+}

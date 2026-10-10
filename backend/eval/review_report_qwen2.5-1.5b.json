@@ -1,0 +1,1135 @@
+{
+  "model": "qwen2.5:1.5b",
+  "cases": 120,
+  "algorithm_accuracy": 0.967,
+  "with_review_accuracy": 0.967,
+  "changed": 0,
+  "fixed": 0,
+  "broken": 0,
+  "unanswered": 0,
+  "hallucinated_quotes": 7,
+  "ms_median": 2807,
+  "ms_p95": 3013,
+  "rows": [
+    {
+      "id": "real-001",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-002",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-003",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-004",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-005",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-006",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-007",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-008",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-009",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-010",
+      "expected": "consider",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-011",
+      "expected": "consider",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-012",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-013",
+      "expected": "consider",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-014",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-015",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-016",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-017",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-018",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-019",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-020",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-021",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-022",
+      "expected": "consider",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-023",
+      "expected": "consider",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-024",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-025",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-026",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-027",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-028",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-029",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-030",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Смысловая близость предмета к профилю 20% (profile) — 20% (0.2) из 25% (0.25) веса.",
+          "quote": "Смысловая близость предмета к профилю 20%",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-031",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-032",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-033",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-034",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-035",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-036",
+      "expected": "consider",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-037",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-038",
+      "expected": "consider",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-039",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Поставка в Свердловская область — вне ваших регионов",
+          "quote": "Поставка в Свердловская область — вне ваших регионов",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-040",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-041",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-042",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-043",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 3,
+      "issues": [
+        {
+          "problem": "Смысловая близость предмета к профилю 19% (закон 44-ФЗ)",
+          "quote": "Смысловая близость предмета к профилю 19%",
+          "verified": false
+        },
+        {
+          "problem": "Обеспечение контракта 10%",
+          "quote": "Обеспечение контракта 10%",
+          "verified": false
+        },
+        {
+          "problem": "Открытый конкурс — нейтральный способ",
+          "quote": "Открытый конкурс — нейтральный способ",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-044",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-045",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-046",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-047",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-048",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-049",
+      "expected": "consider",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-050",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-051",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-052",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-053",
+      "expected": "consider",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-054",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-055",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-056",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-057",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Смысловая близость предмета к профилю 22% (закупка продуктов питания для образовательных учреждений)",
+          "quote": "Смысловая близость предмета к профилю 22%",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-058",
+      "expected": "skip",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-059",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-060",
+      "expected": "skip",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-061",
+      "expected": "consider",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-062",
+      "expected": "consider",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-063",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-064",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-065",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-066",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Предмет закупки не похож на ваш профиль",
+          "quote": "Предмет закупки не по вашему профилю",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-067",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-068",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-069",
+      "expected": "consider",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-070",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-071",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-072",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-073",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-074",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-075",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-076",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-077",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-078",
+      "expected": "skip",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-079",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-080",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-081",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-082",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-083",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-084",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-085",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-086",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-087",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-088",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-089",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-090",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-091",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-092",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-093",
+      "expected": "consider",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-094",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-095",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-096",
+      "expected": "consider",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-097",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-098",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-099",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-100",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-101",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-102",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-103",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-104",
+      "expected": "consider",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-105",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-106",
+      "expected": "consider",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-107",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-108",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-109",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-110",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-111",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-112",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-113",
+      "expected": "consider",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-114",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-115",
+      "expected": "consider",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-116",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-117",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-118",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-119",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-120",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "agree",
+      "unverified": 0,
+      "issues": []
+    }
+  ]
+}

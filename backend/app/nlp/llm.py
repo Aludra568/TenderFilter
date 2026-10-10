@@ -7,6 +7,9 @@ LLM дополняет алгоритм в двух местах: доразби
 
 import json
 import logging
+import time
+from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import TimeoutError as FutureTimeout
 
 import httpx
 
@@ -15,7 +18,20 @@ from app.config import get_settings
 log = logging.getLogger(__name__)
 
 
+_STATUS_CACHE: dict = {"at": 0.0, "value": None}
+_STATUS_TTL = 30.0  # секунд: проверка доступности модели не должна съедать бюджет каждой оценки
+
+
 def provider_status(timeout: float = 1.5) -> dict:
+    now = time.monotonic()
+    if _STATUS_CACHE["value"] is not None and now - _STATUS_CACHE["at"] < _STATUS_TTL:
+        return _STATUS_CACHE["value"]
+    value = _provider_status(timeout)
+    _STATUS_CACHE.update(at=now, value=value)
+    return value
+
+
+def _provider_status(timeout: float) -> dict:
     s = get_settings()
     if s.llm_provider == "ollama":
         try:
@@ -31,9 +47,26 @@ def provider_status(timeout: float = 1.5) -> dict:
     return {"provider": "none", "model": None, "ready": False, "detail": "LLM отключена — работает разбор правилами"}
 
 
+_POOL = ThreadPoolExecutor(max_workers=4, thread_name_prefix="llm")
+
+
 def complete_json(system: str, user: str, schema: dict | None = None, timeout: float | None = None) -> dict | None:
+    """Ответ модели в JSON с ЖЁСТКИМ лимитом по времени: не успела — None, оценка идёт без неё.
+
+    Таймаут httpx относится к каждой операции, а не ко всему запросу, поэтому запрос идёт в отдельном
+    потоке, а ждём его ровно timeout секунд по часам.
+    """
+    timeout = timeout or get_settings().llm_timeout_seconds
+    future = _POOL.submit(_complete_json, system, user, schema, timeout)
+    try:
+        return future.result(timeout=timeout)
+    except FutureTimeout:
+        log.warning("LLM не ответила за %.1f с — работаем без неё", timeout)
+        return None
+
+
+def _complete_json(system: str, user: str, schema: dict | None, timeout: float) -> dict | None:
     s = get_settings()
-    timeout = timeout or s.llm_timeout_seconds
     try:
         if s.llm_provider == "ollama":
             body = {

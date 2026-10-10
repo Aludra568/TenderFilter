@@ -1,0 +1,335 @@
+{
+  "mode": "llm",
+  "model": "qwen2.5:1.5b",
+  "dataset": "phrases_holdout",
+  "phrases": 30,
+  "phrases_fully_correct": 10,
+  "phrase_accuracy": 0.333,
+  "check_accuracy": 0.304,
+  "checks": 46,
+  "ms_median": 3903.9,
+  "ms_max": 4269.97,
+  "errors": [
+    {
+      "text": "Максимальная цена контракта — 8 млн",
+      "failed": [
+        {
+          "key": "price.max_rub",
+          "expected": 8000000,
+          "got": 80000000.0,
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Крупнее 25 миллионов не берём",
+      "failed": [
+        {
+          "key": "price.max_rub",
+          "expected": 25000000,
+          "got": null,
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Работаем в Иркутской области и Бурятии",
+      "failed": [
+        {
+          "key": "geo.regions.38",
+          "expected": 1.0,
+          "got": null,
+          "ok": false
+        },
+        {
+          "key": "geo.regions.03",
+          "expected": 1.0,
+          "got": null,
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Наша география — Пермский край, иногда Удмуртия",
+      "failed": [
+        {
+          "key": "geo.regions.59",
+          "expected": 1.0,
+          "got": null,
+          "ok": false
+        },
+        {
+          "key": "geo.regions.18",
+          "expected": 0.5,
+          "got": null,
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Кавказ не рассматриваем",
+      "failed": [
+        {
+          "key": "geo.excluded[]",
+          "expected": [
+            "05",
+            "20"
+          ],
+          "got": [],
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Возим только по Свердловской области",
+      "failed": [
+        {
+          "key": "geo.regions.66",
+          "expected": 1.0,
+          "got": null,
+          "ok": false
+        },
+        {
+          "key": "geo.required",
+          "expected": true,
+          "got": false,
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Склад у нас в Новосибирске, офис в Москве",
+      "failed": [
+        {
+          "key": "geo.warehouses[]",
+          "expected": [
+            "54"
+          ],
+          "got": [],
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Аукционы — да, конкурсы — нет",
+      "failed": [
+        {
+          "key": "conditions.methods.open_contest",
+          "expected": "exclude",
+          "got": "neutral",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Запросы предложений не рассматриваем",
+      "failed": [
+        {
+          "key": "conditions.methods.proposal_request",
+          "expected": "exclude",
+          "got": null,
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Котировки берём охотно",
+      "failed": [
+        {
+          "key": "conditions.methods.quotation_request",
+          "expected": "prefer",
+          "got": "exclude",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Только 223-ФЗ",
+      "failed": [
+        {
+          "key": "conditions.laws",
+          "expected": [
+            "223-FZ"
+          ],
+          "got": [
+            "44-FZ",
+            "223-FZ"
+          ],
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Продаём бытовую химию и хозтовары",
+      "failed": [
+        {
+          "key": "profile.keywords~",
+          "expected": [
+            "хими",
+            "хозтовар"
+          ],
+          "got": [],
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Специализируемся на поставке продуктов питания",
+      "failed": [
+        {
+          "key": "profile.keywords~",
+          "expected": [
+            "продукт"
+          ],
+          "got": [],
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Оказываем услуги по уборке помещений",
+      "failed": [
+        {
+          "key": "profile.keywords~",
+          "expected": [
+            "уборк"
+          ],
+          "got": [],
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Лекарства не возим",
+      "failed": [
+        {
+          "key": "profile.exclude_keywords~",
+          "expected": [
+            "лекарств"
+          ],
+          "got": [],
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Поставляем стройматериалы, но не металлопрокат",
+      "failed": [
+        {
+          "key": "profile.keywords~",
+          "expected": [
+            "стройматериал"
+          ],
+          "got": [],
+          "ok": false
+        },
+        {
+          "key": "profile.exclude_keywords~",
+          "expected": [
+            "металлопрокат"
+          ],
+          "got": [],
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "С заказчиком 5504123459 больше не работаем",
+      "failed": [
+        {
+          "key": "customer.excluded_inns[]",
+          "expected": [
+            "5504123459"
+          ],
+          "got": [],
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Работаем по Краснодарскому краю, лоты 1–10 млн, аукционы, на заявку минимум 3 дня, аванс желателен",
+      "failed": [
+        {
+          "key": "geo.regions.23",
+          "expected": 1.0,
+          "got": null,
+          "ok": false
+        },
+        {
+          "key": "price.min_rub",
+          "expected": 1000000,
+          "got": null,
+          "ok": false
+        },
+        {
+          "key": "price.max_rub",
+          "expected": 10000000,
+          "got": null,
+          "ok": false
+        },
+        {
+          "key": "conditions.methods.e_auction",
+          "expected": "prefer",
+          "got": null,
+          "ok": false
+        },
+        {
+          "key": "finance.advance",
+          "expected": "want",
+          "got": "ignore",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Мы из Нижнего Новгорода. Контракты до 7 млн, обеспечение не больше 700 тыс. Конкурсы не берём.",
+      "failed": [
+        {
+          "key": "geo.regions.52",
+          "expected": 1.0,
+          "got": null,
+          "ok": false
+        },
+        {
+          "key": "price.max_rub",
+          "expected": 7000000,
+          "got": null,
+          "ok": false
+        },
+        {
+          "key": "finance.guarantee_limit_rub",
+          "expected": 700000,
+          "got": null,
+          "ok": false
+        },
+        {
+          "key": "conditions.methods.open_contest",
+          "expected": "exclude",
+          "got": null,
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Работаем по ЦФО, кроме Москвы",
+      "failed": [
+        {
+          "key": "geo.regions.40",
+          "expected": 1.0,
+          "got": null,
+          "ok": false
+        },
+        {
+          "key": "geo.excluded[]",
+          "expected": [
+            "77"
+          ],
+          "got": [
+            "23"
+          ],
+          "ok": false
+        }
+      ]
+    }
+  ]
+}

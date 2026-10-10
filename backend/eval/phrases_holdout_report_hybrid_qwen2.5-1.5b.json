@@ -1,0 +1,61 @@
+{
+  "mode": "hybrid",
+  "model": "qwen2.5:1.5b",
+  "dataset": "phrases_holdout",
+  "phrases": 30,
+  "phrases_fully_correct": 26,
+  "phrase_accuracy": 0.867,
+  "check_accuracy": 0.913,
+  "checks": 46,
+  "ms_median": 4.85,
+  "ms_max": 5078.93,
+  "errors": [
+    {
+      "text": "Кавказ не рассматриваем",
+      "failed": [
+        {
+          "key": "geo.excluded[]",
+          "expected": [
+            "05",
+            "20"
+          ],
+          "got": [],
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Предоплата для нас критична",
+      "failed": [
+        {
+          "key": "finance.advance",
+          "expected": "must",
+          "got": "want",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Хорошо бы с авансом",
+      "failed": [
+        {
+          "key": "finance.advance",
+          "expected": "want",
+          "got": "ignore",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "text": "Аукционы — да, конкурсы — нет",
+      "failed": [
+        {
+          "key": "conditions.methods.open_contest",
+          "expected": "exclude",
+          "got": "prefer",
+          "ok": false
+        }
+      ]
+    }
+  ]
+}

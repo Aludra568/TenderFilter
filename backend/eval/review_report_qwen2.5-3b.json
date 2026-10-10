@@ -1,0 +1,1967 @@
+{
+  "model": "qwen2.5:3b",
+  "cases": 120,
+  "algorithm_accuracy": 0.967,
+  "with_review_accuracy": 0.983,
+  "changed": 2,
+  "fixed": 2,
+  "broken": 0,
+  "unanswered": 3,
+  "hallucinated_quotes": 115,
+  "ms_median": 3836,
+  "ms_p95": 5687,
+  "rows": [
+    {
+      "id": "real-001",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Предмет закупки не похож на ваш профиль",
+          "quote": "нечётко указан предмет закупки",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-002",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "закупка в Нижегородскую область — вне ваших регионов",
+          "quote": "нечеткая оценка времени — μ: «нормально» 0,26, «достаточно» 0,74",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-003",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "doubt",
+      "unverified": 0,
+      "issues": [
+        {
+          "problem": "Предмет закупки не похож на ваш профиль",
+          "quote": "Работаем только в Москве и Московской области. Поставляем медицинское оборудование и лекарственные препараты.",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "real-004",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Воронежская область — вне ваших регионов",
+          "quote": "Воронежская область — вне ваших регионов.",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-005",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Поставка в Нижегородская область — вне ваших регионов",
+          "quote": "Нижегородская область — вне ваших регионов",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-006",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "закупка в Белгородской области вне регионов поставщика",
+          "quote": "закупка в Белгородской области вне ваших регионов.",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-007",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Поставка в Нижегородская область — вне ваших регионов",
+          "quote": "Нижегородская область — вне ваших регионов",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-008",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "doubt",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Смысловая близость предмета к профилю 29%",
+          "quote": "Работаем только в Москве и Московской области. Поставляем медицинское оборудование и лекарственные препараты.",
+          "verified": true
+        },
+        {
+          "problem": "Диапазон НМЦК не задан — фактор не учитывается",
+          "quote": "Диапазон НМЦК не задан — фактор не учитывается",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-009",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Предмет закупки не похож на ваш профиль",
+          "quote": "нечетко указан предмет закупки",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-010",
+      "expected": "consider",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Срок исполнения 45 дней — неверно применил критерий, не учел норму времени в 6 дней на подготовку заявки из извещения",
+          "quote": "6 дней на подготовку заявки",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-011",
+      "expected": "consider",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Срок исполнения 45 дней — неверно применил критерий, не учел норму времени в 6 дней на подготовку заявки из извещения",
+          "quote": "6 дней на подготовку заявки",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-012",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "doubt",
+      "unverified": 0,
+      "issues": [
+        {
+          "problem": "Поставка в г. Санкт-Петербург — вне ваших регионов",
+          "quote": "г. Санкт-Петербург, вн.тер.г. муниципальный округ Народный, пр-кт Большевиков, д. 52 к. 1 литера К",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "real-013",
+      "expected": "consider",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "unconfirmed",
+      "unverified": 4,
+      "issues": [
+        {
+          "problem": "Диапазон НМЦК не задан — фактор не учитывается",
+          "quote": "Диапазон НМЦК не задан — фактор не учитывается",
+          "verified": false
+        },
+        {
+          "problem": "5 дней на подготовку заявки",
+          "quote": "5 дней на подготовку заявки",
+          "verified": false
+        },
+        {
+          "problem": "Обеспечение контракта 5%",
+          "quote": "Обеспечение контракта 5%",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-014",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "нечеткое определение области закупки из извещения: \"заказчик: null\", \"место поставки\": \"обл. Саратовская, г.о. город Саратов, г. Саратов, ул. им Тархова С.Ф., зд. 64\". Необходимо более точное определение области закупки для правильного применения критерия geo.",
+          "quote": "заказчик: null, \"место поставки\": \"обл. Саратовская, г.о. город Саратов, г. Саратов, ул. им Тархова С.Ф., зд. 64\".",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-015",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unavailable",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-016",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Поставка в г. Москва — вне ваших регионов",
+          "quote": "Закупка только для СМП, а вашей компании нет в реестре МСП",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-017",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "doubt",
+      "unverified": 0,
+      "issues": [
+        {
+          "problem": "Рязанская область — вне ваших регионов",
+          "quote": "Работаем только в Москве и Московской области.",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "real-018",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Поставка в Ленинградская область — вне ваших регионов",
+          "quote": "Ленинградская область — вне ваших регионов",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-019",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "стоп-фактор: Поставка в Белгородская область — вне ваших регионов",
+          "quote": "требование из извещения: 'заказчик: null'",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-020",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Пензенская область — вне ваших регионов",
+          "quote": "Поставка в Пензенскую область — вне ваших регионов",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-021",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "doubt",
+      "unverified": 0,
+      "issues": [
+        {
+          "problem": "Работаем в Новосибирской и Томской областях, в Алтайском крае и Кемеровской области — если выгодно. НМЦК от 500 тыс. до 30 млн. На обеспечения готовы отвлечь не больше 2 млн. На заявку нужно минимум 3 дня. Конкурсы не любим. Аванс важен. Поставляем ноутбуки, компьютеры, серверы, МФУ, картриджи и сетевое оборудование.",
+          "quote": "Работаем в Новосибирской и Томской областях, в Алтайском крае и Кемеровской области — если выгодно.",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "real-022",
+      "expected": "consider",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Нет данных ЕГРЮЛ о заказчике. Это критерий, который не учтен в оценке алгоритма, но мог быть важен для принятия решения.",
+          "quote": "Заказчик не указан в извещении.",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-023",
+      "expected": "consider",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Заказчик не указан в извещении",
+          "quote": "заказчик: null",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-024",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "doubt",
+      "unverified": 0,
+      "issues": [
+        {
+          "problem": "Предмет закупки не похож на ваш профиль",
+          "quote": "Работаем в Новосибирской и Томской областях, в Алтайском крае и Кемеровской области — если выгодно.",
+          "verified": true
+        },
+        {
+          "problem": "Удмуртская Республика — вне ваших регионов",
+          "quote": "Работаем в Новосибирской и Томской областях, в Алтайском крае и Кемеровской области — если выгодно.",
+          "verified": true
+        },
+        {
+          "problem": "45 дней",
+          "quote": "На заявку нужно минимум 3 дня.",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "real-025",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 3,
+      "issues": [
+        {
+          "problem": "Предмет закупки не похож на ваш профиль",
+          "quote": "нечетко сказано о предмете закупки",
+          "verified": false
+        },
+        {
+          "problem": "Диапазон НМЦК не задан — фактор не учитывается",
+          "quote": "Диапазон НМЦК не задан — фактор не учитывается",
+          "verified": false
+        },
+        {
+          "problem": "Запрос котировок — нейтральный способ",
+          "quote": "Запрос котировок — нейтральный способ",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-026",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Нет данных ЕГРЮЛ о заказчике",
+          "quote": "нет нацрежим",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-027",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 3,
+      "issues": [
+        {
+          "problem": "Диапазон НМЦК не задан — фактор не учитывается",
+          "quote": "Диапазон НМЦК не задан — фактор не учитывается",
+          "verified": false
+        },
+        {
+          "problem": "Обеспечение контракта 5%",
+          "quote": "Обеспечение контракта 5%",
+          "verified": false
+        },
+        {
+          "problem": "Действует национальный режим (ПП № 1875) — нужны документы о происхождении товара",
+          "quote": "Действует национальный режим (ПП № 1875) — нужны документы о происхождении товара",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-028",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Волгоградская область — вне ваших регионов. ДОСЛОВНАЯ цитата из критериев: 'Волгоградская область — вне ваших регионов'.",
+          "quote": "Волгоградская область — вне ваших регионов",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-029",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Срок подачи заявок истёк",
+          "quote": "извещение: \"закончение подачи\": \"2026-10-09T07:01:44.866486+00:00\"",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-030",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "закупка в г. Москва — вне ваших регионов (извещение: \"номер\": \"GOLD0029\", \"место поставки\": \"г. Москва\")",
+          "quote": "извещение: \"место поставки\": \"г. Москва\"",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-031",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "закупка в Нижегородскую область — вне ваших регионов",
+          "quote": "требования: \"Работаем только в Москве и Московской области. Поставляем медицинское оборудование и лекарственные препараты. Аванс обязателен.\"",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-032",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Калининградская область — вне ваших регионов",
+          "quote": "Калининградская область — вне ваших регионов",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-033",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Нет данных ЕГРЮЛ о заказчике",
+          "quote": "заказчик: null",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-034",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "doubt",
+      "unverified": 0,
+      "issues": [
+        {
+          "problem": "Поставка в г. Санкт-Петербург — вне ваших регионов. Не учитывается г. Санкт-Петербург в критериях поставщика: 'Работаем только в Москве и Московской области.'",
+          "quote": "Работаем только в Москве и Московской области.",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "real-035",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "doubt",
+      "unverified": 0,
+      "issues": [
+        {
+          "problem": "Поставка в Смоленская область — вне ваших регионов",
+          "quote": "Поставляем медицинское оборудование и лекарственные препараты.",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "real-036",
+      "expected": "consider",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "doubt",
+      "unverified": 2,
+      "issues": [
+        {
+          "problem": "Смысловая близость предмета к профилю 27%",
+          "quote": "Работаем только в Москве и Московской области. Поставляем медицинское оборудование и лекарственные препараты.",
+          "verified": true
+        },
+        {
+          "problem": "6 дней на подготовку заявки",
+          "quote": "6 дней на подготовку заявки",
+          "verified": false
+        },
+        {
+          "problem": "Действует национальный режим (ПП № 1875) — нужны документы о происхождении товара",
+          "quote": "Действует национальный режим (ПП № 1875) — нужны документы о происхождении товара",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-037",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 2,
+      "issues": [
+        {
+          "problem": "Срок исполнения 45 дней — мало, μ: «мало» 0,99, «нормально» 0,01",
+          "quote": "2 дня на подготовку заявки — мало",
+          "verified": false
+        },
+        {
+          "problem": "Обеспечение контракта 5%",
+          "quote": "Аванс в XML не публикуется — проверьте проект контракта",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-038",
+      "expected": "consider",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Нет данных ЕГРЮЛ о заказчике",
+          "quote": "Заказчик: null",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-039",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "doubt",
+      "unverified": 0,
+      "issues": [
+        {
+          "problem": "Поставка в Свердловская область — вне ваших регионов",
+          "quote": "Свердловская область, г. Сухой Лог, ул. Артиллеристов, д. 44А",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "real-040",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Поставка в Хабаровский край — вне ваших регионов",
+          "quote": "критерии поставщика: \"Работаем только в Томской области\"",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-041",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "закупка в Калининградской области вне регионов поставщика в критерии geo",
+          "quote": "Калининградская область — вне ваших регионов.",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-042",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Республика Марий Эл — вне ваших регионов. Данный критерий из извещения: 'поставка в Республика Марий Эл — вне ваших регионов'.",
+          "quote": "извещение: 'поставка в Республика Марий Эл — вне ваших регионов'.",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-043",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Диапазон НМЦК не задан — фактор не учитывается",
+          "quote": "",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-044",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "doubt",
+      "unverified": 0,
+      "issues": [
+        {
+          "problem": "Предмет закупки не похож на ваш профиль",
+          "quote": "Работаем только в Москве и Московской области. Поставляем медицинское оборудование и лекарственные препараты.",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "real-045",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Калининградская область — вне ваших регионов",
+          "quote": "заказчик: null",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-046",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "doubt",
+      "unverified": 0,
+      "issues": [
+        {
+          "problem": "Поставка в Ростовская область — вне ваших регионов",
+          "quote": "Поставляем цемент, кирпич, строительные материалы, отделочные работы.",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "real-047",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Поставка в Калининградскую область — вне ваших регионов",
+          "quote": "извещение: \"место поставки: \"обл. Калининградская, г.о. Советский, г. Советск\"",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-048",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 2,
+      "issues": [
+        {
+          "problem": "Диапазон НМЦК не задан — фактор не учитывается",
+          "quote": "Диапазон НМЦК не задан — фактор не учитывается",
+          "verified": false
+        },
+        {
+          "problem": "Открытый конкурс — нейтральный способ",
+          "quote": "Открытый конкурс — нейтральный способ",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-049",
+      "expected": "consider",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Нет данных ЕГРЮЛ о заказчике",
+          "quote": "Нет данных ЕГРЮЛ о заказчике",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-050",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Воронежская область — вне ваших регионов",
+          "quote": "требования: Воронежская область",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-051",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Поставка в Нижегородская область — вне ваших регионов",
+          "quote": "нижегородская область — вне ваших регионов",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-052",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Белгородская область — вне ваших регионов",
+          "quote": "требования: \"Работаем только в Москве и Московской области. Поставляем медицинское оборудование и лекарственные препараты. Аванс обязателен.\"",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-053",
+      "expected": "consider",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Срок исполнения 45 дней — неверно применил критерий, не учел норму о диапазоне НМЦК для оценки сроков.",
+          "quote": "Диапазон НМЦК не задан — фактор не учитывается.",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-054",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "doubt",
+      "unverified": 0,
+      "issues": [
+        {
+          "problem": "Поставка в г. Санкт-Петербург — вне ваших регионов",
+          "quote": "Работаем только в Москве и Московской области.",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "real-055",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Калининградская область — вне ваших регионов",
+          "quote": "извещение: \"место поставки: \"обл. Калининградская, г.о. город Калининград, г. Калининград, пр-кт Московский, д. 95\"",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-056",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 2,
+      "issues": [
+        {
+          "problem": "Предмет закупки не похож на ваш профиль",
+          "quote": "Предмет закупки не похож на ваш профиль",
+          "verified": false
+        },
+        {
+          "problem": "Обеспечение контракта 10%",
+          "quote": "Обеспечение контракта 10%",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-057",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "г. Санкт-Петербург — вне ваших регионов",
+          "quote": "номер: \"GOLD0056\", \"место поставки\": \"г. Санкт-Петербург\"",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-058",
+      "expected": "skip",
+      "algorithm": "consider",
+      "final": "skip",
+      "status": "doubt",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Слова профиля есть в предмете («медицинское оборудование»), но закупаются работы или услуги, а не поставка",
+          "quote": "Работаем только в Москве и Московской области. Поставляем медицинское оборудование и лекарственные препараты.",
+          "verified": true
+        },
+        {
+          "problem": "Диапазон НМЦК не задан — фактор не учитывается",
+          "quote": "закупаются работы или услуги, а не поставка",
+          "verified": false
+        },
+        {
+          "problem": "Обеспечение контракта 5%, Аванс в XML не публикуется — проверьте проект контракта",
+          "quote": "Аванс обязателен.",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "real-059",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Нижегородская область — вне ваших регионов",
+          "quote": "заказчик: null",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-060",
+      "expected": "skip",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Нет данных ЕГРЮЛ о заказчике",
+          "quote": "Нет данных ЕГРЮЛ о заказчике",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-061",
+      "expected": "consider",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Нет данных ЕГРЮЛ о заказчике",
+          "quote": "заказчик: null",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-062",
+      "expected": "consider",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Срок исполнения 45 дней не указано в извещении, но это важный критерий для скоринга.",
+          "quote": "Срок исполнения 45 дней",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-063",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "doubt",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Смысловая близость предмета к профилю 38%",
+          "quote": "Работаем только в Москве и Московской области. Поставляем медицинское оборудование и лекарственные препараты.",
+          "verified": true
+        },
+        {
+          "problem": "Диапазон НМЦК не задан — фактор не учитывается",
+          "quote": "недостаточно данных для оценки цены",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-064",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 2,
+      "issues": [
+        {
+          "problem": "Диапазон НМЦК не задан — фактор не учитывается",
+          "quote": "Диапазон НМЦК не задан — фактор не учитывается",
+          "verified": false
+        },
+        {
+          "problem": "Нет данных ЕГРЮЛ о заказчике",
+          "quote": "Нет данных ЕГРЮЛ о заказчике",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-065",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "doubt",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Предмет закупки не похож на ваш профиль",
+          "quote": "Работаем только в Томской области. Поставляем цемент, кирпич, строительные материалы, отделочные работы.",
+          "verified": true
+        },
+        {
+          "problem": "Волгоградская область — вне ваших регионов",
+          "quote": "Работаем только в Томской области.",
+          "verified": true
+        },
+        {
+          "problem": "Срок подачи заявок истёк",
+          "quote": "закончено поступление заявок",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-066",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 3,
+      "issues": [
+        {
+          "problem": "номер закупки: \"номер\": \"GOLD0065\", \"закон\": \"44-FZ\", \"способ\": \"Запрос котировок\", \"предмет\": \"ОКАЗАНИЕ УСЛУГ ПО ВЫВОЗУ И РАЗМЕЩЕНИЮ ОТХОДОВ ПРОИЗВОДСТВА И ПОТРЕБЛЕНИЯ 4-5 КЛАССА ОПАСНОСТИ (ИСКЛЮЧАЯ ТКО)\" - г. Санкт-Петербург, вн.тер.г. муниципальный округ Купчино, пр-кт Славы, д. 30 к. 2 литера А вне ваших регионов (НМЦК от 500 тыс. до 30 млн. На обеспечения готовы отвлечь не больше 2 млн. На за",
+          "quote": "номер закупки: \"GOLD0065\", \"закон\": \"44-FZ\", \"способ\": \"Запрос котировок\", \"предмет\": \"ОКАЗАНИЕ УСЛУГ ПО ВЫВОЗУ И РАЗМЕЩЕНИЮ ОТХОДОВ ПРОИЗВОДСТВА И ПОТРЕБЛЕНИЯ 4-5 КЛАССА ОПАСНОСТИ (ИСКЛЮЧАЯ ТКО)\" - г. Санкт-Петербург, вн.тер.г. муниципальный округ Купчино, пр-кт Славы, д. 30 к. 2 литера А вне ваших",
+          "verified": false
+        },
+        {
+          "problem": "критерии поставщика: \"Работаем в Новосибирской и Томской областях, в Алтайском крае и Кемеровской области — если выгодно. НМЦК от 500 тыс. до 30 млн. На обеспечения готовы отвлечь не больше 2 млн. На заявку нужно минимум 3 дня. Конкурсы не любим. Аванс важен. Поставляем ноутбуки, компьютеры, серверы, МФУ, картриджи и сетевое оборудование.\" - Предмет закупки не похож на ваш профиль (ОКАЗАНИЕ УСЛУГ ",
+          "quote": "критерии поставщика: \"Работаем в Новосибирской и Томской областях, в Алтайском крае и Кемеровской области — если выгодно. НМЦК от 500 тыс. до 30 млн. На обеспечения готовы отвлечь не больше 2 млн. На заявку нужно минимум 3 дня. Конкурсы не любим. Аванс важен. Поставляем ноутбуки, компьютеры, серверы",
+          "verified": false
+        },
+        {
+          "problem": "критерии поставщика: \"Работаем в Новосибирской и Томской областях, в Алтайском крае и Кемеровской области — если выгодно. НМЦК от 500 тыс. до 30 млн. На обеспечения готовы отвлечь не больше 2 млн. На заявку нужно минимум 3 дня. Конкурсы не любим. Аванс важен. Поставляем ноутбуки, компьютеры, серверы, МФУ, картриджи и сетевое оборудование.\" - Срок исполнения 45 дней (6 дней на подготовку заявки, Не",
+          "quote": "критерии поставщика: \"Работаем в Новосибирской и Томской областях, в Алтайском крае и Кемеровской области — если выгодно. НМЦК от 500 тыс. до 30 млн. На обеспечения готовы отвлечь не больше 2 млн. На заявку нужно минимум 3 дня. Конкурсы не любим. Аванс важен. Поставляем ноутбуки, компьютеры, серверы",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-067",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Пензенская область — вне ваших регионов",
+          "quote": "Пензенская область — вне ваших регионов",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-068",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Калининградская область — вне ваших регионов",
+          "quote": "Калининградская область — вне ваших регионов",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-069",
+      "expected": "consider",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Заказчик не указан в извещении",
+          "quote": "нет данных ЕГРЮЛ о заказчике",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-070",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "г. Москва — вне ваших регионов",
+          "quote": "критерии поставщика: Работаем только в Томской области",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-071",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "номер закупки не по вашему профилю",
+          "quote": "номер закупки не по вашему профилю",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-072",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "doubt",
+      "unverified": 0,
+      "issues": [
+        {
+          "problem": "Предмет закупки не похож на ваш профиль",
+          "quote": "Работаем в Новосибирской и Томской областях, в Алтайском крае и Кемеровской области — если выгодно.",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "real-073",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Белгородская область — вне ваших регионов",
+          "quote": "требования: Работаем только в Москве и Московской области.",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-074",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 2,
+      "issues": [
+        {
+          "problem": "Предмет закупки не похож на ваш профиль",
+          "quote": "нечеткое определение предмета закупки не похоже на ваш профиль",
+          "verified": false
+        },
+        {
+          "problem": "6 дней на подготовку заявки",
+          "quote": "6 дней на подготовку заявки",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-075",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Республика Дагестан — вне ваших регионов",
+          "quote": "Республика Дагестан — вне ваших регионов.",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-076",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Пензенская область — вне ваших регионов",
+          "quote": "номер: \"GOLD0075\", \"предмет\": \"Оказание услуг по заправке, восстановлению картриджей и по ремонту прочего периферийного оборудования\", \"место поставки\": \"обл. Пензенская, г.о. ЗАТО город Заречный, г. Заречный, пр-кт 30-летия Победы, д. 27\"",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-077",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Красноярский край — вне ваших регионов",
+          "quote": "Красноярский край — вне ваших регионов.",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-078",
+      "expected": "skip",
+      "algorithm": "consider",
+      "final": "skip",
+      "status": "doubt",
+      "unverified": 0,
+      "issues": [
+        {
+          "problem": "Калининградская область — вне ваших регионов",
+          "quote": "Калининградская область, Багратионовский район, г. Багратионовск, ул. Иркутско-Пинской Дивизии, д. 24.",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "real-079",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Пермский край — вне ваших регионов",
+          "quote": "извещение: \"место поставки: \"край Пермский\"",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-080",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Заказчик не указан в извещении",
+          "quote": "заказчик: null",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-081",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Поставка в Воронежская область — вне ваших регионов",
+          "quote": "Позиции: \"2026-06293/ Оказание охранных услуг\"",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-082",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Заказчик не указан в извещении",
+          "quote": "заказчик: null",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-083",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Владимирская область — вне ваших регионов",
+          "quote": "поставка в Владимирскую область — вне ваших регионов",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-084",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Поставка в Краснодарский край — вне ваших регионов",
+          "quote": "Краснодарский край — вне ваших регионов",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-085",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Воронежская область — вне ваших регионов. Критерий географии не учтен в оценке алгоритма, хотя в извещении указано, что закупка проводится в Воронежской области, что вне региона поставщика (критерий поставщика: 'Работаем только в Москве и Московской области').",
+          "quote": "В закупке указано, что закупка проводится в Воронежской области, что вне региона поставщика (извещение: \"закончение подачи\": \"2026-10-20T06:04:08.866486+00:00\", \"место поставки\": \"обл. Воронежская, м.р-н Петропавловский, с.п. Петропавловское, с. Петропавловка, ул. Восточная, зд. 11\")",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-086",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "doubt",
+      "unverified": 0,
+      "issues": [
+        {
+          "problem": "Предмет закупки не похож на ваш профиль",
+          "quote": "Работаем в Новосибирской и Томской областях, в Алтайском крае и Кемеровской области — если выгодно.",
+          "verified": true
+        },
+        {
+          "problem": "Вологодская область — вне ваших регионов",
+          "quote": "Работаем в Новосибирской и Томской областях, в Алтайском крае и Кемеровской области — если выгодно.",
+          "verified": true
+        },
+        {
+          "problem": "5 дней на подготовку заявки",
+          "quote": "На заявку нужно минимум 3 дня.",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "real-087",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "doubt",
+      "unverified": 0,
+      "issues": [
+        {
+          "problem": "Республика Северная Осетия — Алания — вне ваших регионов",
+          "quote": "Работаем только в Москве и Московской области.",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "real-088",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unavailable",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-089",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Смоленская область — вне ваших регионов",
+          "quote": "geo: Смоленская область — вне ваших регионов",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-090",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Нет данных ЕГРЮЛ о заказчике",
+          "quote": "Нет данных ЕГРЮЛ о заказчике",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-091",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "закупка требует поставку в Белгородскую область, а поставщик работает только в Москве и Московской области.",
+          "quote": "закупка требует поставку в Белгородскую область, а поставщик работает только в Москве и Московской области.",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-092",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 3,
+      "issues": [
+        {
+          "problem": "Смысловая близость предмета к профилю 17%",
+          "quote": "профильность: смысловая близость предмета к профилю 17%",
+          "verified": false
+        },
+        {
+          "problem": "Обеспечение контракта 10%",
+          "quote": "финансы: обеспечение контракта 10%",
+          "verified": false
+        },
+        {
+          "problem": "Открытый конкурс — нейтральный способ",
+          "quote": "условия участия: Открытый конкурс — нейтральный способ",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-093",
+      "expected": "consider",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Нет данных ЕГРЮЛ о заказчике",
+          "quote": "Нет данных ЕГРЮЛ о заказчике",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-094",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Поставка в Смоленская область — вне ваших регионов",
+          "quote": "извещение: \"место поставки: \"обл. Смоленская, м.о. Гагаринский, г. Гагарин\"",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-095",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "doubt",
+      "unverified": 0,
+      "issues": [
+        {
+          "problem": "Предмет закупки не похож на ваш профиль",
+          "quote": "Работаем в Новосибирской и Томской областях, в Алтайском крае и Кемеровской области — если выгодно.",
+          "verified": true
+        },
+        {
+          "problem": "Ставропольский край — вне ваших регионов",
+          "quote": "Работаем в Новосибирской и Томской областях, в Алтайском крае и Кемеровской области — если выгодно.",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "real-096",
+      "expected": "consider",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Срок исполнения 45 дней — неверно применил критерий, не учел, что фактор не учитывается при отсутствии диапазона НМЦК в извещении",
+          "quote": "Диапазон НМЦК не задан — фактор не учитывается",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-097",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Предмет закупки не похож на ваш профиль",
+          "quote": "нечетко указан предмет закупки",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-098",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unavailable",
+      "unverified": 0,
+      "issues": []
+    },
+    {
+      "id": "real-099",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "закупка в г. Москва — вне ваших регионов",
+          "quote": "номер: \"GOLD0098\", предмет: \"Электронный запрос котировок на право заключения контракта на поставку лекарственного средства: Доксорубицин.\" место поставки: \"г. Москва\"",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-100",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "doubt",
+      "unverified": 3,
+      "issues": [
+        {
+          "problem": "Смысловая близость предмета к профилю 22%",
+          "quote": "Работаем только в Москве и Московской области. Поставляем медицинское оборудование и лекарственные препараты.",
+          "verified": true
+        },
+        {
+          "problem": "Диапазон НМЦК не задан — фактор не учитывается",
+          "quote": "Диапазон НМЦК не задан — фактор не учитывается",
+          "verified": false
+        },
+        {
+          "problem": "Обеспечение контракта 5%",
+          "quote": "Обеспечение контракта 5%",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-101",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "закупка в Нижегородскую область — вне ваших регионов",
+          "quote": "закупка в Нижегородская область — вне ваших регионов",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-102",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 2,
+      "issues": [
+        {
+          "problem": "Диапазон НМЦК не задан — фактор не учитывается",
+          "quote": "Диапазон НМЦК не задан — фактор не учитывается",
+          "verified": false
+        },
+        {
+          "problem": "Срок подачи заявок истёк",
+          "quote": "Срок подачи заявок истёк",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-103",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "doubt",
+      "unverified": 0,
+      "issues": [
+        {
+          "problem": "Поставка в Республика Дагестан — вне ваших регионов",
+          "quote": "Поставляем цемент, кирпич, строительные материалы, отделочные работы.",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "real-104",
+      "expected": "consider",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Нет данных ЕГРЮЛ о заказчике",
+          "quote": "Нет данных ЕГРЮЛ о заказчике",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-105",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Нет данных ЕГРЮЛ о заказчике",
+          "quote": "нет данных ЕГРЮЛ о заказчике",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-106",
+      "expected": "consider",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Нет данных ЕГРЮЛ о заказчике",
+          "quote": "Нет данных ЕГРЮЛ о заказчике",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-107",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "doubt",
+      "unverified": 0,
+      "issues": [
+        {
+          "problem": "Пензенская область — вне ваших регионов",
+          "quote": "Поставляем медицинское оборудование и лекарственные препараты.",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "real-108",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "doubt",
+      "unverified": 0,
+      "issues": [
+        {
+          "problem": "Предмет закупки не похож на ваш профиль",
+          "quote": "Работаем только в Москве и Московской области. Поставляем медицинское оборудование и лекарственные препараты.",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "real-109",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Пензенская область — вне ваших регионов",
+          "quote": "Поставка в Пензенскую область — вне ваших регионов",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-110",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Красноярский край — вне ваших регионов",
+          "quote": "Красноярский край — вне ваших регионов.",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-111",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "doubt",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Предмет закупки не похож на ваш профиль",
+          "quote": "Работаем в Новосибирской и Томской областях, в Алтайском крае и Кемеровской области — если выгодно.",
+          "verified": true
+        },
+        {
+          "problem": "Московская область — вне ваших регионов",
+          "quote": "Московская область — вне ваших регионов.",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-112",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "doubt",
+      "unverified": 0,
+      "issues": [
+        {
+          "problem": "Предмет закупки не похож на ваш профиль",
+          "quote": "Работаем в Новосибирской и Томской областях, в Алтайском крае и Кемеровской области — если выгодно.",
+          "verified": true
+        },
+        {
+          "problem": "Белгородская область — вне ваших регионов",
+          "quote": "Работаем в Новосибирской и Томской областях, в Алтайском крае и Кемеровской области — если выгодно.",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "real-113",
+      "expected": "consider",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Нет данных ЕГРЮЛ о заказчике",
+          "quote": "Нет данных ЕГРЮЛ о заказчике",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-114",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "doubt",
+      "unverified": 0,
+      "issues": [
+        {
+          "problem": "Поставка в г. Москва — вне ваших регионов",
+          "quote": "Поставляем цемент, кирпич, строительные материалы, отделочные работы.",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "real-115",
+      "expected": "consider",
+      "algorithm": "consider",
+      "final": "consider",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Заказчик не указан в извещении",
+          "quote": "заказчик: null",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-116",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "2 дня на подготовку заявки — меньше вашего минимума 3 дня",
+          "quote": "До окончания подачи 2 дня — меньше вашего минимума (3 дня)",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-117",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "doubt",
+      "unverified": 0,
+      "issues": [
+        {
+          "problem": "Предмет закупки не похож на ваш профиль",
+          "quote": "Работаем только в Москве и Московской области.",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "real-118",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Ульяновская область — вне ваших регионов",
+          "quote": "Ульяновская область — вне ваших регионов.",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-119",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "unconfirmed",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Красноярский край — вне ваших регионов",
+          "quote": "Контрольные критерии по географии",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "real-120",
+      "expected": "skip",
+      "algorithm": "skip",
+      "final": "skip",
+      "status": "doubt",
+      "unverified": 1,
+      "issues": [
+        {
+          "problem": "Работаем только в Москве и Московской области.",
+          "quote": "Работаем только в Москве и Московской области.",
+          "verified": true
+        },
+        {
+          "problem": "Нет данных ЕГРЮЛ о заказчике.",
+          "quote": "Нет данных ЕГРЮЛ о заказчике.",
+          "verified": false
+        }
+      ]
+    }
+  ]
+}
